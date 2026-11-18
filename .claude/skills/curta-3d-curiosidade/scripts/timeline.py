@@ -70,16 +70,36 @@ def main():
     tag = [s for s in internal if s[1] - s[0] >= 1.2 and s[0] > dur - 6]
     if tag and not a.sem_vinheta:
         speech_end = tag[0][0]; internal = [s for s in internal if s[0] < speech_end]; mode += " + vinheta cortada"
+    if len(internal) < N - 1:
+        # voz com pausas curtas (ex.: ElevenLabs): procura de novo com limiar menor
+        fino = [s for s in silences(src, d=0.18) if s[1] is not None and s[0] > speech_start + 0.05 and s[1] < speech_end]
+        if len(fino) >= N - 1: internal = fino; mode += " curtas"
     if len(internal) == N - 1:
         gaps = internal
     elif len(internal) > N - 1:
-        # pausas de frase (~0,8 s) são mais longas que as de vírgula (~0,3 s): fica com as N-1 maiores
-        gaps = sorted(sorted(internal, key=lambda s: s[1] - s[0], reverse=True)[:N - 1])
-        menor = min(g[1] - g[0] for g in gaps); sobra = max(s[1] - s[0] for s in internal if s not in gaps)
-        mode += f" (as {N-1} mais longas de {len(internal)})"
-        if sobra > menor * 0.8:
-            warn = (f"pausas ambíguas: uma pausa dentro de frase ({sobra:.2f}s) quase do tamanho de uma entre frases "
-                    f"({menor:.2f}s). Confira as legendas nos stills.")
+        # Mais pausas que fronteiras (vírgulas também pausam). Estima onde cada frase deveria
+        # acabar pelo nº de letras e escolhe, em ordem, as pausas que melhor batem com essas
+        # estimativas, preferindo as mais longas (programação dinâmica).
+        tot = sum(len(s) + 4 for _, s in sents); acc = 0; exp = []
+        for _, s in sents[:-1]:
+            acc += len(s) + 4; exp.append(speech_start + (speech_end - speech_start) * acc / tot)
+        M = len(internal); INF = float("inf")
+        mid = [(s[0] + s[1]) / 2 for s in internal]; ln = [s[1] - s[0] for s in internal]
+        cost = lambda i, j: abs(mid[j] - exp[i]) - 2.0 * ln[j]
+        D = [[INF] * M for _ in range(N - 1)]; B = [[-1] * M for _ in range(N - 1)]
+        for j in range(M): D[0][j] = cost(0, j)
+        for i in range(1, N - 1):
+            best, bj = INF, -1
+            for j in range(M):
+                if j > 0 and D[i - 1][j - 1] < best: best, bj = D[i - 1][j - 1], j - 1
+                if best < INF: D[i][j] = best + cost(i, j); B[i][j] = bj
+        j = min(range(M), key=lambda x: D[N - 2][x]); pick = []
+        for i in range(N - 2, -1, -1): pick.append(j); j = B[i][j]
+        gaps = [internal[k] for k in reversed(pick)]
+        mode += f" (casadas pelo texto: {N-1} de {len(internal)})"
+        desvio = max(abs((g[0] + g[1]) / 2 - e) for g, e in zip(gaps, exp))
+        if desvio > 2.5:
+            warn = f"alguma fronteira de frase ficou {desvio:.1f}s longe do esperado: confira as legendas nos stills."
     else:
         gaps = None
         mode = "proporcional"

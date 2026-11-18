@@ -1,0 +1,486 @@
+{
+ "fps": 30,
+ "total": 71.929,
+ "lead": 0.8,
+ "titulos": {
+  "gancho": "VOCÊ CONHECE<br>MESMO O SEU<br><em>GATO?</em>",
+  "final": "COMENTA<br><em>AÍ</em>"
+ },
+ "beats": [
+  {
+   "id": "gancho",
+   "tag": "PENSE DE NOVO",
+   "start": 0.8,
+   "end": 4.97,
+   "sentences": [
+    {
+     "text": "Você acha que conhece o seu gato?",
+     "start": 0.8,
+     "end": 2.749
+    },
+    {
+     "text": "Pense de novo.",
+     "start": 3.162,
+     "end": 4.97
+    }
+   ]
+  },
+  {
+   "id": "visao",
+   "tag": "FATO #1 · VISÃO",
+   "start": 5.345,
+   "end": 17.911,
+   "sentences": [
+    {
+     "text": "No escuro, ele enxerga com seis vezes menos luz do que você precisa.",
+     "start": 5.345,
+     "end": 10.013
+    },
+    {
+     "text": "Atrás dos olhos existe uma camada que reflete a luz.",
+     "start": 10.557,
+     "end": 14.165
+    },
+    {
+     "text": "É por isso que eles brilham na noite.",
+     "start": 14.386,
+     "end": 17.911
+    }
+   ]
+  },
+  {
+   "id": "miado",
+   "tag": "FATO #2 · MIADO",
+   "start": 18.2,
+   "end": 28.352,
+   "sentences": [
+    {
+     "text": "Gatos adultos quase não miam entre si.",
+     "start": 18.2,
+     "end": 20.253
+    },
+    {
+     "text": "O miado é uma linguagem que eles desenvolveram para falar com humanos.",
+     "start": 20.633,
+     "end": 26.065
+    },
+    {
+     "text": "Ou seja, para te manipular.",
+     "start": 26.236,
+     "end": 28.352
+    }
+   ]
+  },
+  {
+   "id": "ronronar",
+   "tag": "FATO #3 · RONRONAR",
+   "start": 28.564,
+   "end": 38.906,
+   "sentences": [
+    {
+     "text": "O ronronar vibra numa frequência entre 25 e 150 hertz.",
+     "start": 28.564,
+     "end": 34.124
+    },
+    {
+     "text": "Cientistas investigam se essa vibração ajuda o próprio corpo do gato a se recuperar.",
+     "start": 34.435,
+     "end": 38.906
+    }
+   ]
+  },
+  {
+   "id": "doce",
+   "tag": "FATO #4 · DOCE",
+   "start": 39.116,
+   "end": 48.113,
+   "sentences": [
+    {
+     "text": "Seu gato não sente gosto de doce.",
+     "start": 39.116,
+     "end": 42.303
+    },
+    {
+     "text": "Ele não tem o receptor para isso.",
+     "start": 42.549,
+     "end": 44.594
+    },
+    {
+     "text": "Para ele, açúcar simplesmente não existe.",
+     "start": 44.934,
+     "end": 48.113
+    }
+   ]
+  },
+  {
+   "id": "piscada",
+   "tag": "FATO #5 · PISCADA",
+   "start": 48.424,
+   "end": 58.324,
+   "sentences": [
+    {
+     "text": "Se ele te olha e pisca devagar, isso é confiança.",
+     "start": 48.424,
+     "end": 52.351
+    },
+    {
+     "text": "Pesquisadores descobriram que, se você piscar devagar de volta, ele tende a se aproximar.",
+     "start": 52.652,
+     "end": 58.324
+    }
+   ]
+  },
+  {
+   "id": "sono",
+   "tag": "FATO #6 · SONO",
+   "start": 58.638,
+   "end": 66.704,
+   "sentences": [
+    {
+     "text": "Ele dorme até 16 horas por dia.",
+     "start": 58.638,
+     "end": 61.414
+    },
+    {
+     "text": "Mas, mesmo dormindo, ele está te observando.",
+     "start": 61.877,
+     "end": 65.372
+    },
+    {
+     "text": "Agora mesmo.",
+     "start": 65.731,
+     "end": 66.704
+    }
+   ]
+  },
+  {
+   "id": "fim",
+   "tag": "E VOCÊ?",
+   "start": 67.038,
+   "end": 70.129,
+   "sentences": [
+    {
+     "text": "Qual dessas você não sabia?",
+     "start": 67.038,
+     "end": 68.726
+    },
+    {
+     "text": "Comenta aí.",
+     "start": 69.022,
+     "end": 70.129
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 3.042,
+   "cena": "gato",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "sentado"
+   },
+   "descricao": "gato de massinha sentado, encarando"
+  },
+  {
+   "beat": 0,
+   "start": 3.042,
+   "end": 5.225,
+   "cena": "gato",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "acao": "encara"
+   },
+   "descricao": "close nos olhos do gato"
+  },
+  {
+   "beat": 1,
+   "start": 5.225,
+   "end": 7.796,
+   "cena": "noite",
+   "camera": "pan_right",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 7.796,
+   "end": 10.437,
+   "cena": "gato",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "escuro"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 10.437,
+   "end": 12.938,
+   "cena": "olho",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 12.938,
+   "end": 15.509,
+   "cena": "olho",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "reflexo": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 15.509,
+   "end": 18.08,
+   "cena": "noite",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "brilho": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 18.08,
+   "end": 20.513,
+   "cena": "dois",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 20.513,
+   "end": 23.262,
+   "cena": "gato",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "mia"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 23.262,
+   "end": 26.116,
+   "cena": "gato",
+   "camera": "tilt_up",
+   "impacto": false,
+   "args": {
+    "acao": "mia",
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 26.116,
+   "end": 28.444,
+   "cena": "gato",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "acao": "malandro"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 28.444,
+   "end": 31.082,
+   "cena": "ronrona",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 31.082,
+   "end": 34.315,
+   "cena": "ronrona",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 34.315,
+   "end": 36.358,
+   "cena": "osso",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 36.358,
+   "end": 38.996,
+   "cena": "osso",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 38.996,
+   "end": 42.429,
+   "cena": "doce",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": "gato diante de um cupcake, indiferente"
+  },
+  {
+   "beat": 4,
+   "start": 42.429,
+   "end": 44.814,
+   "cena": "lingua",
+   "camera": "pan_left",
+   "impacto": false,
+   "args": {},
+   "descricao": "língua em corte, receptor faltando"
+  },
+  {
+   "beat": 4,
+   "start": 44.814,
+   "end": 48.304,
+   "cena": "doce",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "some": true
+   },
+   "descricao": "cupcake some em fumaça"
+  },
+  {
+   "beat": 5,
+   "start": 48.304,
+   "end": 50.858,
+   "cena": "gato",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "pisca"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 50.858,
+   "end": 52.532,
+   "cena": "gato",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "acao": "pisca",
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 52.532,
+   "end": 55.965,
+   "cena": "gato",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "acao": "aproxima"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 55.965,
+   "end": 58.518,
+   "cena": "gato",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "acao": "aproxima",
+    "coracao": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 58.518,
+   "end": 61.757,
+   "cena": "dorme",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 61.757,
+   "end": 64.118,
+   "cena": "dorme",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 64.118,
+   "end": 66.918,
+   "cena": "dorme",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "espia": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 7,
+   "start": 66.918,
+   "end": 68.902,
+   "cena": "gato",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "acao": "sentado"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 7,
+   "start": 68.902,
+   "end": 71.929,
+   "cena": "gato",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "acao": "sentado"
+   },
+   "descricao": ""
+  }
+ ]
+}

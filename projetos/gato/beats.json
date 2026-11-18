@@ -1,0 +1,267 @@
+{
+  "titulo": "Você acha que conhece o seu gato?",
+  "voz": "ElevenLabs: Will - Deep, Smooth and Affectionate",
+  "titulos": {
+    "gancho": "VOCÊ CONHECE<br>MESMO O SEU<br><em>GATO?</em>",
+    "final": "COMENTA<br><em>AÍ</em>"
+  },
+  "beats": [
+    {
+      "id": "gancho",
+      "tag": "PENSE DE NOVO",
+      "narracao": "Você acha que conhece o seu gato? Pense de novo.",
+      "shots": [
+        {
+          "cena": "gato",
+          "camera": "push_in",
+          "args": {
+            "acao": "sentado"
+          },
+          "descricao": "gato de massinha sentado, encarando"
+        },
+        {
+          "cena": "gato",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "acao": "encara"
+          },
+          "descricao": "close nos olhos do gato"
+        }
+      ]
+    },
+    {
+      "id": "visao",
+      "tag": "FATO #1 · VISÃO",
+      "narracao": "No escuro, ele enxerga com seis vezes menos luz do que você precisa. Atrás dos olhos existe uma camada que reflete a luz. É por isso que eles brilham na noite.",
+      "shots": [
+        {
+          "cena": "noite",
+          "camera": "pan_right",
+          "impacto": false,
+          "args": {}
+        },
+        {
+          "cena": "gato",
+          "camera": "push_in",
+          "impacto": false,
+          "args": {
+            "acao": "escuro"
+          }
+        },
+        {
+          "cena": "olho",
+          "camera": "push_in",
+          "impacto": false,
+          "args": {}
+        },
+        {
+          "cena": "olho",
+          "camera": "orbit",
+          "impacto": false,
+          "args": {
+            "reflexo": true
+          }
+        },
+        {
+          "cena": "noite",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "brilho": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "miado",
+      "tag": "FATO #2 · MIADO",
+      "narracao": "Gatos adultos quase não miam entre si. O miado é uma linguagem que eles desenvolveram para falar com humanos. Ou seja, para te manipular.",
+      "shots": [
+        {
+          "cena": "dois",
+          "camera": "orbit",
+          "impacto": false,
+          "args": {}
+        },
+        {
+          "cena": "gato",
+          "camera": "push_in",
+          "impacto": false,
+          "args": {
+            "acao": "mia"
+          }
+        },
+        {
+          "cena": "gato",
+          "camera": "tilt_up",
+          "impacto": false,
+          "args": {
+            "acao": "mia",
+            "close": true
+          }
+        },
+        {
+          "cena": "gato",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "acao": "malandro"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ronronar",
+      "tag": "FATO #3 · RONRONAR",
+      "narracao": "O ronronar vibra numa frequência entre 25 e 150 hertz. Cientistas investigam se essa vibração ajuda o próprio corpo do gato a se recuperar.",
+      "shots": [
+        {
+          "cena": "ronrona",
+          "camera": "push_in",
+          "impacto": false,
+          "args": {}
+        },
+        {
+          "cena": "ronrona",
+          "camera": "static",
+          "impacto": false,
+          "args": {
+            "close": true
+          }
+        },
+        {
+          "cena": "osso",
+          "camera": "orbit",
+          "impacto": false,
+          "args": {}
+        },
+        {
+          "cena": "osso",
+          "camera": "push_in",
+          "impacto": false,
+          "args": {
+            "close": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "doce",
+      "tag": "FATO #4 · DOCE",
+      "narracao": "Seu gato não sente gosto de doce. Ele não tem o receptor para isso. Para ele, açúcar simplesmente não existe.",
+      "shots": [
+        {
+          "cena": "doce",
+          "camera": "push_in",
+          "descricao": "gato diante de um cupcake, indiferente"
+        },
+        {
+          "cena": "lingua",
+          "camera": "pan_left",
+          "descricao": "língua em corte, receptor faltando"
+        },
+        {
+          "cena": "doce",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "some": true
+          },
+          "descricao": "cupcake some em fumaça"
+        }
+      ]
+    },
+    {
+      "id": "piscada",
+      "tag": "FATO #5 · PISCADA",
+      "narracao": "Se ele te olha e pisca devagar, isso é confiança. Pesquisadores descobriram que, se você piscar devagar de volta, ele tende a se aproximar.",
+      "shots": [
+        {
+          "cena": "gato",
+          "camera": "push_in",
+          "impacto": false,
+          "args": {
+            "acao": "pisca"
+          }
+        },
+        {
+          "cena": "gato",
+          "camera": "static",
+          "impacto": false,
+          "args": {
+            "acao": "pisca",
+            "close": true
+          }
+        },
+        {
+          "cena": "gato",
+          "camera": "pull_out",
+          "impacto": false,
+          "args": {
+            "acao": "aproxima"
+          }
+        },
+        {
+          "cena": "gato",
+          "camera": "static",
+          "impacto": false,
+          "args": {
+            "acao": "aproxima",
+            "coracao": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "sono",
+      "tag": "FATO #6 · SONO",
+      "narracao": "Ele dorme até 16 horas por dia. Mas, mesmo dormindo, ele está te observando. Agora mesmo.",
+      "shots": [
+        {
+          "cena": "dorme",
+          "camera": "orbit",
+          "impacto": false,
+          "args": {}
+        },
+        {
+          "cena": "dorme",
+          "camera": "push_in",
+          "impacto": false,
+          "args": {}
+        },
+        {
+          "cena": "dorme",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "espia": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "fim",
+      "tag": "E VOCÊ?",
+      "narracao": "Qual dessas você não sabia? Comenta aí.",
+      "shots": [
+        {
+          "cena": "gato",
+          "camera": "pull_out",
+          "impacto": false,
+          "args": {
+            "acao": "sentado"
+          }
+        },
+        {
+          "cena": "gato",
+          "camera": "orbit",
+          "impacto": false,
+          "args": {
+            "acao": "sentado"
+          }
+        }
+      ]
+    }
+  ]
+}
