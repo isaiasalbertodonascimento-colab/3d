@@ -1,2 +1,5 @@
 node_modules/
 audio/raw_*.wav
+projetos/*/frames/
+projetos/*/stills/
+projetos/*/audio/narracao_raw.*

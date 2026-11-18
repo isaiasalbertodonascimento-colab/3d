@@ -1,0 +1,207 @@
+{
+ "fps": 30,
+ "total": 32.612,
+ "lead": 0.8,
+ "titulos": {
+  "gancho": "CHICLETE FICA<br><em>7 ANOS</em><br>NA BARRIGA?",
+  "final": "SÓ NO<br><em>MITO</em>"
+ },
+ "beats": [
+  {
+   "id": "gancho",
+   "tag": "MITO?",
+   "start": 0.8,
+   "end": 6.092,
+   "sentences": [
+    {
+     "text": "Dizem que chiclete engolido fica sete anos no seu estômago.",
+     "start": 0.8,
+     "end": 4.036
+    },
+    {
+     "text": "Mas será que é verdade?",
+     "start": 4.826,
+     "end": 6.092
+    }
+   ]
+  },
+  {
+   "id": "mecanismo",
+   "tag": "PASSO 1",
+   "start": 6.863,
+   "end": 13.059,
+   "sentences": [
+    {
+     "text": "Assim que ele desce pela garganta, a saliva e as enzimas tentam dissolvê-lo.",
+     "start": 6.863,
+     "end": 10.707
+    },
+    {
+     "text": "Mas nenhuma delas consegue.",
+     "start": 11.467,
+     "end": 13.059
+    }
+   ]
+  },
+  {
+   "id": "escalada",
+   "tag": "PASSO 2",
+   "start": 13.844,
+   "end": 22.415,
+   "sentences": [
+    {
+     "text": "No estômago, um ácido capaz de corroer metal ataca a goma.",
+     "start": 13.844,
+     "end": 17.164
+    },
+    {
+     "text": "Mesmo assim, ela não se desfaz.",
+     "start": 17.945,
+     "end": 19.987
+    },
+    {
+     "text": "Então, o que acontece?",
+     "start": 20.782,
+     "end": 22.415
+    }
+   ]
+  },
+  {
+   "id": "resolucao",
+   "tag": "A VERDADE",
+   "start": 23.221,
+   "end": 30.612,
+   "sentences": [
+    {
+     "text": "Seu intestino trata o chiclete como fibra, e o empurra para fora em poucos dias.",
+     "start": 23.221,
+     "end": 27.494
+    },
+    {
+     "text": "Sete anos?",
+     "start": 28.304,
+     "end": 29.151
+    },
+    {
+     "text": "Só no mito.",
+     "start": 29.95,
+     "end": 30.612
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 3.372,
+   "cena": "menino",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "engolir"
+   },
+   "descricao": "menino engole chiclete rosa"
+  },
+  {
+   "beat": 0,
+   "start": 3.372,
+   "end": 6.743,
+   "cena": "garganta",
+   "camera": "tilt_down",
+   "impacto": true,
+   "args": {},
+   "descricao": "corte da cabeça: bolinha descendo pela garganta"
+  },
+  {
+   "beat": 1,
+   "start": 6.743,
+   "end": 11.347,
+   "cena": "esofago",
+   "camera": "pan_right",
+   "impacto": false,
+   "args": {},
+   "descricao": "esôfago em corte, enzimas cercando a goma"
+  },
+  {
+   "beat": 1,
+   "start": 11.347,
+   "end": 13.724,
+   "cena": "goma",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "fundo": "vinho"
+   },
+   "descricao": "close: enzimas ricocheteiam na goma"
+  },
+  {
+   "beat": 2,
+   "start": 13.724,
+   "end": 17.825,
+   "cena": "estomago",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": "estômago em corte com ácido brilhando"
+  },
+  {
+   "beat": 2,
+   "start": 17.825,
+   "end": 20.662,
+   "cena": "goma",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "acido": true
+   },
+   "descricao": "goma intacta no ácido"
+  },
+  {
+   "beat": 2,
+   "start": 20.662,
+   "end": 23.101,
+   "cena": "menino",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "acao": "duvida"
+   },
+   "descricao": "menino coçando a cabeça, intrigado"
+  },
+  {
+   "beat": 3,
+   "start": 23.101,
+   "end": 26.271,
+   "cena": "intestino",
+   "camera": "pan_left",
+   "impacto": false,
+   "args": {},
+   "descricao": "goma viajando pelo intestino"
+  },
+  {
+   "beat": 3,
+   "start": 26.271,
+   "end": 29.83,
+   "cena": "intestino",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "fim": true
+   },
+   "descricao": "close: goma saindo no fim do intestino"
+  },
+  {
+   "beat": 3,
+   "start": 29.83,
+   "end": 32.612,
+   "cena": "menino",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "acao": "alivio"
+   },
+   "descricao": "menino aliviado, sorrindo"
+  }
+ ]
+}

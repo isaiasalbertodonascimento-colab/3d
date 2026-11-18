@@ -1,0 +1,110 @@
+{
+  "titulo": "Chiclete fica 7 anos na barriga?",
+  "voz": "pt-BR-AntonioNeural",
+  "titulos": {
+    "gancho": "CHICLETE FICA<br><em>7 ANOS</em><br>NA BARRIGA?",
+    "final": "SÓ NO<br><em>MITO</em>"
+  },
+  "beats": [
+    {
+      "id": "gancho",
+      "tag": "MITO?",
+      "narracao": "Dizem que chiclete engolido fica sete anos no seu estômago. Mas será que é verdade?",
+      "shots": [
+        {
+          "cena": "menino",
+          "camera": "push_in",
+          "descricao": "menino engole chiclete rosa",
+          "args": {
+            "acao": "engolir"
+          }
+        },
+        {
+          "cena": "garganta",
+          "camera": "tilt_down",
+          "impacto": true,
+          "descricao": "corte da cabeça: bolinha descendo pela garganta"
+        }
+      ]
+    },
+    {
+      "id": "mecanismo",
+      "tag": "PASSO 1",
+      "narracao": "Assim que ele desce pela garganta, a saliva e as enzimas tentam dissolvê-lo. Mas nenhuma delas consegue.",
+      "shots": [
+        {
+          "cena": "esofago",
+          "camera": "pan_right",
+          "descricao": "esôfago em corte, enzimas cercando a goma"
+        },
+        {
+          "cena": "goma",
+          "camera": "static",
+          "impacto": true,
+          "descricao": "close: enzimas ricocheteiam na goma",
+          "args": {
+            "fundo": "vinho"
+          }
+        }
+      ]
+    },
+    {
+      "id": "escalada",
+      "tag": "PASSO 2",
+      "narracao": "No estômago, um ácido capaz de corroer metal ataca a goma. Mesmo assim, ela não se desfaz. Então, o que acontece?",
+      "shots": [
+        {
+          "cena": "estomago",
+          "camera": "orbit",
+          "descricao": "estômago em corte com ácido brilhando"
+        },
+        {
+          "cena": "goma",
+          "camera": "push_in",
+          "impacto": true,
+          "descricao": "goma intacta no ácido",
+          "args": {
+            "acido": true
+          }
+        },
+        {
+          "cena": "menino",
+          "camera": "static",
+          "descricao": "menino coçando a cabeça, intrigado",
+          "args": {
+            "acao": "duvida"
+          }
+        }
+      ]
+    },
+    {
+      "id": "resolucao",
+      "tag": "A VERDADE",
+      "narracao": "Seu intestino trata o chiclete como fibra, e o empurra para fora em poucos dias. Sete anos? Só no mito.",
+      "shots": [
+        {
+          "cena": "intestino",
+          "camera": "pan_left",
+          "descricao": "goma viajando pelo intestino"
+        },
+        {
+          "cena": "intestino",
+          "camera": "push_in",
+          "impacto": true,
+          "descricao": "close: goma saindo no fim do intestino",
+          "args": {
+            "fim": true
+          }
+        },
+        {
+          "cena": "menino",
+          "camera": "pull_out",
+          "descricao": "menino aliviado, sorrindo",
+          "args": {
+            "acao": "alivio"
+          }
+        }
+      ]
+    }
+  ]
+}
