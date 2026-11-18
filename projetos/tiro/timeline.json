@@ -1,0 +1,274 @@
+{
+ "fps": 30,
+ "total": 43.893,
+ "lead": 0.8,
+ "titulos": {
+  "gancho": "O QUE ACONTECE<br>QUANDO ALGUÉM<br><em>LEVA UM TIRO?</em>",
+  "final": "CADA MINUTO<br><em>CONTA</em>"
+ },
+ "beats": [
+  {
+   "id": "gancho",
+   "tag": "MITO?",
+   "start": 0.8,
+   "end": 8.832,
+   "sentences": [
+    {
+     "text": "Nos filmes, quem leva um tiro voa para trás.",
+     "start": 0.8,
+     "end": 3.483
+    },
+    {
+     "text": "Na vida real, muitas vezes a pessoa nem percebe na hora.",
+     "start": 4.266,
+     "end": 7.624
+    },
+    {
+     "text": "Por quê?",
+     "start": 8.404,
+     "end": 8.832
+    }
+   ]
+  },
+  {
+   "id": "adrenalina",
+   "tag": "ADRENALINA",
+   "start": 9.605,
+   "end": 17.301,
+   "sentences": [
+    {
+     "text": "O cérebro inunda o corpo de adrenalina, que pode esconder a dor por vários minutos.",
+     "start": 9.605,
+     "end": 13.86
+    },
+    {
+     "text": "Mas o perigo de verdade está acontecendo por dentro.",
+     "start": 14.662,
+     "end": 17.301
+    }
+   ]
+  },
+  {
+   "id": "sangue",
+   "tag": "O SANGUE",
+   "start": 18.096,
+   "end": 25.401,
+   "sentences": [
+    {
+     "text": "Um adulto tem cerca de cinco litros de sangue.",
+     "start": 18.096,
+     "end": 20.545
+    },
+    {
+     "text": "E o coração, tentando compensar a perda, bate cada vez mais rápido.",
+     "start": 21.344,
+     "end": 25.401
+    }
+   ]
+  },
+  {
+   "id": "defesa",
+   "tag": "DEFESA",
+   "start": 26.202,
+   "end": 34.693,
+   "sentences": [
+    {
+     "text": "Enquanto isso, as plaquetas correm até o ferimento e tentam fechar o vazamento, como um tampão.",
+     "start": 26.202,
+     "end": 31.294
+    },
+    {
+     "text": "Só que, sozinhas, elas não dão conta.",
+     "start": 32.113,
+     "end": 34.693
+    }
+   ]
+  },
+  {
+   "id": "verdade",
+   "tag": "A VERDADE",
+   "start": 35.507,
+   "end": 41.893,
+   "sentences": [
+    {
+     "text": "É por isso que apertar o ferimento e chamar socorro rápido salvam vidas.",
+     "start": 35.507,
+     "end": 39.29
+    },
+    {
+     "text": "No trauma, cada minuto conta.",
+     "start": 40.084,
+     "end": 41.893
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 4.146,
+   "cena": "pessoa",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "andar"
+   },
+   "descricao": "personagem andando tranquilo"
+  },
+  {
+   "beat": 0,
+   "start": 4.146,
+   "end": 6.323,
+   "cena": "pessoa",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "acao": "impacto"
+   },
+   "descricao": "flash amarelo simbólico no ombro"
+  },
+  {
+   "beat": 0,
+   "start": 6.323,
+   "end": 9.485,
+   "cena": "pessoa",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "acao": "confuso"
+   },
+   "descricao": "personagem parado, confuso"
+  },
+  {
+   "beat": 1,
+   "start": 9.485,
+   "end": 12.315,
+   "cena": "cerebro",
+   "camera": "tilt_down",
+   "impacto": false,
+   "args": {},
+   "descricao": "cabeça em corte, cérebro brilhando, adrenalina descendo"
+  },
+  {
+   "beat": 1,
+   "start": 12.315,
+   "end": 14.542,
+   "cena": "pessoa",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "respira"
+   },
+   "descricao": "personagem respirando rápido"
+  },
+  {
+   "beat": 1,
+   "start": 14.542,
+   "end": 17.976,
+   "cena": "vaso",
+   "camera": "orbit",
+   "impacto": true,
+   "args": {},
+   "descricao": "vaso em corte com vazamento estilizado"
+  },
+  {
+   "beat": 2,
+   "start": 17.976,
+   "end": 21.224,
+   "cena": "litros",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": "cinco potes de massinha com líquido vermelho"
+  },
+  {
+   "beat": 2,
+   "start": 21.224,
+   "end": 23.38,
+   "cena": "coracao",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": "tronco em corte, coração batendo"
+  },
+  {
+   "beat": 2,
+   "start": 23.38,
+   "end": 26.082,
+   "cena": "coracao",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "rapido": true
+   },
+   "descricao": "close no coração acelerado"
+  },
+  {
+   "beat": 3,
+   "start": 26.082,
+   "end": 29.184,
+   "cena": "vaso",
+   "camera": "pan_right",
+   "impacto": false,
+   "args": {
+    "plaquetas": true
+   },
+   "descricao": "plaquetas amarelas correndo pelo vaso"
+  },
+  {
+   "beat": 3,
+   "start": 29.184,
+   "end": 31.993,
+   "cena": "tampao",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": "plaquetas formando tampão"
+  },
+  {
+   "beat": 3,
+   "start": 31.993,
+   "end": 35.387,
+   "cena": "tampao",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "vaza": true
+   },
+   "descricao": "tampão não fecha tudo, ainda vaza"
+  },
+  {
+   "beat": 4,
+   "start": 35.387,
+   "end": 38.222,
+   "cena": "maos",
+   "camera": "static",
+   "impacto": false,
+   "args": {},
+   "descricao": "mãos pressionando um pano no ombro"
+  },
+  {
+   "beat": 4,
+   "start": 38.222,
+   "end": 39.964,
+   "cena": "ambulancia",
+   "camera": "pan_left",
+   "impacto": true,
+   "args": {},
+   "descricao": "ambulância de massinha chegando"
+  },
+  {
+   "beat": 4,
+   "start": 39.964,
+   "end": 43.893,
+   "cena": "pessoa",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "acao": "atendido"
+   },
+   "descricao": "personagem com curativo, aliviado"
+  }
+ ]
+}

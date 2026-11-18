@@ -1,0 +1,149 @@
+{
+  "titulo": "O que acontece quando alguém leva um tiro?",
+  "voz": "pt-BR-AntonioNeural",
+  "titulos": {
+    "gancho": "O QUE ACONTECE<br>QUANDO ALGUÉM<br><em>LEVA UM TIRO?</em>",
+    "final": "CADA MINUTO<br><em>CONTA</em>"
+  },
+  "beats": [
+    {
+      "id": "gancho",
+      "tag": "MITO?",
+      "narracao": "Nos filmes, quem leva um tiro voa para trás. Na vida real, muitas vezes a pessoa nem percebe na hora. Por quê?",
+      "shots": [
+        {
+          "cena": "pessoa",
+          "camera": "push_in",
+          "descricao": "personagem andando tranquilo",
+          "args": {
+            "acao": "andar"
+          }
+        },
+        {
+          "cena": "pessoa",
+          "camera": "static",
+          "impacto": true,
+          "descricao": "flash amarelo simbólico no ombro",
+          "args": {
+            "acao": "impacto"
+          }
+        },
+        {
+          "cena": "pessoa",
+          "camera": "orbit",
+          "descricao": "personagem parado, confuso",
+          "args": {
+            "acao": "confuso"
+          }
+        }
+      ]
+    },
+    {
+      "id": "adrenalina",
+      "tag": "ADRENALINA",
+      "narracao": "O cérebro inunda o corpo de adrenalina, que pode esconder a dor por vários minutos. Mas o perigo de verdade está acontecendo por dentro.",
+      "shots": [
+        {
+          "cena": "cerebro",
+          "camera": "tilt_down",
+          "descricao": "cabeça em corte, cérebro brilhando, adrenalina descendo"
+        },
+        {
+          "cena": "pessoa",
+          "camera": "push_in",
+          "descricao": "personagem respirando rápido",
+          "args": {
+            "acao": "respira"
+          }
+        },
+        {
+          "cena": "vaso",
+          "camera": "orbit",
+          "impacto": true,
+          "descricao": "vaso em corte com vazamento estilizado"
+        }
+      ]
+    },
+    {
+      "id": "sangue",
+      "tag": "O SANGUE",
+      "narracao": "Um adulto tem cerca de cinco litros de sangue. E o coração, tentando compensar a perda, bate cada vez mais rápido.",
+      "shots": [
+        {
+          "cena": "litros",
+          "camera": "push_in",
+          "descricao": "cinco potes de massinha com líquido vermelho"
+        },
+        {
+          "cena": "coracao",
+          "camera": "orbit",
+          "descricao": "tronco em corte, coração batendo"
+        },
+        {
+          "cena": "coracao",
+          "camera": "push_in",
+          "impacto": true,
+          "descricao": "close no coração acelerado",
+          "args": {
+            "rapido": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "defesa",
+      "tag": "DEFESA",
+      "narracao": "Enquanto isso, as plaquetas correm até o ferimento e tentam fechar o vazamento, como um tampão. Só que, sozinhas, elas não dão conta.",
+      "shots": [
+        {
+          "cena": "vaso",
+          "camera": "pan_right",
+          "descricao": "plaquetas amarelas correndo pelo vaso",
+          "args": {
+            "plaquetas": true
+          }
+        },
+        {
+          "cena": "tampao",
+          "camera": "push_in",
+          "descricao": "plaquetas formando tampão"
+        },
+        {
+          "cena": "tampao",
+          "camera": "static",
+          "impacto": true,
+          "descricao": "tampão não fecha tudo, ainda vaza",
+          "args": {
+            "vaza": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "verdade",
+      "tag": "A VERDADE",
+      "narracao": "É por isso que apertar o ferimento e chamar socorro rápido salvam vidas. No trauma, cada minuto conta.",
+      "shots": [
+        {
+          "cena": "maos",
+          "camera": "static",
+          "descricao": "mãos pressionando um pano no ombro"
+        },
+        {
+          "cena": "ambulancia",
+          "camera": "pan_left",
+          "impacto": true,
+          "descricao": "ambulância de massinha chegando"
+        },
+        {
+          "cena": "pessoa",
+          "camera": "pull_out",
+          "descricao": "personagem com curativo, aliviado",
+          "args": {
+            "acao": "atendido"
+          }
+        }
+      ]
+    }
+  ]
+}
