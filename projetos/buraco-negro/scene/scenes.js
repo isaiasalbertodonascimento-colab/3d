@@ -136,11 +136,11 @@ export default {
     const cam = camHud(ctx, 40); scene.add(cam);
     const t1 = a.setas ? hud(cam, 'PÉS: PUXÃO FORTE', '#ff8787', 0.62, 0.9) : null, t2 = a.setas ? hud(cam, 'CABEÇA: PUXÃO FRACO', '#ffd43b', 0.45, 0.9) : null;
     return {
-      scene, cam, rig: { target: V(0, 0.6, 0), dist: 7.4, pitch: 0.12, fov: 40 }, bloom: [0.35, 0.4, 0.85],
+      scene, cam, rig: a.estica != null ? { target: V(0, 1.6, 0), dist: 9.0, pitch: 0.1, fov: 40 } : { target: V(0, 0.6, 0), dist: 7.4, pitch: 0.12, fov: 40 }, bloom: [0.35, 0.4, 0.85],
       update(t, d, k) {
         bn.update(t);
         const e = a.estica != null ? (a.estica >= 1 ? ease(smooth(0, 0.9, k)) : a.estica * ease(smooth(0, 0.8, k))) : 0;
-        p.scale.set(1 - e * 0.55, 1 + e * 2.2, 1 - e * 0.55); p.position.y = 0.2 - e * 2.6 + Math.sin(t) * 0.04; p.rotation.z = Math.sin(t * 0.8) * 0.08;
+        p.scale.set(1 - e * 0.5, 1 + e * 1.6, 1 - e * 0.5); p.position.y = 0.2 - e * 2.0 + Math.sin(t) * 0.04; p.rotation.z = Math.sin(t * 0.8) * 0.08;
         pose(p, t, { expr: e > 0.05 || a.setas ? 'susto' : 'preocupado', bE: 2.6, bD: 2.6, olhar: [0, -1] });
         sPe.position.set(0.75, -0.6 - e * 2, 0.3); sCab.position.set(0.75, 1.85 + e * 1.2, 0.3);
         if (t1) { t1.scale.setScalar(Math.max(0.001, ease(smooth(0.1, 0.3, k)))); t2.scale.setScalar(Math.max(0.001, ease(smooth(0.35, 0.55, k)))); }
@@ -188,7 +188,7 @@ export default {
       scene, rig, bloom: [0.35, 0.4, 0.8], exposure: 1.0,
       update(t, d, k) {
         poeira.update(t); jan.material.color.setScalar(1).multiplyScalar(1.1 + 0.08 * Math.sin(t * 2));
-        if (a.olha) { const v = ease(smooth(0.05, 0.4, k)); b.rotation.y = lerp(Math.PI * 0.85, 0.1, v); pose(b, t, { expr: 'preocupado', olhar: [0, 0], bE: 0.15, bD: 0.15, cabZ: 0.06 }); }
+        if (a.olha) { const v = ease(smooth(0.05, 0.4, k)); b.rotation.y = lerp(Math.PI * 0.85, 0.1, v); pose(b, t, { expr: 'susto', olhar: [0, 0], bE: 0.15, bD: 0.15, cabZ: 0.06 }); }
         else { b.rotation.y = Math.PI * 0.85; pose(b, t, { expr: 'preocupado', bD: 0.5, bDx: -1.6, olhar: [0, 0.4], cabX: -0.12 }); }
       }
     };

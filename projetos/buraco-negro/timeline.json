@@ -4,7 +4,8 @@
  "lead": 0.8,
  "titulos": {
   "gancho": "E SE VOCÊ<br>CAÍSSE NUM<br><em>BURACO NEGRO?</em>",
-  "final": "VOCÊ<br><em>ENTRARIA?</em>"
+  "final": "VOCÊ<br><em>ENTRARIA?</em>",
+  "gancho_dur": 1.9
  },
  "beats": [
   {

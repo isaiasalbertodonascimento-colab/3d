@@ -3,7 +3,8 @@
   "voz": "ElevenLabs: Will - Deep, Smooth and Affectionate",
   "titulos": {
     "gancho": "E SE VOCÊ<br>CAÍSSE NUM<br><em>BURACO NEGRO?</em>",
-    "final": "VOCÊ<br><em>ENTRARIA?</em>"
+    "final": "VOCÊ<br><em>ENTRARIA?</em>",
+    "gancho_dur": 1.9
   },
   "beats": [
     {
