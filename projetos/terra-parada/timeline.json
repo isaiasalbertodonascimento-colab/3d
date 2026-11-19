@@ -1,0 +1,298 @@
+{
+ "fps": 30,
+ "total": 51.23,
+ "lead": 0.8,
+ "titulos": {
+  "gancho": "E SE A TERRA<br><em>PARASSE</em><br>DE GIRAR?",
+  "final": "VOCÊ<br><em>SOBREVIVERIA?</em>"
+ },
+ "beats": [
+  {
+   "id": "gancho",
+   "tag": "E SE...",
+   "start": 0.8,
+   "end": 5.911,
+   "sentences": [
+    {
+     "text": "E se a Terra parasse de girar por um segundo?",
+     "start": 0.8,
+     "end": 4.133
+    },
+    {
+     "text": "Spoiler: seria o fim do mundo.",
+     "start": 4.311,
+     "end": 5.911
+    }
+   ]
+  },
+  {
+   "id": "velocidade",
+   "tag": "AGORA MESMO",
+   "start": 6.203,
+   "end": 13.153,
+   "sentences": [
+    {
+     "text": "Agora mesmo, perto da linha do Equador, você está girando a mais de mil e seiscentos quilômetros por hora.",
+     "start": 6.203,
+     "end": 13.153
+    }
+   ]
+  },
+  {
+   "id": "voa",
+   "tag": "PAROU!",
+   "start": 13.58,
+   "end": 23.32,
+   "sentences": [
+    {
+     "text": "Se a Terra parasse de repente, tudo que não está preso continuaria nessa velocidade.",
+     "start": 13.58,
+     "end": 19.056
+    },
+    {
+     "text": "Pessoas, carros e até prédios sairiam voando para o leste.",
+     "start": 19.425,
+     "end": 23.32
+    }
+   ]
+  },
+  {
+   "id": "caos",
+   "tag": "CAOS",
+   "start": 23.554,
+   "end": 29.053,
+   "sentences": [
+    {
+     "text": "Os oceanos virariam ondas gigantes, e os ventos seriam mais fortes que qualquer furacão.",
+     "start": 23.554,
+     "end": 29.053
+    }
+   ]
+  },
+  {
+   "id": "parada",
+   "tag": "E SE FICASSE?",
+   "start": 29.242,
+   "end": 36.824,
+   "sentences": [
+    {
+     "text": "E se ela continuasse parada?",
+     "start": 29.242,
+     "end": 31.203
+    },
+    {
+     "text": "Um dia duraria um ano inteiro: seis meses de sol e seis meses de noite.",
+     "start": 31.444,
+     "end": 36.824
+    }
+   ]
+  },
+  {
+   "id": "continente",
+   "tag": "NOVO MAPA",
+   "start": 37.283,
+   "end": 43.275,
+   "sentences": [
+    {
+     "text": "Os oceanos fugiriam para os polos, e surgiria um único continente gigante no meio do planeta.",
+     "start": 37.283,
+     "end": 43.275
+    }
+   ]
+  },
+  {
+   "id": "fim",
+   "tag": "E VOCÊ?",
+   "start": 43.803,
+   "end": 49.43,
+   "sentences": [
+    {
+     "text": "Ainda bem que isso é praticamente impossível.",
+     "start": 43.803,
+     "end": 46.598
+    },
+    {
+     "text": "Você sobreviveria?",
+     "start": 46.962,
+     "end": 48.184
+    },
+    {
+     "text": "Comenta aí.",
+     "start": 48.517,
+     "end": 49.43
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 4.191,
+   "cena": "planeta",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 0,
+   "start": 4.191,
+   "end": 6.083,
+   "cena": "planeta",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "para": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 6.083,
+   "end": 9.771,
+   "cena": "planeta",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "equador": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 9.771,
+   "end": 13.46,
+   "cena": "rua",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "hud": "1.670 KM/H"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 13.46,
+   "end": 16.785,
+   "cena": "rua",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "voa": 0.4
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 16.785,
+   "end": 19.305,
+   "cena": "rua",
+   "camera": "pan_right",
+   "impacto": false,
+   "args": {
+    "voa": 1
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 19.305,
+   "end": 23.434,
+   "cena": "rua",
+   "camera": "pull_out",
+   "impacto": true,
+   "args": {
+    "voa": 1,
+    "predios": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 23.434,
+   "end": 26.278,
+   "cena": "onda",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 26.278,
+   "end": 29.122,
+   "cena": "furacao",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 29.122,
+   "end": 33.142,
+   "cena": "diaenoite",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 33.142,
+   "end": 37.163,
+   "cena": "diaenoite",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "hud": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 37.163,
+   "end": 40.423,
+   "cena": "mapa",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 40.423,
+   "end": 43.683,
+   "cena": "mapa",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "pronto": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 43.683,
+   "end": 46.842,
+   "cena": "rua",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "alivio": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 46.842,
+   "end": 51.23,
+   "cena": "planeta",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  }
+ ]
+}

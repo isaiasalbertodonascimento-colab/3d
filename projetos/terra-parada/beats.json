@@ -1,0 +1,22 @@
+{
+  "titulo": "E se a Terra parasse de girar por um segundo?",
+  "voz": "ElevenLabs: Will - Deep, Smooth and Affectionate",
+  "titulos": { "gancho": "E SE A TERRA<br><em>PARASSE</em><br>DE GIRAR?", "final": "VOCÊ<br><em>SOBREVIVERIA?</em>" },
+  "beats": [
+    { "id": "gancho", "tag": "E SE...", "narracao": "E se a Terra parasse de girar por um segundo? Spoiler: seria o fim do mundo.",
+      "shots": [ { "cena": "planeta", "camera": "push_in" }, { "cena": "planeta", "camera": "static", "impacto": true, "args": { "para": true } } ] },
+    { "id": "velocidade", "tag": "AGORA MESMO", "narracao": "Agora mesmo, perto da linha do Equador, você está girando a mais de mil e seiscentos quilômetros por hora.",
+      "shots": [ { "cena": "planeta", "camera": "orbit", "args": { "equador": true } }, { "cena": "rua", "camera": "push_in", "args": { "hud": "1.670 KM/H" } } ] },
+    { "id": "voa", "tag": "PAROU!", "narracao": "Se a Terra parasse de repente, tudo que não está preso continuaria nessa velocidade. Pessoas, carros e até prédios sairiam voando para o leste.",
+      "shots": [ { "cena": "rua", "camera": "static", "impacto": true, "args": { "voa": 0.4 } }, { "cena": "rua", "camera": "pan_right", "args": { "voa": 1 } },
+                 { "cena": "rua", "camera": "pull_out", "impacto": true, "args": { "voa": 1, "predios": true } } ] },
+    { "id": "caos", "tag": "CAOS", "narracao": "Os oceanos virariam ondas gigantes, e os ventos seriam mais fortes que qualquer furacão.",
+      "shots": [ { "cena": "onda", "camera": "push_in", "impacto": true }, { "cena": "furacao", "camera": "orbit" } ] },
+    { "id": "parada", "tag": "E SE FICASSE?", "narracao": "E se ela continuasse parada? Um dia duraria um ano inteiro: seis meses de sol e seis meses de noite.",
+      "shots": [ { "cena": "diaenoite", "camera": "orbit" }, { "cena": "diaenoite", "camera": "push_in", "impacto": true, "args": { "hud": true } } ] },
+    { "id": "continente", "tag": "NOVO MAPA", "narracao": "Os oceanos fugiriam para os polos, e surgiria um único continente gigante no meio do planeta.",
+      "shots": [ { "cena": "mapa", "camera": "orbit" }, { "cena": "mapa", "camera": "push_in", "impacto": true, "args": { "pronto": true } } ] },
+    { "id": "fim", "tag": "E VOCÊ?", "narracao": "Ainda bem que isso é praticamente impossível. Você sobreviveria? Comenta aí.",
+      "shots": [ { "cena": "rua", "camera": "push_in", "args": { "alivio": true } }, { "cena": "planeta", "camera": "pull_out" } ] }
+  ]
+}
