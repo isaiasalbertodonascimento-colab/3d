@@ -90,13 +90,13 @@ export default {
   },
   // a "morte": subindo numa luz dourada (cômico)
   ceu(ctx) {
-    const b = base(ctx, { top: '#fff4d6', bottom: '#ffd98a', keyI: 1.0, hemi: 0.9, sky: 0xffffff }); const s = b.scene;
+    const b = base(ctx, { top: '#d99a3a', bottom: '#8a5a1e', keyI: 1.0, hemi: 0.9, sky: 0xffe0a0 }); const s = b.scene;
     const h = heroi(); s.add(h);
     const auréola = new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.035, 10, 40), glow(0xfff0a0, 1.6)); auréola.rotation.x = Math.PI / 2; s.add(auréola);
     const brilho = particles(160, [-3, -2, -3, 6, 8, 4], { color: 0xffffff, size: 0.08, rise: 0.8 }); s.add(brilho.points);
-    const r = raios(s, V(0, 12, -2), V(0, -2, 0), { n: 6, r0: 0.5, r1: 2.6, esp: 0.9, op: 0.12, poeira: 60 });
+    const r = raios(s, V(0, 12, -2), V(0, -2, 0), { n: 4, r0: 0.5, r1: 2.2, esp: 1.1, op: 0.04, poeira: 60 });
     return {
-      scene: s, rig: { target: V(0, 2.0, 0), dist: 6.0, pitch: 0.05, fov: 38 }, bloom: [0.5, 0.5, 0.75], dof: 0.002,
+      scene: s, rig: { target: V(0, 2.0, 0), dist: 6.0, pitch: 0.05, fov: 38 }, bloom: [0.3, 0.4, 0.85], dof: 0.002, exposure: 0.8,
       update(t, d, k) { brilho.update(t); r.update(t); h.position.y = k * 1.4; h.rotation.y = t * 0.6; auréola.position.set(h.position.x, h.position.y + 2.62, 0); pose(h, t, { expr: 'concentrado', bE: 0.5, bD: 0.5 }); }
     };
   },
@@ -198,7 +198,7 @@ export default {
     if (bgN === 'noite') tingir(p, 0x7080c0, 0.5);
     let fx = null; if (a.expr === 'concentrado' || a.expr === 'risada') { fx = aneis(s, 3); }
     return {
-      scene: s, rig: { target: V(0, 2.05, 1.5), dist: 2.8, pitch: 0.02, yaw: 0.12, fov: 30 }, bloom: [0.35, 0.45, 0.75], dof: 0.02, maxblur: 0.018,
+      scene: s, rig: { target: V(0, 1.72, 1.5), dist: 2.8, pitch: 0.02, yaw: 0.12, fov: 30 }, bloom: [0.35, 0.45, 0.75], dof: 0.02, maxblur: 0.018,
       update(t, d, k) {
         amb.update(t);
         pose(p, t, { expr: a.expr, olhar: a.expr === 'raiva' ? [0, 0] : [Math.sin(t * 2) * 0.3, 0.1], cabZ: a.expr === 'medo' ? -0.06 : 0, bE: 0.1, bD: 0.1 });
