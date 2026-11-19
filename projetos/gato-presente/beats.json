@@ -1,31 +1,157 @@
 {
   "titulo": "Por que seu gato traz bichos mortos para você?",
   "voz": "ElevenLabs: Will - Deep, Smooth and Affectionate",
-  "titulos": { "gancho": "POR QUE SEU GATO<br>TE DÁ <em>PRESENTES?</em>", "final": "PARTE 3<br><em>AMANHÃ</em>" },
+  "titulos": {
+    "gancho": "POR QUE SEU GATO<br>TE DÁ <em>PRESENTES?</em>",
+    "final": "PARTE 3<br><em>AMANHÃ</em>"
+  },
   "beats": [
-    { "id": "gancho", "tag": "PARTE 2", "narracao": "Seu gato deixa um bicho morto na sua porta e fica te olhando, todo orgulhoso. Isso é um presente? É quase isso.",
-      "shots": [ { "cena": "porta", "camera": "push_in" },
-                 { "cena": "porta", "camera": "static", "impacto": true, "args": { "close": true } },
-                 { "cena": "porta", "camera": "orbit", "args": { "orgulho": true } } ] },
-    { "id": "instinto", "tag": "MOTIVO #1", "narracao": "Para o cérebro dele, caçar e comer são coisas separadas. Mesmo de barriga cheia, o instinto manda caçar.",
-      "shots": [ { "cena": "pote", "camera": "push_in" },
-                 { "cena": "jardim", "camera": "pan_right" },
-                 { "cena": "jardim", "camera": "static", "impacto": true, "args": { "bote": true } } ] },
-    { "id": "professor", "tag": "MOTIVO #2", "narracao": "Uma teoria diz que ele está te ensinando. É o que as mães fazem com os filhotes. Ou seja, ele acha que você é um péssimo caçador.",
-      "shots": [ { "cena": "mae", "camera": "orbit" },
-                 { "cena": "mae", "camera": "push_in", "args": { "close": true } },
-                 { "cena": "pessimo", "camera": "pull_out", "impacto": true },
-                 { "cena": "pessimo", "camera": "static", "args": { "julga": true } } ] },
-    { "id": "seguro", "tag": "MOTIVO #3", "narracao": "Outra explicação: sua casa é o lugar mais seguro que ele conhece. Então ele traz a presa para guardar.",
-      "shots": [ { "cena": "casa", "camera": "push_in" },
-                 { "cena": "casa", "camera": "pan_left", "args": { "entra": true } } ] },
-    { "id": "ciencia", "tag": "O QUE FAZER", "narracao": "Pesquisadores ingleses descobriram um truque. Brincar de caçada todo dia reduziu as presas em um quarto. E uma ração mais rica em carne reduziu em mais de um terço.",
-      "shots": [ { "cena": "brinca", "camera": "orbit" },
-                 { "cena": "barras", "camera": "push_in", "impacto": true, "args": { "qual": "brincar" } },
-                 { "cena": "racao", "camera": "push_in" },
-                 { "cena": "barras", "camera": "static", "impacto": true, "args": { "qual": "racao" } } ] },
-    { "id": "parte3", "tag": "PARTE 3", "narracao": "Na parte três: por que ele te amassa como se fosse pão. Segue para não perder.",
-      "shots": [ { "cena": "amassa", "camera": "push_in" },
-                 { "cena": "porta", "camera": "push_in" } ] }
+    {
+      "id": "gancho",
+      "tag": "PARTE 2",
+      "narracao": "Seu gato deixa um bicho morto na sua porta e fica te olhando, todo orgulhoso. Isso é um presente? É quase isso.",
+      "shots": [
+        {
+          "cena": "porta",
+          "camera": "push_in"
+        },
+        {
+          "cena": "porta",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "close": true
+          }
+        },
+        {
+          "cena": "porta",
+          "camera": "orbit",
+          "args": {
+            "orgulho": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "instinto",
+      "tag": "MOTIVO #1",
+      "narracao": "Para o cérebro dele, caçar e comer são coisas separadas. Mesmo de barriga cheia, o instinto manda caçar.",
+      "shots": [
+        {
+          "cena": "pote",
+          "camera": "push_in"
+        },
+        {
+          "cena": "jardim",
+          "camera": "pan_right"
+        },
+        {
+          "cena": "jardim",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "bote": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "professor",
+      "tag": "MOTIVO #2",
+      "narracao": "Uma teoria diz que ele está te ensinando. É o que as mães fazem com os filhotes. Ou seja, ele acha que você é um péssimo caçador.",
+      "shots": [
+        {
+          "cena": "mae",
+          "camera": "orbit"
+        },
+        {
+          "cena": "mae",
+          "camera": "push_in",
+          "args": {
+            "close": true
+          }
+        },
+        {
+          "cena": "pessimo",
+          "camera": "pull_out",
+          "impacto": true
+        },
+        {
+          "cena": "pessimo",
+          "camera": "static",
+          "args": {
+            "julga": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "seguro",
+      "tag": "MOTIVO #3",
+      "narracao": "Outra explicação: sua casa é o lugar mais seguro que ele conhece. Então ele traz a presa para guardar.",
+      "shots": [
+        {
+          "cena": "casa",
+          "camera": "push_in"
+        },
+        {
+          "cena": "casa",
+          "camera": "orbit"
+        },
+        {
+          "cena": "casa",
+          "camera": "pan_left",
+          "args": {
+            "entra": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "ciencia",
+      "tag": "O QUE FAZER",
+      "narracao": "Pesquisadores ingleses descobriram um truque. Brincar de caçada todo dia reduziu as presas em um quarto. E uma ração mais rica em carne reduziu em mais de um terço.",
+      "shots": [
+        {
+          "cena": "brinca",
+          "camera": "orbit"
+        },
+        {
+          "cena": "barras",
+          "camera": "push_in",
+          "impacto": true,
+          "args": {
+            "qual": "brincar"
+          }
+        },
+        {
+          "cena": "racao",
+          "camera": "push_in"
+        },
+        {
+          "cena": "barras",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "qual": "racao"
+          }
+        }
+      ]
+    },
+    {
+      "id": "parte3",
+      "tag": "PARTE 3",
+      "narracao": "Na parte três: por que ele te amassa como se fosse pão. Segue para não perder.",
+      "shots": [
+        {
+          "cena": "amassa",
+          "camera": "push_in"
+        },
+        {
+          "cena": "porta",
+          "camera": "push_in"
+        }
+      ]
+    }
   ]
 }

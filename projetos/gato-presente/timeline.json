@@ -245,9 +245,19 @@
   {
    "beat": 3,
    "start": 25.915,
-   "end": 30.848,
+   "end": 28.43,
    "cena": "casa",
    "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 28.43,
+   "end": 30.848,
+   "cena": "casa",
+   "camera": "orbit",
    "impacto": false,
    "args": {},
    "descricao": ""
