@@ -1,0 +1,282 @@
+{
+ "fps": 30,
+ "total": 42.437,
+ "lead": 0.8,
+ "titulos": {
+  "gancho": "POR QUE SEU GATO<br><em>DERRUBA TUDO?</em>",
+  "final": "PARTE 2<br><em>AMANHÃ</em>"
+ },
+ "beats": [
+  {
+   "id": "gancho",
+   "tag": "NÃO É ACIDENTE",
+   "start": 0.8,
+   "end": 6.064,
+   "sentences": [
+    {
+     "text": "Seu gato derruba coisas da mesa olhando nos seus olhos.",
+     "start": 0.8,
+     "end": 4.415
+    },
+    {
+     "text": "E isso não é acidente.",
+     "start": 4.727,
+     "end": 6.064
+    }
+   ]
+  },
+  {
+   "id": "cacador",
+   "tag": "MOTIVO #1",
+   "start": 6.392,
+   "end": 14.487,
+   "sentences": [
+    {
+     "text": "Gatos nasceram para caçar.",
+     "start": 6.392,
+     "end": 8.644
+    },
+    {
+     "text": "Quando ele empurra um objeto com a pata, está testando se aquilo está vivo.",
+     "start": 9.126,
+     "end": 14.487
+    }
+   ]
+  },
+  {
+   "id": "barulho",
+   "tag": "MOTIVO #2",
+   "start": 14.828,
+   "end": 21.573,
+   "sentences": [
+    {
+     "text": "Se cai e faz barulho, melhor ainda.",
+     "start": 14.828,
+     "end": 16.965
+    },
+    {
+     "text": "Para o instinto dele, é como uma caçada que deu certo.",
+     "start": 17.279,
+     "end": 21.573
+    }
+   ]
+  },
+  {
+   "id": "esperto",
+   "tag": "MOTIVO #3",
+   "start": 21.913,
+   "end": 28.893,
+   "sentences": [
+    {
+     "text": "Mas especialistas apontam um motivo mais esperto.",
+     "start": 21.913,
+     "end": 25.158
+    },
+    {
+     "text": "Ele aprendeu que, quando algo cai, você aparece.",
+     "start": 25.453,
+     "end": 28.893
+    }
+   ]
+  },
+  {
+   "id": "veredito",
+   "tag": "VEREDITO",
+   "start": 29.104,
+   "end": 34.549,
+   "sentences": [
+    {
+     "text": "Ou seja, ele derruba para chamar a sua atenção.",
+     "start": 29.104,
+     "end": 32.671
+    },
+    {
+     "text": "E funciona todas as vezes.",
+     "start": 32.969,
+     "end": 34.549
+    }
+   ]
+  },
+  {
+   "id": "parte2",
+   "tag": "PARTE 2",
+   "start": 34.746,
+   "end": 40.637,
+   "sentences": [
+    {
+     "text": "Na parte dois: por que ele traz presentes mortos para você.",
+     "start": 34.746,
+     "end": 38.665
+    },
+    {
+     "text": "Segue para não perder.",
+     "start": 38.968,
+     "end": 40.637
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 2.091,
+   "cena": "mesa",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "fase": "empurra"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 0,
+   "start": 2.091,
+   "end": 4.607,
+   "cena": "queda",
+   "camera": "static",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 0,
+   "start": 4.607,
+   "end": 6.272,
+   "cena": "mesa",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "fase": "encara",
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 6.272,
+   "end": 9.006,
+   "cena": "cacada",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 9.006,
+   "end": 11.896,
+   "cena": "mesa",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "fase": "cutuca",
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 11.896,
+   "end": 14.708,
+   "cena": "mesa",
+   "camera": "pan_right",
+   "impacto": false,
+   "args": {
+    "fase": "cutuca"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 14.708,
+   "end": 17.159,
+   "cena": "queda",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "ondas": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 17.159,
+   "end": 21.793,
+   "cena": "festa",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 21.793,
+   "end": 25.333,
+   "cena": "mesa",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "fase": "pensa"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 25.333,
+   "end": 28.984,
+   "cena": "chega",
+   "camera": "pan_left",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 28.984,
+   "end": 32.849,
+   "cena": "chega",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "carinho": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 32.849,
+   "end": 34.626,
+   "cena": "mesa",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "fase": "malandro",
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 34.626,
+   "end": 38.848,
+   "cena": "presente",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 38.848,
+   "end": 42.437,
+   "cena": "mesa",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "fase": "empurra"
+   },
+   "descricao": ""
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+  "titulo": "Por que seu gato derruba coisas da mesa?",
+  "voz": "ElevenLabs: Will - Deep, Smooth and Affectionate",
+  "titulos": { "gancho": "POR QUE SEU GATO<br><em>DERRUBA TUDO?</em>", "final": "PARTE 2<br><em>AMANHÃ</em>" },
+  "beats": [
+    { "id": "gancho", "tag": "NÃO É ACIDENTE", "narracao": "Seu gato derruba coisas da mesa olhando nos seus olhos. E isso não é acidente.",
+      "shots": [ { "cena": "mesa", "camera": "push_in", "args": { "fase": "empurra" } },
+                 { "cena": "queda", "camera": "static", "impacto": true },
+                 { "cena": "mesa", "camera": "push_in", "args": { "fase": "encara", "close": true } } ] },
+    { "id": "cacador", "tag": "MOTIVO #1", "narracao": "Gatos nasceram para caçar. Quando ele empurra um objeto com a pata, está testando se aquilo está vivo.",
+      "shots": [ { "cena": "cacada", "camera": "orbit" },
+                 { "cena": "mesa", "camera": "push_in", "args": { "fase": "cutuca", "close": true } },
+                 { "cena": "mesa", "camera": "pan_right", "args": { "fase": "cutuca" } } ] },
+    { "id": "barulho", "tag": "MOTIVO #2", "narracao": "Se cai e faz barulho, melhor ainda. Para o instinto dele, é como uma caçada que deu certo.",
+      "shots": [ { "cena": "queda", "camera": "static", "impacto": true, "args": { "ondas": true } },
+                 { "cena": "festa", "camera": "push_in" } ] },
+    { "id": "esperto", "tag": "MOTIVO #3", "narracao": "Mas especialistas apontam um motivo mais esperto. Ele aprendeu que, quando algo cai, você aparece.",
+      "shots": [ { "cena": "mesa", "camera": "static", "args": { "fase": "pensa" } },
+                 { "cena": "chega", "camera": "pan_left", "impacto": true } ] },
+    { "id": "veredito", "tag": "VEREDITO", "narracao": "Ou seja, ele derruba para chamar a sua atenção. E funciona todas as vezes.",
+      "shots": [ { "cena": "chega", "camera": "push_in", "args": { "carinho": true } },
+                 { "cena": "mesa", "camera": "static", "impacto": true, "args": { "fase": "malandro", "close": true } } ] },
+    { "id": "parte2", "tag": "PARTE 2", "narracao": "Na parte dois: por que ele traz presentes mortos para você. Segue para não perder.",
+      "shots": [ { "cena": "presente", "camera": "push_in" },
+                 { "cena": "mesa", "camera": "push_in", "args": { "fase": "empurra" } } ] }
+  ]
+}
