@@ -1,0 +1,482 @@
+{
+ "fps": 30,
+ "total": 99.563,
+ "lead": 0.8,
+ "titulos": {
+  "gancho": "CADA MENTIRA<br>TE DEIXA<br><em>1 CM MENOR</em>",
+  "gancho_dur": 3.0,
+  "final": "MUNDO DE<br><em>MARCOS</em>"
+ },
+ "beats": [
+  {
+   "id": "premissa",
+   "tag": "",
+   "start": 0.8,
+   "end": 8.425,
+   "sentences": [
+    {
+     "text": "No meu mundo, ninguém precisa de detector de mentira, porque cada mentira que você conta te deixa um centímetro menor.",
+     "start": 0.8,
+     "end": 8.425
+    }
+   ]
+  },
+  {
+   "id": "exemplos",
+   "tag": "",
+   "start": 8.875,
+   "end": 22.438,
+   "sentences": [
+    {
+     "text": "Político aqui discursa em cima de um banquinho, criança que quebra vaso encolhe na hora, mas toda verdade difícil devolve o centímetro, então tem gente que cresce a vida inteira e gente que vai sumindo aos poucos.",
+     "start": 8.875,
+     "end": 22.438
+    }
+   ]
+  },
+  {
+   "id": "marcos",
+   "tag": "",
+   "start": 22.887,
+   "end": 32.325,
+   "sentences": [
+    {
+     "text": "Meu nome é Marcos, já tive um metro e oitenta e hoje tenho um e quarenta, porque vendedor de carro mente muito, e eu era o melhor vendedor da loja.",
+     "start": 22.887,
+     "end": 32.325
+    }
+   ]
+  },
+  {
+   "id": "demissao",
+   "tag": "",
+   "start": 32.775,
+   "end": 40.65,
+   "sentences": [
+    {
+     "text": "Até que um dia eu fui demitido, e quando cheguei em casa e o Gabriel perguntou como foi o trabalho eu disse que foi ótimo.",
+     "start": 32.775,
+     "end": 40.65
+    }
+   ]
+  },
+  {
+   "id": "praca",
+   "tag": "",
+   "start": 41.1,
+   "end": 48.975,
+   "sentences": [
+    {
+     "text": "Daí pra frente eu saía todo dia de terno e passava o dia na praça, e a cada \"tá tudo bem, filho\" eu ficava um pouco menor.",
+     "start": 41.1,
+     "end": 48.975
+    }
+   ]
+  },
+  {
+   "id": "pia",
+   "tag": "",
+   "start": 49.425,
+   "end": 56.3,
+   "sentences": [
+    {
+     "text": "Em dois meses eu já precisava de cadeira pra alcançar a pia, e eu dizia que era a mesa que tinha crescido.",
+     "start": 49.425,
+     "end": 56.3
+    }
+   ]
+  },
+  {
+   "id": "confronto",
+   "tag": "",
+   "start": 56.75,
+   "end": 65.125,
+   "sentences": [
+    {
+     "text": "Até o dia em que o Gabriel parou na minha frente, a gente do mesmo tamanho, olho no olho, e perguntou se eu tava mentindo pra ele.",
+     "start": 56.75,
+     "end": 65.125
+    }
+   ]
+  },
+  {
+   "id": "verdade",
+   "tag": "",
+   "start": 65.575,
+   "end": 80.4,
+   "sentences": [
+    {
+     "text": "E eu falei a verdade: que eu tinha perdido o emprego, que tava com vergonha, que tava com medo de não dar conta.",
+     "start": 65.575,
+     "end": 72.825
+    },
+    {
+     "text": "A cada frase eu sentia um centímetro voltando, e quando eu terminei de falar já tinha crescido quase um palmo.",
+     "start": 73.275,
+     "end": 80.4
+    }
+   ]
+  },
+  {
+   "id": "abraco",
+   "tag": "",
+   "start": 80.85,
+   "end": 86.163,
+   "sentences": [
+    {
+     "text": "O Gabriel me abraçou e disse que preferia um pai desempregado a um pai que sumia.",
+     "start": 80.85,
+     "end": 86.163
+    }
+   ]
+  },
+  {
+   "id": "final",
+   "tag": "",
+   "start": 86.613,
+   "end": 97.563,
+   "sentences": [
+    {
+     "text": "Hoje eu conserto carro em vez de vender, e quando meu filho olha pra cima e diz \"pai, você tá enorme\", é a frase mais verdadeira que eu já ouvi.",
+     "start": 86.613,
+     "end": 95.863
+    },
+    {
+     "text": "Mundo de Marcos.",
+     "start": 96.313,
+     "end": 97.563
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 2.918,
+   "cena": "rua",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 0,
+   "start": 2.918,
+   "end": 5.837,
+   "cena": "encolhe",
+   "camera": "static",
+   "impacto": true,
+   "args": {}
+  },
+  {
+   "beat": 0,
+   "start": 5.837,
+   "end": 8.755,
+   "cena": "rua",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "regua": true
+   }
+  },
+  {
+   "beat": 1,
+   "start": 8.755,
+   "end": 12.258,
+   "cena": "politico",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 1,
+   "start": 12.258,
+   "end": 15.761,
+   "cena": "vaso",
+   "camera": "static",
+   "impacto": true,
+   "args": {}
+  },
+  {
+   "beat": 1,
+   "start": 15.761,
+   "end": 19.264,
+   "cena": "cresce",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 1,
+   "start": 19.264,
+   "end": 22.767,
+   "cena": "cresce",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "some": true
+   }
+  },
+  {
+   "beat": 2,
+   "start": 22.767,
+   "end": 25.239,
+   "cena": "regua",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 2,
+   "start": 25.239,
+   "end": 27.711,
+   "cena": "regua",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "encolhe": true
+   }
+  },
+  {
+   "beat": 2,
+   "start": 27.711,
+   "end": 30.183,
+   "cena": "loja",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 2,
+   "start": 30.183,
+   "end": 32.655,
+   "cena": "loja",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "trofeu": true
+   }
+  },
+  {
+   "beat": 3,
+   "start": 32.655,
+   "end": 35.43,
+   "cena": "demitido",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {}
+  },
+  {
+   "beat": 3,
+   "start": 35.43,
+   "end": 38.205,
+   "cena": "casa",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "pergunta": true
+   }
+  },
+  {
+   "beat": 3,
+   "start": 38.205,
+   "end": 40.98,
+   "cena": "casa",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "mente": true,
+    "close": true
+   }
+  },
+  {
+   "beat": 4,
+   "start": 40.98,
+   "end": 43.755,
+   "cena": "praca",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 4,
+   "start": 43.755,
+   "end": 46.53,
+   "cena": "praca",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "dias": true
+   }
+  },
+  {
+   "beat": 4,
+   "start": 46.53,
+   "end": 49.305,
+   "cena": "casa",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "mente": true,
+    "menor": 0.86
+   }
+  },
+  {
+   "beat": 5,
+   "start": 49.305,
+   "end": 52.968,
+   "cena": "pia",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 5,
+   "start": 52.968,
+   "end": 56.63,
+   "cena": "pia",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "mesa": true
+   }
+  },
+  {
+   "beat": 6,
+   "start": 56.63,
+   "end": 59.572,
+   "cena": "frente",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 6,
+   "start": 59.572,
+   "end": 62.513,
+   "cena": "frente",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "close": "gabriel"
+   }
+  },
+  {
+   "beat": 6,
+   "start": 62.513,
+   "end": 65.455,
+   "cena": "frente",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "close": "marcos"
+   }
+  },
+  {
+   "beat": 7,
+   "start": 65.455,
+   "end": 69.274,
+   "cena": "frente",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "close": "marcos",
+    "fala": true
+   }
+  },
+  {
+   "beat": 7,
+   "start": 69.274,
+   "end": 73.155,
+   "cena": "frente",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "fala": true
+   }
+  },
+  {
+   "beat": 7,
+   "start": 73.155,
+   "end": 76.911,
+   "cena": "cresce_marcos",
+   "camera": "static",
+   "impacto": true,
+   "args": {}
+  },
+  {
+   "beat": 7,
+   "start": 76.911,
+   "end": 80.73,
+   "cena": "cresce_marcos",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "regua": true
+   }
+  },
+  {
+   "beat": 8,
+   "start": 80.73,
+   "end": 83.611,
+   "cena": "abraco",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 8,
+   "start": 83.611,
+   "end": 86.493,
+   "cena": "abraco",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "close": true
+   }
+  },
+  {
+   "beat": 9,
+   "start": 86.493,
+   "end": 89.76,
+   "cena": "oficina",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 9,
+   "start": 89.76,
+   "end": 93.028,
+   "cena": "oficina",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "olha": true
+   }
+  },
+  {
+   "beat": 9,
+   "start": 93.028,
+   "end": 96.193,
+   "cena": "oficina",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "olha": true
+   }
+  },
+  {
+   "beat": 9,
+   "start": 96.193,
+   "end": 99.563,
+   "cena": "oficina",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "olha": true
+   }
+  }
+ ],
+ "sem_voz": true
+}

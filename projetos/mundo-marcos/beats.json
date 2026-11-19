@@ -1,0 +1,261 @@
+{
+  "titulo": "Mundo de Marcos",
+  "titulos": {
+    "gancho": "CADA MENTIRA<br>TE DEIXA<br><em>1 CM MENOR</em>",
+    "gancho_dur": 3.0,
+    "final": "MUNDO DE<br><em>MARCOS</em>"
+  },
+  "beats": [
+    {
+      "id": "premissa",
+      "narracao": "No meu mundo, ninguém precisa de detector de mentira, porque cada mentira que você conta te deixa um centímetro menor.",
+      "shots": [
+        {
+          "cena": "rua",
+          "camera": "push_in"
+        },
+        {
+          "cena": "encolhe",
+          "camera": "static",
+          "impacto": true
+        },
+        {
+          "cena": "rua",
+          "camera": "orbit",
+          "args": {
+            "regua": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "exemplos",
+      "narracao": "Político aqui discursa em cima de um banquinho, criança que quebra vaso encolhe na hora, mas toda verdade difícil devolve o centímetro, então tem gente que cresce a vida inteira e gente que vai sumindo aos poucos.",
+      "shots": [
+        {
+          "cena": "politico",
+          "camera": "push_in"
+        },
+        {
+          "cena": "vaso",
+          "camera": "static",
+          "impacto": true
+        },
+        {
+          "cena": "cresce",
+          "camera": "orbit"
+        },
+        {
+          "cena": "cresce",
+          "camera": "pull_out",
+          "args": {
+            "some": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "marcos",
+      "narracao": "Meu nome é Marcos, já tive um metro e oitenta e hoje tenho um e quarenta, porque vendedor de carro mente muito, e eu era o melhor vendedor da loja.",
+      "shots": [
+        {
+          "cena": "regua",
+          "camera": "push_in"
+        },
+        {
+          "cena": "regua",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "encolhe": true
+          }
+        },
+        {
+          "cena": "loja",
+          "camera": "orbit"
+        },
+        {
+          "cena": "loja",
+          "camera": "push_in",
+          "args": {
+            "trofeu": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "demissao",
+      "narracao": "Até que um dia eu fui demitido, e quando cheguei em casa e o Gabriel perguntou como foi o trabalho eu disse que foi ótimo.",
+      "shots": [
+        {
+          "cena": "demitido",
+          "camera": "push_in",
+          "impacto": true
+        },
+        {
+          "cena": "casa",
+          "camera": "static",
+          "args": {
+            "pergunta": true
+          }
+        },
+        {
+          "cena": "casa",
+          "camera": "push_in",
+          "args": {
+            "mente": true,
+            "close": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "praca",
+      "narracao": "Daí pra frente eu saía todo dia de terno e passava o dia na praça, e a cada \"tá tudo bem, filho\" eu ficava um pouco menor.",
+      "shots": [
+        {
+          "cena": "praca",
+          "camera": "push_in"
+        },
+        {
+          "cena": "praca",
+          "camera": "static",
+          "args": {
+            "dias": true
+          }
+        },
+        {
+          "cena": "casa",
+          "camera": "static",
+          "args": {
+            "mente": true,
+            "menor": 0.86
+          }
+        }
+      ]
+    },
+    {
+      "id": "pia",
+      "narracao": "Em dois meses eu já precisava de cadeira pra alcançar a pia, e eu dizia que era a mesa que tinha crescido.",
+      "shots": [
+        {
+          "cena": "pia",
+          "camera": "push_in"
+        },
+        {
+          "cena": "pia",
+          "camera": "orbit",
+          "args": {
+            "mesa": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "confronto",
+      "narracao": "Até o dia em que o Gabriel parou na minha frente, a gente do mesmo tamanho, olho no olho, e perguntou se eu tava mentindo pra ele.",
+      "shots": [
+        {
+          "cena": "frente",
+          "camera": "push_in"
+        },
+        {
+          "cena": "frente",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "close": "gabriel"
+          }
+        },
+        {
+          "cena": "frente",
+          "camera": "static",
+          "args": {
+            "close": "marcos"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verdade",
+      "narracao": "E eu falei a verdade: que eu tinha perdido o emprego, que tava com vergonha, que tava com medo de não dar conta. A cada frase eu sentia um centímetro voltando, e quando eu terminei de falar já tinha crescido quase um palmo.",
+      "shots": [
+        {
+          "cena": "frente",
+          "camera": "push_in",
+          "args": {
+            "close": "marcos",
+            "fala": true
+          }
+        },
+        {
+          "cena": "frente",
+          "camera": "static",
+          "args": {
+            "fala": true
+          }
+        },
+        {
+          "cena": "cresce_marcos",
+          "camera": "static",
+          "impacto": true
+        },
+        {
+          "cena": "cresce_marcos",
+          "camera": "pull_out",
+          "args": {
+            "regua": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "abraco",
+      "narracao": "O Gabriel me abraçou e disse que preferia um pai desempregado a um pai que sumia.",
+      "shots": [
+        {
+          "cena": "abraco",
+          "camera": "orbit"
+        },
+        {
+          "cena": "abraco",
+          "camera": "push_in",
+          "args": {
+            "close": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "final",
+      "narracao": "Hoje eu conserto carro em vez de vender, e quando meu filho olha pra cima e diz \"pai, você tá enorme\", é a frase mais verdadeira que eu já ouvi. Mundo de Marcos.",
+      "shots": [
+        {
+          "cena": "oficina",
+          "camera": "push_in"
+        },
+        {
+          "cena": "oficina",
+          "camera": "static",
+          "args": {
+            "olha": true
+          }
+        },
+        {
+          "cena": "oficina",
+          "camera": "orbit",
+          "args": {
+            "olha": true
+          }
+        },
+        {
+          "cena": "oficina",
+          "camera": "pull_out",
+          "args": {
+            "olha": true
+          }
+        }
+      ]
+    }
+  ]
+}

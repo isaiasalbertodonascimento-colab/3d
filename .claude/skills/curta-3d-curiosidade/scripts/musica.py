@@ -24,6 +24,7 @@ CLIMAS = {
     "curioso": dict(roots=[110.0, 87.31, 130.81, 98.0], chord=[1, 1.5, 2, 2.52], bpm=100, bright=1800),   # Am F C G
     "tenso":   dict(roots=[55.0, 58.27, 55.0, 51.91], chord=[1, 1.5, 2, 2.38], bpm=84, bright=900),        # Am Bb Am Ab
     "leve":    dict(roots=[130.81, 98.0, 110.0, 87.31], chord=[1, 1.26, 1.5, 2], bpm=112, bright=2600),   # C G Am F
+    "emocional": dict(roots=[87.31, 130.81, 98.0, 110.0], chord=[1, 1.26, 1.5, 2], bpm=72, bright=1500),  # F C G Am (histórias)
 }
 
 def main():
