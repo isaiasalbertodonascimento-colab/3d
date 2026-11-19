@@ -1,0 +1,24 @@
+{
+  "titulo": "E se você pulasse num buraco que atravessa a Terra?",
+  "voz": "ElevenLabs: Will - Deep, Smooth and Affectionate",
+  "titulos": { "gancho": "E SE VOCÊ<br>PULASSE NUM<br><em>BURACO</em>?", "final": "VOCÊ<br><em>PULARIA?</em>" },
+  "beats": [
+    { "id": "gancho", "tag": "E SE...", "narracao": "E se você pulasse num buraco que atravessa a Terra inteira? A viagem levaria cerca de quarenta minutos.",
+      "shots": [ { "cena": "pulo", "camera": "push_in" }, { "cena": "pulo", "camera": "static", "impacto": true, "args": { "pula": true } },
+                 { "cena": "corte", "camera": "orbit", "args": { "hud": "≈ 40 MINUTOS" } } ] },
+    { "id": "calor", "tag": "O CALOR", "narracao": "Primeiro, o calor. No centro, a temperatura passa de cinco mil graus, quase a temperatura da superfície do Sol.",
+      "shots": [ { "cena": "corte", "camera": "push_in", "args": { "camadas": true } }, { "cena": "nucleo", "camera": "push_in", "impacto": true },
+                 { "cena": "nucleo", "camera": "orbit", "args": { "sol": true } } ] },
+    { "id": "velocidade", "tag": "VELOCIDADE", "narracao": "Mas digamos que você aguente. No meio do caminho, você estaria a quase trinta mil quilômetros por hora.",
+      "shots": [ { "cena": "queda", "camera": "static" }, { "cena": "queda", "camera": "push_in", "impacto": true, "args": { "rapido": true } } ] },
+    { "id": "gravidade", "tag": "SEM PESO", "narracao": "E aí vem a parte mais estranha. No centro da Terra, você não pesaria nada, porque a gravidade te puxa igualmente para todos os lados.",
+      "shots": [ { "cena": "flutua", "camera": "orbit" }, { "cena": "flutua", "camera": "push_in", "impacto": true, "args": { "setas": true } },
+                 { "cena": "flutua", "camera": "static", "args": { "setas": true, "close": true } } ] },
+    { "id": "saida", "tag": "ONDE SAI?", "narracao": "Se você pulasse do Brasil, sairia no meio do Oceano Pacífico, ao sul do Japão.",
+      "shots": [ { "cena": "globo", "camera": "static" }, { "cena": "globo", "camera": "push_in", "impacto": true, "args": { "saida": true } } ] },
+    { "id": "vaivem", "tag": "PLOT TWIST", "narracao": "Só que, sem o ar para te frear, você cairia de volta. E ficaria indo e voltando para sempre.",
+      "shots": [ { "cena": "corte", "camera": "static", "args": { "vaivem": true } }, { "cena": "corte", "camera": "orbit", "impacto": true, "args": { "vaivem": true, "hud": "PARA SEMPRE" } } ] },
+    { "id": "fim", "tag": "E VOCÊ?", "narracao": "Você pularia? Comenta aí.",
+      "shots": [ { "cena": "pulo", "camera": "push_in" } ] }
+  ]
+}

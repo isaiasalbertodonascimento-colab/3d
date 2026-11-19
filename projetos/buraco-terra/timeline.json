@@ -1,0 +1,316 @@
+{
+ "fps": 30,
+ "total": 48.358,
+ "lead": 0.8,
+ "titulos": {
+  "gancho": "E SE VOCÊ<br>PULASSE NUM<br><em>BURACO</em>?",
+  "final": "VOCÊ<br><em>PULARIA?</em>"
+ },
+ "beats": [
+  {
+   "id": "gancho",
+   "tag": "E SE...",
+   "start": 0.8,
+   "end": 7.716,
+   "sentences": [
+    {
+     "text": "E se você pulasse num buraco que atravessa a Terra inteira?",
+     "start": 0.8,
+     "end": 4.467
+    },
+    {
+     "text": "A viagem levaria cerca de quarenta minutos.",
+     "start": 4.726,
+     "end": 7.716
+    }
+   ]
+  },
+  {
+   "id": "calor",
+   "tag": "O CALOR",
+   "start": 7.991,
+   "end": 15.521,
+   "sentences": [
+    {
+     "text": "Primeiro, o calor.",
+     "start": 7.991,
+     "end": 9.321
+    },
+    {
+     "text": "No centro, a temperatura passa de cinco mil graus, quase a temperatura da superfície do Sol.",
+     "start": 9.743,
+     "end": 15.521
+    }
+   ]
+  },
+  {
+   "id": "velocidade",
+   "tag": "VELOCIDADE",
+   "start": 16.035,
+   "end": 22.633,
+   "sentences": [
+    {
+     "text": "Mas digamos que você aguente.",
+     "start": 16.035,
+     "end": 17.597
+    },
+    {
+     "text": "No meio do caminho, você estaria a quase trinta mil quilômetros por hora.",
+     "start": 17.981,
+     "end": 22.633
+    }
+   ]
+  },
+  {
+   "id": "gravidade",
+   "tag": "SEM PESO",
+   "start": 23.179,
+   "end": 31.89,
+   "sentences": [
+    {
+     "text": "E aí vem a parte mais estranha.",
+     "start": 23.179,
+     "end": 25.877
+    },
+    {
+     "text": "No centro da Terra, você não pesaria nada, porque a gravidade te puxa igualmente para todos os lados.",
+     "start": 26.132,
+     "end": 31.89
+    }
+   ]
+  },
+  {
+   "id": "saida",
+   "tag": "ONDE SAI?",
+   "start": 32.264,
+   "end": 38.272,
+   "sentences": [
+    {
+     "text": "Se você pulasse do Brasil, sairia no meio do Oceano Pacífico, ao sul do Japão.",
+     "start": 32.264,
+     "end": 38.272
+    }
+   ]
+  },
+  {
+   "id": "vaivem",
+   "tag": "PLOT TWIST",
+   "start": 38.687,
+   "end": 44.377,
+   "sentences": [
+    {
+     "text": "Só que, sem o ar para te frear, você cairia de volta.",
+     "start": 38.687,
+     "end": 41.995
+    },
+    {
+     "text": "E ficaria indo e voltando para sempre.",
+     "start": 42.415,
+     "end": 44.377
+    }
+   ]
+  },
+  {
+   "id": "fim",
+   "tag": "E VOCÊ?",
+   "start": 44.647,
+   "end": 46.558,
+   "sentences": [
+    {
+     "text": "Você pularia?",
+     "start": 44.647,
+     "end": 45.467
+    },
+    {
+     "text": "Comenta aí.",
+     "start": 45.662,
+     "end": 46.558
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 2.624,
+   "cena": "pulo",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 0,
+   "start": 2.624,
+   "end": 4.606,
+   "cena": "pulo",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "pula": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 0,
+   "start": 4.606,
+   "end": 7.871,
+   "cena": "corte",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "hud": "≈ 40 MINUTOS"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 7.871,
+   "end": 9.623,
+   "cena": "corte",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "camadas": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 9.623,
+   "end": 13.234,
+   "cena": "nucleo",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 13.234,
+   "end": 15.915,
+   "cena": "nucleo",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "sol": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 15.915,
+   "end": 19.487,
+   "cena": "queda",
+   "camera": "static",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 19.487,
+   "end": 23.059,
+   "cena": "queda",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "rapido": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 23.059,
+   "end": 26.012,
+   "cena": "flutua",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 26.012,
+   "end": 29.116,
+   "cena": "flutua",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "setas": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 29.116,
+   "end": 32.144,
+   "cena": "flutua",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "setas": true,
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 32.144,
+   "end": 35.356,
+   "cena": "globo",
+   "camera": "static",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 35.356,
+   "end": 38.567,
+   "cena": "globo",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "saida": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 38.567,
+   "end": 42.295,
+   "cena": "corte",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "vaivem": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 42.295,
+   "end": 44.527,
+   "cena": "corte",
+   "camera": "orbit",
+   "impacto": true,
+   "args": {
+    "vaivem": true,
+    "hud": "PARA SEMPRE"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 44.527,
+   "end": 48.358,
+   "cena": "pulo",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  }
+ ]
+}
