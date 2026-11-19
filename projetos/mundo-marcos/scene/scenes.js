@@ -16,7 +16,7 @@ function sala(ctx, o = {}) {
   const fundo = new THREE.Mesh(new THREE.PlaneGeometry(10, 4.6), new THREE.MeshLambertMaterial({ map: tex })); fundo.position.set(0, 2.3, -2); fundo.receiveShadow = true; scene.add(fundo);
   const lat = new THREE.Mesh(new THREE.PlaneGeometry(6, 4.6), new THREE.MeshLambertMaterial({ map: tex })); lat.rotation.y = Math.PI / 2; lat.position.set(-4, 2.3, 1); lat.receiveShadow = true; scene.add(lat);
   const ctex = (() => { const c = document.createElement('canvas'); c.width = c.height = 512; const g = c.getContext('2d'); g.fillStyle = o.chao ?? '#8a6a4a'; g.fillRect(0, 0, 512, 512); g.strokeStyle = 'rgba(0,0,0,.18)'; for (let i = 0; i < 512; i += 64) { g.beginPath(); g.moveTo(0, i); g.lineTo(512, i); g.stroke(); } for (let i = 0; i < 1500; i++) { g.fillStyle = `rgba(0,0,0,${Math.random() * 0.05})`; g.fillRect(Math.random() * 512, Math.random() * 512, 3, 3); } const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 3); return t; })();
-  const chao = new THREE.Mesh(new THREE.PlaneGeometry(10, 8), new THREE.MeshLambertMaterial({ map: ctex })); chao.rotation.x = -Math.PI / 2; chao.receiveShadow = true; scene.add(chao);
+  const chao = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.MeshLambertMaterial({ map: ctex })); ctex.repeat.set(9, 9); chao.rotation.x = -Math.PI / 2; chao.receiveShadow = true; scene.add(chao);
   // janela com luz quente e poeira
   const jx = o.janelaX ?? 1.6;
   const jan = new THREE.Mesh(new THREE.PlaneGeometry(1.3, 1.5), glow(0xffd8a8, 1.05)); jan.position.set(jx, 2.6, -1.98); scene.add(jan);
