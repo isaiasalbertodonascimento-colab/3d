@@ -19,6 +19,7 @@
   "homepage": "https://github.com/isaiasalbertodonascimento-colab/3d#readme",
   "dependencies": {
     "@fontsource/anton": "^5.3.0",
+    "@fontsource/bebas-neue": "^5.3.0",
     "@fontsource/inter": "^5.3.0",
     "three": "^0.170.0"
   }

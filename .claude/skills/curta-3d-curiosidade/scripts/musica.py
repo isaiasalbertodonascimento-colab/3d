@@ -24,12 +24,15 @@ CLIMAS = {
     "curioso": dict(roots=[110.0, 87.31, 130.81, 98.0], chord=[1, 1.5, 2, 2.52], bpm=100, bright=1800),   # Am F C G
     "tenso":   dict(roots=[55.0, 58.27, 55.0, 51.91], chord=[1, 1.5, 2, 2.38], bpm=84, bright=900),        # Am Bb Am Ab
     "leve":    dict(roots=[130.81, 98.0, 110.0, 87.31], chord=[1, 1.26, 1.5, 2], bpm=112, bright=2600),   # C G Am F
+    "cinematico": dict(roots=[73.42, 58.27, 87.31, 65.41], chord=[1, 1.5, 2, 2.38], bpm=78, bright=1200),  # Dm Bb F C (épico suave)
     "emocional": dict(roots=[87.31, 130.81, 98.0, 110.0], chord=[1, 1.26, 1.5, 2], bpm=72, bright=1500),  # F C G Am (histórias)
 }
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("project"); ap.add_argument("--clima", default="curioso", choices=CLIMAS); ap.add_argument("--bpm", type=float)
+    ap.add_argument("--magia", default="", help="cenas (separadas por vírgula) que ganham zumbido mágico")
+    ap.add_argument("--whoosh-cortes", action="store_true", help="whoosh suave em cada corte de shot")
     a = ap.parse_args()
     tl = json.load(open(os.path.join(a.project, "timeline.json"), encoding="utf-8"))
     c = CLIMAS[a.clima]; bpm = a.bpm or c["bpm"]; beat = 60 / bpm
@@ -70,6 +73,22 @@ def main():
         ln = int(0.5 * SR); i = int((b["start"] - 0.5) * SR); tt = np.arange(ln) / SR
         w = bandpass(rng.standard_normal(ln), 600, 6000) * (tt / 0.5) ** 2 * 0.35
         e = min(n, i + ln); L[i:e] += w[:e - i]; R[i:e] += w[:e - i] * .8
+    # whoosh curto em cada corte
+    if a.whoosh_cortes:
+        for sh in tl["shots"][1:]:
+            ln = int(0.32 * SR); i = int((sh["start"] - 0.28) * SR); tt = np.arange(ln) / SR
+            w = bandpass(rng.standard_normal(ln), 900, 5000) * np.sin(np.pi * tt / 0.32) ** 2 * 0.16
+            e = min(n, i + ln); i0 = max(0, i)
+            if e > i0: L[i0:e] += w[i0 - i:e - i]; R[i0:e] += w[i0 - i:e - i] * 0.85
+    # zumbido mágico (cintilante) nas cenas de poder
+    magia = {c.strip() for c in a.magia.split(",") if c.strip()}
+    for sh in tl["shots"]:
+        if sh["cena"] not in magia: continue
+        i = int(sh["start"] * SR); e = min(n, int(sh["end"] * SR)); tt = np.arange(e - i) / SR; dur = max(tt[-1], 1e-3)
+        env = np.minimum(1, tt / 0.25) * np.minimum(1, (dur - tt) / 0.3 + 1e-9)
+        z = sum(np.sin(2 * np.pi * f * tt + 3 * np.sin(2 * np.pi * 5.5 * tt)) / (k + 1) for k, f in enumerate([440, 660, 990, 1320]))
+        z = z * (0.6 + 0.4 * np.sin(2 * np.pi * 7 * tt)) * env * 0.07
+        L[i:e] += z; R[i:e] += np.roll(z, 400)
     # baque grave nos impactos
     for s in tl["shots"]:
         if not s.get("impacto"): continue

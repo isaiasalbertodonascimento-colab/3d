@@ -1,0 +1,804 @@
+{
+ "fps": 30,
+ "total": 79.517,
+ "lead": 0.8,
+ "titulos": {
+  "final": "CONTINUA<em>...</em>"
+ },
+ "beats": [
+  {
+   "id": "morte",
+   "tag": "",
+   "start": 0.8,
+   "end": 6.85,
+   "sentences": [
+    {
+     "text": "Eu morri do jeito mais *ridículo* possível.",
+     "start": 0.8,
+     "end": 3.917
+    },
+    {
+     "text": "Escorreguei numa *casca de banana*.",
+     "start": 4.267,
+     "end": 6.85
+    }
+   ]
+  },
+  {
+   "id": "1347",
+   "tag": "",
+   "start": 7.2,
+   "end": 9.2,
+   "sentences": [
+    {
+     "text": "E acordei em *1347*.",
+     "start": 7.2,
+     "end": 9.2
+    }
+   ]
+  },
+  {
+   "id": "sem",
+   "tag": "",
+   "start": 9.55,
+   "end": 16.25,
+   "sentences": [
+    {
+     "text": "Sem celular.",
+     "start": 9.55,
+     "end": 11.55
+    },
+    {
+     "text": "Sem internet.",
+     "start": 11.9,
+     "end": 13.9
+    },
+    {
+     "text": "Sem *banho*.",
+     "start": 14.25,
+     "end": 16.25
+    }
+   ]
+  },
+  {
+   "id": "veio",
+   "tag": "",
+   "start": 16.6,
+   "end": 18.917,
+   "sentences": [
+    {
+     "text": "Mas alguma coisa *veio comigo*.",
+     "start": 16.6,
+     "end": 18.917
+    }
+   ]
+  },
+  {
+   "id": "maca",
+   "tag": "",
+   "start": 19.267,
+   "end": 24.517,
+   "sentences": [
+    {
+     "text": "Eu estiquei a mão pra pegar uma maçã...",
+     "start": 19.267,
+     "end": 22.117
+    },
+    {
+     "text": "e ela veio *direto na mão*.",
+     "start": 22.467,
+     "end": 24.517
+    }
+   ]
+  },
+  {
+   "id": "curvar",
+   "tag": "",
+   "start": 24.867,
+   "end": 27.383,
+   "sentences": [
+    {
+     "text": "Eu conseguia *curvar a gravidade*.",
+     "start": 24.867,
+     "end": 27.383
+    }
+   ]
+  },
+  {
+   "id": "bruxaria",
+   "tag": "",
+   "start": 27.733,
+   "end": 32.267,
+   "sentences": [
+    {
+     "text": "Só que os aldeões viram tudo.",
+     "start": 27.733,
+     "end": 29.917
+    },
+    {
+     "text": "*BRUXARIA!*",
+     "start": 30.267,
+     "end": 32.267
+    }
+   ]
+  },
+  {
+   "id": "fisica",
+   "tag": "",
+   "start": 32.617,
+   "end": 36.967,
+   "sentences": [
+    {
+     "text": "Mas não era magia.",
+     "start": 32.617,
+     "end": 34.617
+    },
+    {
+     "text": "Era *física*.",
+     "start": 34.967,
+     "end": 36.967
+    }
+   ]
+  },
+  {
+   "id": "einstein",
+   "tag": "",
+   "start": 37.317,
+   "end": 42.767,
+   "sentences": [
+    {
+     "text": "Pra Einstein, a gravidade nem é uma força.",
+     "start": 37.317,
+     "end": 40.367
+    },
+    {
+     "text": "É o *espaço-tempo* curvado.",
+     "start": 40.717,
+     "end": 42.767
+    }
+   ]
+  },
+  {
+   "id": "lencol",
+   "tag": "",
+   "start": 43.117,
+   "end": 49.367,
+   "sentences": [
+    {
+     "text": "Coisas com muita massa afundam o espaço-tempo, como uma bola pesada num *lençol esticado*.",
+     "start": 43.117,
+     "end": 49.367
+    }
+   ]
+  },
+  {
+   "id": "cai",
+   "tag": "",
+   "start": 49.717,
+   "end": 52.767,
+   "sentences": [
+    {
+     "text": "E tudo ao redor *cai* pra dentro da curva.",
+     "start": 49.717,
+     "end": 52.767
+    }
+   ]
+  },
+  {
+   "id": "proposito",
+   "tag": "",
+   "start": 53.117,
+   "end": 55.5,
+   "sentences": [
+    {
+     "text": "Eu só fazia isso *de propósito*.",
+     "start": 53.117,
+     "end": 55.5
+    }
+   ]
+  },
+  {
+   "id": "treino",
+   "tag": "",
+   "start": 55.85,
+   "end": 58.767,
+   "sentences": [
+    {
+     "text": "Fugi pra floresta e comecei a *treinar*.",
+     "start": 55.85,
+     "end": 58.767
+    }
+   ]
+  },
+  {
+   "id": "evolui",
+   "tag": "",
+   "start": 59.117,
+   "end": 68.167,
+   "sentences": [
+    {
+     "text": "Primeiro, *pedras*.",
+     "start": 59.117,
+     "end": 61.117
+    },
+    {
+     "text": "Depois, *troncos*.",
+     "start": 61.467,
+     "end": 63.467
+    },
+    {
+     "text": "Depois...",
+     "start": 63.817,
+     "end": 65.817
+    },
+    {
+     "text": "*eu mesmo*.",
+     "start": 66.167,
+     "end": 68.167
+    }
+   ]
+  },
+  {
+   "id": "noite",
+   "tag": "",
+   "start": 68.517,
+   "end": 71.833,
+   "sentences": [
+    {
+     "text": "Até que uma noite, eu senti o espaço *tremer*.",
+     "start": 68.517,
+     "end": 71.833
+    }
+   ]
+  },
+  {
+   "id": "alguem",
+   "tag": "",
+   "start": 72.183,
+   "end": 75.167,
+   "sentences": [
+    {
+     "text": "Tinha mais alguém curvando a *gravidade*.",
+     "start": 72.183,
+     "end": 75.167
+    }
+   ]
+  },
+  {
+   "id": "nome",
+   "tag": "",
+   "start": 75.517,
+   "end": 77.517,
+   "sentences": [
+    {
+     "text": "E ele *sabia meu nome*.",
+     "start": 75.517,
+     "end": 77.517
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 1.416,
+   "cena": "cidade",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "anda"
+   }
+  },
+  {
+   "beat": 0,
+   "start": 1.416,
+   "end": 2.832,
+   "cena": "cidade",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "acao": "banana"
+   }
+  },
+  {
+   "beat": 0,
+   "start": 2.832,
+   "end": 4.147,
+   "cena": "cidade",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "acao": "escorrega"
+   }
+  },
+  {
+   "beat": 0,
+   "start": 4.147,
+   "end": 5.664,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "expr": "surpresa",
+    "bg": "cidade"
+   }
+  },
+  {
+   "beat": 0,
+   "start": 5.664,
+   "end": 7.08,
+   "cena": "ceu",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 1,
+   "start": 7.08,
+   "end": 8.255,
+   "cena": "acorda",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 1,
+   "start": 8.255,
+   "end": 9.43,
+   "cena": "vila",
+   "camera": "pull_out",
+   "impacto": true,
+   "args": {
+    "acao": "wide"
+   }
+  },
+  {
+   "beat": 2,
+   "start": 9.43,
+   "end": 11.78,
+   "cena": "rosto",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "expr": "surpresa",
+    "bg": "vila"
+   }
+  },
+  {
+   "beat": 2,
+   "start": 11.78,
+   "end": 14.13,
+   "cena": "vila",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "anda"
+   }
+  },
+  {
+   "beat": 2,
+   "start": 14.13,
+   "end": 16.48,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "expr": "raiva",
+    "bg": "vila"
+   }
+  },
+  {
+   "beat": 3,
+   "start": 16.48,
+   "end": 17.813,
+   "cena": "interior",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "vela"
+   }
+  },
+  {
+   "beat": 3,
+   "start": 17.813,
+   "end": 19.147,
+   "cena": "mao",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "bg": "interior",
+    "forca": 0.35
+   }
+  },
+  {
+   "beat": 4,
+   "start": 19.147,
+   "end": 20.547,
+   "cena": "interior",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "acao": "maca",
+    "ini": 0,
+    "fim": 0.15
+   }
+  },
+  {
+   "beat": 4,
+   "start": 20.547,
+   "end": 21.947,
+   "cena": "mao",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "bg": "interior",
+    "forca": 1
+   }
+  },
+  {
+   "beat": 4,
+   "start": 21.947,
+   "end": 23.347,
+   "cena": "interior",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "acao": "maca",
+    "ini": 0.15,
+    "fim": 1
+   }
+  },
+  {
+   "beat": 4,
+   "start": 23.347,
+   "end": 24.747,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "expr": "surpresa",
+    "bg": "interior"
+   }
+  },
+  {
+   "beat": 5,
+   "start": 24.747,
+   "end": 26.18,
+   "cena": "interior",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "acao": "objetos"
+   }
+  },
+  {
+   "beat": 5,
+   "start": 26.18,
+   "end": 27.613,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "expr": "risada",
+    "bg": "interior"
+   }
+  },
+  {
+   "beat": 6,
+   "start": 27.613,
+   "end": 29.241,
+   "cena": "vila",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "janela"
+   }
+  },
+  {
+   "beat": 6,
+   "start": 29.241,
+   "end": 30.869,
+   "cena": "vila",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "acao": "aldeoes"
+   }
+  },
+  {
+   "beat": 6,
+   "start": 30.869,
+   "end": 32.497,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "expr": "raiva",
+    "bg": "vila",
+    "quem": "aldeao"
+   }
+  },
+  {
+   "beat": 7,
+   "start": 32.497,
+   "end": 34.847,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "expr": "concentrado",
+    "bg": "interior"
+   }
+  },
+  {
+   "beat": 7,
+   "start": 34.847,
+   "end": 37.197,
+   "cena": "grade",
+   "camera": "orbit",
+   "impacto": true,
+   "args": {
+    "modo": "plana"
+   }
+  },
+  {
+   "beat": 8,
+   "start": 37.197,
+   "end": 39.13,
+   "cena": "grade",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "modo": "plana"
+   }
+  },
+  {
+   "beat": 8,
+   "start": 39.13,
+   "end": 40.597,
+   "cena": "grade",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "modo": "planeta"
+   }
+  },
+  {
+   "beat": 8,
+   "start": 40.597,
+   "end": 42.997,
+   "cena": "grade",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "modo": "planeta"
+   }
+  },
+  {
+   "beat": 9,
+   "start": 42.997,
+   "end": 45.197,
+   "cena": "tecido",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "modo": "bola"
+   }
+  },
+  {
+   "beat": 9,
+   "start": 45.197,
+   "end": 47.397,
+   "cena": "tecido",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "modo": "bola",
+    "close": true
+   }
+  },
+  {
+   "beat": 9,
+   "start": 47.397,
+   "end": 49.597,
+   "cena": "tecido",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "modo": "bola"
+   }
+  },
+  {
+   "beat": 10,
+   "start": 49.597,
+   "end": 51.297,
+   "cena": "tecido",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "modo": "bolinhas"
+   }
+  },
+  {
+   "beat": 10,
+   "start": 51.297,
+   "end": 52.997,
+   "cena": "grade",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "modo": "orbita"
+   }
+  },
+  {
+   "beat": 11,
+   "start": 52.997,
+   "end": 54.364,
+   "cena": "grade",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "modo": "mao"
+   }
+  },
+  {
+   "beat": 11,
+   "start": 54.364,
+   "end": 55.73,
+   "cena": "mao",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "bg": "grade",
+    "forca": 1
+   }
+  },
+  {
+   "beat": 12,
+   "start": 55.73,
+   "end": 57.364,
+   "cena": "estrada",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 12,
+   "start": 57.364,
+   "end": 58.997,
+   "cena": "floresta",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "acao": "wide"
+   }
+  },
+  {
+   "beat": 13,
+   "start": 58.997,
+   "end": 60.877,
+   "cena": "floresta",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "pedra"
+   }
+  },
+  {
+   "beat": 13,
+   "start": 60.877,
+   "end": 62.757,
+   "cena": "rosto",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "expr": "concentrado",
+    "bg": "floresta"
+   }
+  },
+  {
+   "beat": 13,
+   "start": 62.757,
+   "end": 64.637,
+   "cena": "floresta",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "acao": "tronco"
+   }
+  },
+  {
+   "beat": 13,
+   "start": 64.637,
+   "end": 66.517,
+   "cena": "floresta",
+   "camera": "tilt_up",
+   "impacto": true,
+   "args": {
+    "acao": "voa"
+   }
+  },
+  {
+   "beat": 13,
+   "start": 66.517,
+   "end": 68.397,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "expr": "risada",
+    "bg": "floresta"
+   }
+  },
+  {
+   "beat": 14,
+   "start": 68.397,
+   "end": 70.23,
+   "cena": "vila",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "noite"
+   }
+  },
+  {
+   "beat": 14,
+   "start": 70.23,
+   "end": 72.063,
+   "cena": "rosto",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "expr": "medo",
+    "bg": "noite"
+   }
+  },
+  {
+   "beat": 15,
+   "start": 72.063,
+   "end": 73.73,
+   "cena": "torre",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "janela"
+   }
+  },
+  {
+   "beat": 15,
+   "start": 73.73,
+   "end": 75.397,
+   "cena": "torre",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "acao": "figura"
+   }
+  },
+  {
+   "beat": 16,
+   "start": 75.397,
+   "end": 77.457,
+   "cena": "torre",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "acao": "olhos"
+   }
+  },
+  {
+   "beat": 16,
+   "start": 77.457,
+   "end": 79.517,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "expr": "medo",
+    "bg": "noite"
+   }
+  }
+ ],
+ "sem_voz": true
+}

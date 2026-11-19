@@ -152,6 +152,8 @@ def main():
             ok = near is not None and abs(near - target) < 1.2 and near - prev >= 1.2 and b1 - near >= 1.2 * (len(sl) - j)
             cuts.append(near if ok else target)  # nunca deixa um shot com menos de ~1,2 s
         edges = [b0] + cuts + [b1]
+        if min(edges[i + 1] - edges[i] for i in range(len(edges) - 1)) < 1.2:  # algum ficou curto: divide por igual
+            edges = [b0 + (b1 - b0) * i / len(sl) for i in range(len(sl) + 1)]
         for j, s in enumerate(sl):
             shots.append({"beat": bi, "start": round(edges[j], 3), "end": round(edges[j + 1], 3), "cena": s["cena"],
                           "camera": s.get("camera", "static"), "impacto": bool(s.get("impacto", False)), "args": s.get("args", {}),

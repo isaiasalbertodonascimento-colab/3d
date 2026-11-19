@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Curta 3D</title>
+<link rel="stylesheet" href="/node_modules/@fontsource/anton/index.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/bebas-neue/index.css">
+<link rel="stylesheet" href="/node_modules/@fontsource/inter/800.css">
+<style>
+  html,body{margin:0;background:#000;overflow:hidden}
+  #wrap{position:relative;width:720px;height:1280px;overflow:hidden;background:#000}
+  #stage{position:absolute;inset:0;transform-origin:50% 50%}
+  canvas{display:block}
+  .ov{position:absolute;left:0;right:0;pointer-events:none}
+  #flash{inset:0;background:#fff;opacity:0}
+  #fade{inset:0;background:#000;opacity:1}
+  #cap{top:560px;text-align:center;padding:0 70px;font-family:'Bebas Neue',Anton,sans-serif;font-size:104px;line-height:.98;color:#fff;text-transform:uppercase;letter-spacing:1.5px;text-shadow:0 3px 6px rgba(0,0,0,.45),0 8px 26px rgba(0,0,0,.35);transform-origin:50% 50%}
+  #cap span{display:inline-block;margin:0 10px}
+  #cap span.k{color:#ffc83a}
+  #tag{display:none}
+  #tag div{display:inline-block;font-family:Inter,sans-serif;font-weight:800;font-size:30px;letter-spacing:4px;color:#111;
+       background:#ffd21f;padding:12px 26px;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.45);text-transform:uppercase}
+  #title{top:500px;text-align:center;font-family:'Bebas Neue',Anton,sans-serif;font-size:150px;line-height:.95;color:#fff;padding:0 30px;text-transform:uppercase;text-shadow:0 4px 10px rgba(0,0,0,.5),0 12px 40px rgba(0,0,0,.4);transform-origin:50% 50%}
+  #title em{font-style:normal;color:#ffc83a}
+  #bar{display:none}
+  #bar i{display:block;height:100%;width:0;background:#ffd21f}
+</style>
+<script type="importmap">
+{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}
+</script>
+</head>
+<body>
+<div id="wrap">
+  <div id="stage"></div>
+  <div id="flash" class="ov"></div>
+  <div id="title" class="ov"></div>
+  <div id="tag" class="ov"></div>
+  <div id="cap" class="ov"></div>
+  <div id="bar" class="ov"><i></i></div>
+  <div id="fade" class="ov"></div>
+</div>
+<script type="module">
+  import { boot } from './engine.js';
+  import SCENES from './scenes.js';
+  boot(SCENES).catch(e => { console.error(e.stack || e); window.bootError = String(e.stack || e); });
+</script>
+</body>
+</html>
