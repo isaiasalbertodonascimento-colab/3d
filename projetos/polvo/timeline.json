@@ -1,0 +1,363 @@
+{
+ "fps": 30,
+ "total": 51.918,
+ "lead": 0.8,
+ "titulos": {
+  "gancho": "3 CORAÇÕES<br>SANGUE <em>AZUL</em><br>9 CÉREBROS",
+  "final": "COMENTA<br><em>AÍ</em>"
+ },
+ "beats": [
+  {
+   "id": "gancho",
+   "tag": "O POLVO",
+   "start": 0.8,
+   "end": 7.59,
+   "sentences": [
+    {
+     "text": "O polvo tem três corações, sangue azul e nove cérebros.",
+     "start": 0.8,
+     "end": 4.048
+    },
+    {
+     "text": "E isso nem é o mais estranho.",
+     "start": 4.315,
+     "end": 7.59
+    }
+   ]
+  },
+  {
+   "id": "coracoes",
+   "tag": "3 CORAÇÕES",
+   "start": 7.811,
+   "end": 14.899,
+   "sentences": [
+    {
+     "text": "Dois corações bombeiam sangue só para as brânquias.",
+     "start": 7.811,
+     "end": 10.303
+    },
+    {
+     "text": "O terceiro manda sangue para o resto do corpo.",
+     "start": 10.51,
+     "end": 14.899
+    }
+   ]
+  },
+  {
+   "id": "nada",
+   "tag": "PLOT TWIST",
+   "start": 15.145,
+   "end": 22.008,
+   "sentences": [
+    {
+     "text": "Mas quando o polvo nada, esse terceiro coração para de bater.",
+     "start": 15.145,
+     "end": 19.259
+    },
+    {
+     "text": "Por isso ele prefere rastejar pelo fundo do mar.",
+     "start": 19.59,
+     "end": 22.008
+    }
+   ]
+  },
+  {
+   "id": "sangue",
+   "tag": "SANGUE AZUL",
+   "start": 22.444,
+   "end": 27.63,
+   "sentences": [
+    {
+     "text": "O sangue dele é azul porque usa cobre, e não ferro, para carregar oxigênio.",
+     "start": 22.444,
+     "end": 27.63
+    }
+   ]
+  },
+  {
+   "id": "cerebros",
+   "tag": "9 CÉREBROS",
+   "start": 27.902,
+   "end": 36.957,
+   "sentences": [
+    {
+     "text": "E cada braço tem o seu próprio mini cérebro.",
+     "start": 27.902,
+     "end": 31.21
+    },
+    {
+     "text": "Dois terços dos neurônios ficam nos braços.",
+     "start": 31.426,
+     "end": 34.263
+    },
+    {
+     "text": "Eles sentem até o gosto de tudo o que tocam.",
+     "start": 34.582,
+     "end": 36.957
+    }
+   ]
+  },
+  {
+   "id": "cor",
+   "tag": "O MAIS ESTRANHO",
+   "start": 37.192,
+   "end": 46.345,
+   "sentences": [
+    {
+     "text": "Agora, o mais estranho de todos.",
+     "start": 37.192,
+     "end": 39.937
+    },
+    {
+     "text": "Ele muda de cor em menos de um segundo.",
+     "start": 40.383,
+     "end": 42.559
+    },
+    {
+     "text": "Mas os cientistas acreditam que ele não enxerga cores.",
+     "start": 42.947,
+     "end": 46.345
+    }
+   ]
+  },
+  {
+   "id": "fim",
+   "tag": "E VOCÊ?",
+   "start": 46.712,
+   "end": 50.118,
+   "sentences": [
+    {
+     "text": "Qual desses te deixou mais chocado?",
+     "start": 46.712,
+     "end": 48.768
+    },
+    {
+     "text": "Comenta aí.",
+     "start": 49.236,
+     "end": 50.118
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 2.564,
+   "cena": "polvo",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "acena"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 0,
+   "start": 2.564,
+   "end": 4.195,
+   "cena": "coracoes",
+   "camera": "orbit",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 0,
+   "start": 4.195,
+   "end": 7.691,
+   "cena": "polvo",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "acao": "olha",
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 7.691,
+   "end": 10.39,
+   "cena": "coracoes",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "foco": "branquias"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 10.39,
+   "end": 12.58,
+   "cena": "coracoes",
+   "camera": "pan_right",
+   "impacto": false,
+   "args": {
+    "foco": "sistemico"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 12.58,
+   "end": 15.025,
+   "cena": "coracoes",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "foco": "sistemico"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 15.025,
+   "end": 17.458,
+   "cena": "nada",
+   "camera": "pan_left",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 17.458,
+   "end": 19.47,
+   "cena": "coracoes",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "foco": "sistemico",
+    "para": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 19.47,
+   "end": 22.324,
+   "cena": "polvo",
+   "camera": "pan_right",
+   "impacto": false,
+   "args": {
+    "acao": "rasteja"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 22.324,
+   "end": 25.053,
+   "cena": "sangue",
+   "camera": "pan_right",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 25.053,
+   "end": 27.782,
+   "cena": "sangue",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 27.782,
+   "end": 31.306,
+   "cena": "rede",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 31.306,
+   "end": 34.462,
+   "cena": "rede",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "bracos": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 34.462,
+   "end": 37.072,
+   "cena": "ventosa",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 37.072,
+   "end": 40.263,
+   "cena": "polvo",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "olha",
+    "close": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 40.263,
+   "end": 42.827,
+   "cena": "polvo",
+   "camera": "orbit",
+   "impacto": true,
+   "args": {
+    "acao": "cores"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 42.827,
+   "end": 46.592,
+   "cena": "olho",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 46.592,
+   "end": 49.116,
+   "cena": "polvo",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "acao": "acena"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 49.116,
+   "end": 51.918,
+   "cena": "polvo",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "acao": "cores"
+   },
+   "descricao": ""
+  }
+ ]
+}

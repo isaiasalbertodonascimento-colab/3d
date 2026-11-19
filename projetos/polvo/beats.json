@@ -1,0 +1,183 @@
+{
+  "titulo": "O polvo tem três corações, sangue azul e nove cérebros",
+  "voz": "ElevenLabs: Will - Deep, Smooth and Affectionate",
+  "titulos": {
+    "gancho": "3 CORAÇÕES<br>SANGUE <em>AZUL</em><br>9 CÉREBROS",
+    "final": "COMENTA<br><em>AÍ</em>"
+  },
+  "beats": [
+    {
+      "id": "gancho",
+      "tag": "O POLVO",
+      "narracao": "O polvo tem três corações, sangue azul e nove cérebros. E isso nem é o mais estranho.",
+      "shots": [
+        {
+          "cena": "polvo",
+          "camera": "push_in",
+          "args": {
+            "acao": "acena"
+          }
+        },
+        {
+          "cena": "coracoes",
+          "camera": "orbit",
+          "impacto": true
+        },
+        {
+          "cena": "polvo",
+          "camera": "static",
+          "args": {
+            "acao": "olha",
+            "close": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "coracoes",
+      "tag": "3 CORAÇÕES",
+      "narracao": "Dois corações bombeiam sangue só para as brânquias. O terceiro manda sangue para o resto do corpo.",
+      "shots": [
+        {
+          "cena": "coracoes",
+          "camera": "push_in",
+          "args": {
+            "foco": "branquias"
+          }
+        },
+        {
+          "cena": "coracoes",
+          "camera": "pan_right",
+          "args": {
+            "foco": "sistemico"
+          }
+        },
+        {
+          "cena": "coracoes",
+          "camera": "orbit",
+          "args": {
+            "foco": "sistemico"
+          }
+        }
+      ]
+    },
+    {
+      "id": "nada",
+      "tag": "PLOT TWIST",
+      "narracao": "Mas quando o polvo nada, esse terceiro coração para de bater. Por isso ele prefere rastejar pelo fundo do mar.",
+      "shots": [
+        {
+          "cena": "nada",
+          "camera": "pan_left"
+        },
+        {
+          "cena": "coracoes",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "foco": "sistemico",
+            "para": true
+          }
+        },
+        {
+          "cena": "polvo",
+          "camera": "pan_right",
+          "args": {
+            "acao": "rasteja"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sangue",
+      "tag": "SANGUE AZUL",
+      "narracao": "O sangue dele é azul porque usa cobre, e não ferro, para carregar oxigênio.",
+      "shots": [
+        {
+          "cena": "sangue",
+          "camera": "pan_right"
+        },
+        {
+          "cena": "sangue",
+          "camera": "push_in",
+          "impacto": true,
+          "args": {
+            "close": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "cerebros",
+      "tag": "9 CÉREBROS",
+      "narracao": "E cada braço tem o seu próprio mini cérebro. Dois terços dos neurônios ficam nos braços. Eles sentem até o gosto de tudo o que tocam.",
+      "shots": [
+        {
+          "cena": "rede",
+          "camera": "orbit"
+        },
+        {
+          "cena": "rede",
+          "camera": "push_in",
+          "impacto": true,
+          "args": {
+            "bracos": true
+          }
+        },
+        {
+          "cena": "ventosa",
+          "camera": "push_in"
+        }
+      ]
+    },
+    {
+      "id": "cor",
+      "tag": "O MAIS ESTRANHO",
+      "narracao": "Agora, o mais estranho de todos. Ele muda de cor em menos de um segundo. Mas os cientistas acreditam que ele não enxerga cores.",
+      "shots": [
+        {
+          "cena": "polvo",
+          "camera": "push_in",
+          "args": {
+            "acao": "olha",
+            "close": true
+          }
+        },
+        {
+          "cena": "polvo",
+          "camera": "orbit",
+          "impacto": true,
+          "args": {
+            "acao": "cores"
+          }
+        },
+        {
+          "cena": "olho",
+          "camera": "push_in",
+          "impacto": true
+        }
+      ]
+    },
+    {
+      "id": "fim",
+      "tag": "E VOCÊ?",
+      "narracao": "Qual desses te deixou mais chocado? Comenta aí.",
+      "shots": [
+        {
+          "cena": "polvo",
+          "camera": "pull_out",
+          "args": {
+            "acao": "acena"
+          }
+        },
+        {
+          "cena": "polvo",
+          "camera": "orbit",
+          "args": {
+            "acao": "cores"
+          }
+        }
+      ]
+    }
+  ]
+}
