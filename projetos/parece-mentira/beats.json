@@ -1,0 +1,165 @@
+{
+  "titulo": "5 coisas que parecem mentira, mas são verdade",
+  "voz": "ElevenLabs: Will - Deep, Smooth and Affectionate",
+  "titulos": {
+    "gancho": "PARECE<br><em>MENTIRA</em><br>MAS É VERDADE",
+    "final": "COMENTA<br><em>AÍ</em>"
+  },
+  "beats": [
+    {
+      "id": "gancho",
+      "tag": "5 FATOS",
+      "narracao": "Essas cinco coisas parecem mentira. Mas todas são verdade.",
+      "shots": [
+        {
+          "cena": "abertura",
+          "camera": "push_in"
+        },
+        {
+          "cena": "abertura",
+          "camera": "orbit",
+          "impacto": true,
+          "args": {
+            "explode": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "papel",
+      "tag": "#1 · O PAPEL",
+      "narracao": "Se você dobrar uma folha de papel quarenta e duas vezes, ela chega até a Lua. Cada dobra dobra a espessura, e na última já são mais de quatrocentos mil quilômetros.",
+      "shots": [
+        {
+          "cena": "papel",
+          "camera": "push_in"
+        },
+        {
+          "cena": "papel",
+          "camera": "tilt_up",
+          "args": {
+            "pilha": true
+          }
+        },
+        {
+          "cena": "lua",
+          "camera": "pull_out",
+          "impacto": true
+        },
+        {
+          "cena": "lua",
+          "camera": "static",
+          "args": {
+            "numero": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "neutrons",
+      "tag": "#2 · ESTRELA",
+      "narracao": "Uma colher de chá de estrela de nêutrons pesaria bilhões de toneladas. Mais do que todos os carros do mundo juntos.",
+      "shots": [
+        {
+          "cena": "estrela",
+          "camera": "orbit"
+        },
+        {
+          "cena": "colher",
+          "camera": "push_in",
+          "impacto": true
+        },
+        {
+          "cena": "colher",
+          "camera": "static",
+          "args": {
+            "carros": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "venus",
+      "tag": "#3 · VÊNUS",
+      "narracao": "Em Vênus, um dia dura mais do que um ano. O planeta gira tão devagar que dá a volta no Sol antes de completar um giro.",
+      "shots": [
+        {
+          "cena": "venus",
+          "camera": "push_in",
+          "impacto": true,
+          "args": {
+            "numero": true
+          }
+        },
+        {
+          "cena": "venus",
+          "camera": "orbit"
+        },
+        {
+          "cena": "venus",
+          "camera": "pull_out",
+          "args": {
+            "orbita": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "banana",
+      "tag": "#4 · BANANA",
+      "narracao": "A banana é levemente radioativa, por causa do potássio. Mas relaxa: você teria que comer milhões de uma vez para fazer mal.",
+      "shots": [
+        {
+          "cena": "banana",
+          "camera": "orbit",
+          "impacto": true
+        },
+        {
+          "cena": "banana",
+          "camera": "pull_out",
+          "args": {
+            "pilha": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "arvores",
+      "tag": "#5 · ÁRVORES",
+      "narracao": "E existem mais árvores na Terra do que estrelas na nossa galáxia. São cerca de três trilhões de árvores, contra algumas centenas de bilhões de estrelas.",
+      "shots": [
+        {
+          "cena": "galaxia",
+          "camera": "orbit"
+        },
+        {
+          "cena": "floresta",
+          "camera": "push_in",
+          "impacto": true
+        },
+        {
+          "cena": "versus",
+          "camera": "static"
+        }
+      ]
+    },
+    {
+      "id": "fim",
+      "tag": "E VOCÊ?",
+      "narracao": "Qual delas você não acreditou? Comenta aí.",
+      "shots": [
+        {
+          "cena": "abertura",
+          "camera": "pull_out"
+        },
+        {
+          "cena": "abertura",
+          "camera": "orbit",
+          "args": {
+            "explode": true
+          }
+        }
+      ]
+    }
+  ]
+}

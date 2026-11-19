@@ -1,0 +1,345 @@
+{
+ "fps": 30,
+ "total": 56.472,
+ "lead": 0.8,
+ "titulos": {
+  "gancho": "PARECE<br><em>MENTIRA</em><br>MAS É VERDADE",
+  "final": "COMENTA<br><em>AÍ</em>"
+ },
+ "beats": [
+  {
+   "id": "gancho",
+   "tag": "5 FATOS",
+   "start": 0.8,
+   "end": 5.089,
+   "sentences": [
+    {
+     "text": "Essas cinco coisas parecem mentira.",
+     "start": 0.8,
+     "end": 3.245
+    },
+    {
+     "text": "Mas todas são verdade.",
+     "start": 3.615,
+     "end": 5.089
+    }
+   ]
+  },
+  {
+   "id": "papel",
+   "tag": "#1 · O PAPEL",
+   "start": 5.513,
+   "end": 16.399,
+   "sentences": [
+    {
+     "text": "Se você dobrar uma folha de papel quarenta e duas vezes, ela chega até a Lua.",
+     "start": 5.513,
+     "end": 10.128
+    },
+    {
+     "text": "Cada dobra dobra a espessura, e na última já são mais de quatrocentos mil quilômetros.",
+     "start": 10.464,
+     "end": 16.399
+    }
+   ]
+  },
+  {
+   "id": "neutrons",
+   "tag": "#2 · ESTRELA",
+   "start": 16.638,
+   "end": 24.275,
+   "sentences": [
+    {
+     "text": "Uma colher de chá de estrela de nêutrons pesaria bilhões de toneladas.",
+     "start": 16.638,
+     "end": 21.005
+    },
+    {
+     "text": "Mais do que todos os carros do mundo juntos.",
+     "start": 21.38,
+     "end": 24.275
+    }
+   ]
+  },
+  {
+   "id": "venus",
+   "tag": "#3 · VÊNUS",
+   "start": 24.491,
+   "end": 33.085,
+   "sentences": [
+    {
+     "text": "Em Vênus, um dia dura mais do que um ano.",
+     "start": 24.491,
+     "end": 27.292
+    },
+    {
+     "text": "O planeta gira tão devagar que dá a volta no Sol antes de completar um giro.",
+     "start": 27.785,
+     "end": 33.085
+    }
+   ]
+  },
+  {
+   "id": "banana",
+   "tag": "#4 · BANANA",
+   "start": 33.564,
+   "end": 41.191,
+   "sentences": [
+    {
+     "text": "A banana é levemente radioativa, por causa do potássio.",
+     "start": 33.564,
+     "end": 36.887
+    },
+    {
+     "text": "Mas relaxa: você teria que comer milhões de uma vez para fazer mal.",
+     "start": 37.213,
+     "end": 41.191
+    }
+   ]
+  },
+  {
+   "id": "arvores",
+   "tag": "#5 · ÁRVORES",
+   "start": 41.651,
+   "end": 51.328,
+   "sentences": [
+    {
+     "text": "E existem mais árvores na Terra do que estrelas na nossa galáxia.",
+     "start": 41.651,
+     "end": 45.473
+    },
+    {
+     "text": "São cerca de três trilhões de árvores, contra algumas centenas de bilhões de estrelas.",
+     "start": 45.923,
+     "end": 51.328
+    }
+   ]
+  },
+  {
+   "id": "fim",
+   "tag": "E VOCÊ?",
+   "start": 51.726,
+   "end": 54.672,
+   "sentences": [
+    {
+     "text": "Qual delas você não acreditou?",
+     "start": 51.726,
+     "end": 53.387
+    },
+    {
+     "text": "Comenta aí.",
+     "start": 53.775,
+     "end": 54.672
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 3.495,
+   "cena": "abertura",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 0,
+   "start": 3.495,
+   "end": 5.393,
+   "cena": "abertura",
+   "camera": "orbit",
+   "impacto": true,
+   "args": {
+    "explode": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 5.393,
+   "end": 8.174,
+   "cena": "papel",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 8.174,
+   "end": 10.344,
+   "cena": "papel",
+   "camera": "tilt_up",
+   "impacto": false,
+   "args": {
+    "pilha": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 10.344,
+   "end": 13.737,
+   "cena": "lua",
+   "camera": "pull_out",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 13.737,
+   "end": 16.518,
+   "cena": "lua",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "numero": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 16.518,
+   "end": 19.136,
+   "cena": "estrela",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 19.136,
+   "end": 21.26,
+   "cena": "colher",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 21.26,
+   "end": 24.371,
+   "cena": "colher",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "carros": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 24.371,
+   "end": 27.665,
+   "cena": "venus",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "numero": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 27.665,
+   "end": 30.42,
+   "cena": "venus",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 30.42,
+   "end": 33.444,
+   "cena": "venus",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "orbita": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 33.444,
+   "end": 37.093,
+   "cena": "banana",
+   "camera": "orbit",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 37.093,
+   "end": 41.531,
+   "cena": "banana",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "pilha": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 41.531,
+   "end": 45.803,
+   "cena": "galaxia",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 45.803,
+   "end": 48.248,
+   "cena": "floresta",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 48.248,
+   "end": 51.606,
+   "cena": "versus",
+   "camera": "static",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 51.606,
+   "end": 53.655,
+   "cena": "abertura",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 53.655,
+   "end": 56.472,
+   "cena": "abertura",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "explode": true
+   },
+   "descricao": ""
+  }
+ ]
+}
