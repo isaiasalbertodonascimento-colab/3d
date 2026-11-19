@@ -12,26 +12,37 @@ function gradiente() {
 }
 export const toon = (cor, o = {}) => new THREE.MeshToonMaterial({ color: cor, gradientMap: gradiente(), transparent: o.opacity != null, opacity: o.opacity ?? 1, side: o.side ?? THREE.FrontSide, emissive: o.emissive ?? 0x000000 });
 const plano = (cor) => new THREE.MeshBasicMaterial({ color: cor });
+let _hach = null;
+function hachura() {
+  if (_hach) return _hach;
+  const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
+  g.fillStyle = '#fff'; g.fillRect(0, 0, 64, 64); g.strokeStyle = 'rgba(0,0,0,.10)'; g.lineWidth = 2;
+  for (let i = -64; i < 128; i += 8) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i + 64, 64); g.stroke(); }
+  _hach = new THREE.CanvasTexture(c); _hach.wrapS = _hach.wrapT = THREE.RepeatWrapping; _hach.repeat.set(3, 3); _hach.colorSpace = THREE.SRGBColorSpace;
+  return _hach;
+}
+// cor chapada estilo desenho 2D (sem sombreamento); com hachura para tecidos
+export const chapado = (cor, tecido = false) => new THREE.MeshBasicMaterial({ color: cor, map: tecido ? hachura() : null });
 
 // contorno por "casco invertido"
 export function contorno(m, w = 0.035, cor = 0x2a1d17) {
   const c = new THREE.Mesh(m.geometry, new THREE.MeshBasicMaterial({ color: cor, side: THREE.BackSide }));
   c.scale.setScalar(1 + w); c.raycast = () => {}; m.add(c); return m;
 }
-const peca = (geo, mat, w) => { const m = new THREE.Mesh(geo, mat); m.castShadow = true; return contorno(m, w); };
+const peca = (geo, mat, w) => { const m = new THREE.Mesh(geo, mat); m.castShadow = true; return contorno(m, (w ?? 0.035) * 1.5, 0x3a2418); };
 
 // ---------- personagem ----------
 // o: { pele, roupa, calca, cabelo, estilo:'cachos'|'coque', capacete, faixa }
 export function personagem(o = {}) {
-  const pele = toon(o.pele ?? 0xc98552), roupa = toon(o.roupa ?? 0xf1f3f5), calca = toon(o.calca ?? 0x8c7b63), cab = toon(o.cabelo ?? 0x2b1a12);
+  const pele = chapado(o.pele ?? 0xc98552), roupa = chapado(o.roupa ?? 0xf1f3f5, true), calca = chapado(o.calca ?? 0x8c7b63, true), cab = chapado(o.cabelo ?? 0x2b1a12);
   const g = new THREE.Group();
   const quadril = new THREE.Group(); quadril.position.y = 0.95; g.add(quadril);
   const torso = new THREE.Group(); quadril.add(torso);
   const tronco = peca(new THREE.CapsuleGeometry(0.2, 0.4, 6, 16), roupa); tronco.position.y = 0.33; tronco.scale.set(1.05, 1, 0.7); torso.add(tronco);
   if (o.faixa) { const f = new THREE.Mesh(new THREE.CylinderGeometry(0.212, 0.212, 0.07, 24), toon(o.faixa)); f.position.y = 0.3; f.scale.set(1.05, 1, 0.7); torso.add(f); }
-  if (o.gravata) { const gr = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.36, 0.02), toon(o.gravata)); gr.position.set(0, 0.42, 0.15); torso.add(gr); const n = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.06, 0.03), toon(o.gravata)); n.position.set(0, 0.61, 0.145); torso.add(n);
-    const gola = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.06, 0.02), toon(0xf8f9fa)); gola.position.set(0, 0.64, 0.14); torso.add(gola); }
-  if (o.alca) { for (const s2 of [-1, 1]) { const al = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.5, 0.02), toon(o.alca)); al.position.set(s2 * 0.1, 0.4, 0.15); torso.add(al); } }
+  if (o.gravata) { const gr = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.36, 0.02), chapado(o.gravata)); gr.position.set(0, 0.42, 0.15); torso.add(gr); const n = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.06, 0.03), chapado(o.gravata)); n.position.set(0, 0.61, 0.145); torso.add(n);
+    const gola = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.06, 0.02), chapado(0xf8f9fa)); gola.position.set(0, 0.64, 0.14); torso.add(gola); }
+  if (o.alca) { for (const s2 of [-1, 1]) { const al = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.5, 0.02), chapado(o.alca)); al.position.set(s2 * 0.1, 0.4, 0.15); torso.add(al); } }
   const pesc = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.12, 12), pele); pesc.position.y = 0.66; torso.add(pesc);
   const cabeca = new THREE.Group(); cabeca.position.y = 0.95; torso.add(cabeca);
   const cranio = peca(new THREE.SphereGeometry(0.3, 32, 24), pele, 0.03); cabeca.add(cranio);
@@ -69,7 +80,7 @@ export function personagem(o = {}) {
     bracos[s] = om;
     const qp = new THREE.Group(); qp.position.set(s * 0.1, 0, 0); quadril.add(qp);
     const pe = peca(new THREE.CapsuleGeometry(0.075, 0.68, 4, 10), calca); pe.position.y = -0.42; qp.add(pe);
-    const sap = peca(new THREE.SphereGeometry(0.08, 12, 10), toon(o.capacete ? 0xdee2e6 : 0x6b4a2b), 0.05); sap.scale.set(1, 0.6, 1.6); sap.position.set(0, -0.86, 0.05); qp.add(sap);
+    const sap = peca(new THREE.SphereGeometry(0.08, 12, 10), chapado(o.capacete ? 0xdee2e6 : 0x6b4a2b), 0.05); sap.scale.set(1, 0.6, 1.6); sap.position.set(0, -0.86, 0.05); qp.add(sap);
     pernas[s] = qp;
   }
   let capacete = null;

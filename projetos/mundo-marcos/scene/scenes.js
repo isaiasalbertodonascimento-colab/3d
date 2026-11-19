@@ -265,7 +265,7 @@ export default {
     const torn = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.025, 8, 16, Math.PI), toon(0xc0c0c0)); torn.position.set(0.6, 1.1, -1.85); scene.add(torn);
     const pratos = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.12, 20), toon(0xf8f9fa)); pratos.position.set(0.25, 1.04, -1.55); scene.add(pratos);
     cadeira(scene, 0.6, -0.95, Math.PI);
-    const p = marcos({ gravata: false, roupa: 0xf1f3f5 }); altura(p, 1.05); p.position.set(0.6, 0.51, -1.0); p.rotation.y = Math.PI; scene.add(p);
+    const p = marcos({ gravata: false, roupa: 0xe0d8c8 }); altura(p, 1.05); p.position.set(0.6, 0.51, -1.0); p.rotation.y = Math.PI; scene.add(p);
     const g = gabriel(); altura(g, 1.15); g.position.set(-1.0, 0, 0.3); g.rotation.y = 0.9; scene.add(g);
     const cam = camHud(ctx, 38); scene.add(cam); const txt = ctx.args.mesa ? hud(cam, '"A MESA CRESCEU"', '#ffffff', 0.55, 0.9) : null;
     return {
@@ -283,7 +283,7 @@ export default {
   frente(ctx) {
     const a = ctx.args;
     const { scene, poeira } = sala(ctx, { cima: '#e8dcc6', baixo: '#b5835a', janelaX: 0.05, sol: 16 });
-    const m = marcos({ gravata: false, roupa: 0xf1f3f5 }); altura(m, 1.15); m.position.set(0.55, 0, 0); m.rotation.y = -Math.PI / 2 + 0.25; scene.add(m);
+    const m = marcos({ gravata: false, roupa: 0xe0d8c8 }); altura(m, 1.15); m.position.set(0.55, 0, 0); m.rotation.y = -Math.PI / 2 + 0.25; scene.add(m);
     const g = gabriel(); altura(g, 1.15); g.position.set(-0.55, 0, 0); g.rotation.y = Math.PI / 2 - 0.25; scene.add(g);
     const cam = camHud(ctx, 36); scene.add(cam);
     const txt = a.close === 'gabriel' && !a.fala ? hud(cam, '"PAI, CÊ TÁ MENTINDO?"', '#ffffff', 0.55, 1.0) : a.fala ? hud(cam, 'A VERDADE', '#ffd43b', 0.55, 0.6) : null;
@@ -303,7 +303,7 @@ export default {
   // Marcos crescendo a cada verdade (regua = régua mostrando quase um palmo)
   cresce_marcos(ctx) {
     const { scene, poeira } = sala(ctx, { cima: '#e8dcc6', baixo: '#b5835a', janelaX: 0.05, sol: 30 });
-    const m = marcos({ gravata: false, roupa: 0xf1f3f5 }); m.position.set(0.3, 0, 0); m.rotation.y = -0.35; scene.add(m);
+    const m = marcos({ gravata: false, roupa: 0xe0d8c8 }); m.position.set(0.3, 0, 0); m.rotation.y = -0.35; scene.add(m);
     const g = gabriel(); altura(g, 1.15); g.position.set(-0.8, 0, 0.1); g.rotation.y = 0.6; scene.add(g);
     const brilho = particles(110, [-0.3, 0.1, -0.5, 1.2, 2.2, 1], { color: 0xffe066, size: 0.06, rise: 0.7 }); scene.add(brilho.points);
     const cam = camHud(ctx, 38); scene.add(cam);
@@ -322,7 +322,7 @@ export default {
   abraco(ctx) {
     const close = !!ctx.args.close;
     const { scene, poeira } = sala(ctx, { cima: '#e8dcc6', baixo: '#b5835a', janelaX: 0.0, sol: 32 });
-    const m = marcos({ gravata: false, roupa: 0xf1f3f5 }); altura(m, 1.4); m.position.set(0.18, 0, 0); m.rotation.y = -Math.PI / 2 + 0.4; scene.add(m);
+    const m = marcos({ gravata: false, roupa: 0xe0d8c8 }); altura(m, 1.4); m.position.set(0.18, 0, 0); m.rotation.y = -Math.PI / 2 + 0.4; scene.add(m);
     const g = gabriel(); altura(g, 1.15); g.position.set(-0.2, 0, 0.05); g.rotation.y = Math.PI / 2 - 0.4; scene.add(g);
     const coracoes = particles(30, [-0.5, 1.2, -0.3, 1, 1, 0.6], { color: 0xff8fab, size: 0.09, rise: 0.4 }); scene.add(coracoes.points);
     const cam = camHud(ctx, 36); scene.add(cam); const txt = close ? hud(cam, '"PREFIRO UM PAI QUE NÃO SOME"', '#ffffff', 0.55, 1.05) : null;
