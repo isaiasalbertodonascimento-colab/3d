@@ -40,8 +40,17 @@ export async function boot(SCENES) {
     fragmentShader: `uniform sampler2D tDiffuse; uniform float time; varying vec2 vUv;
       float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
       void main(){ vec2 d=vUv-.5; vec3 c=texture2D(tDiffuse,vUv).rgb;
-        c*=mix(1.,smoothstep(1.0,.3,length(d)),.55);
-        c+=(h(vUv*vec2(720.,1280.)+fract(time*7.13)*100.)-.5)*.025;
+        // acabamento "pintado": cores um pouco apagadas e quentes, sombras azuladas
+        float l=dot(c,vec3(.299,.587,.114));
+        c=mix(vec3(l),c,.82);
+        c=mix(c,c*vec3(1.07,1.0,.86),.55);
+        c+=vec3(-.012,0.,.025)*(1.-smoothstep(.0,.45,l));
+        c=c*.94+.035;                                   // pretos levemente lavados
+        // textura de papel: hachura diagonal bem suave
+        float hach=sin((vUv.x*720.+vUv.y*1280.)*1.15)*.5+.5;
+        c*=1.-.022*hach;
+        c*=mix(1.,smoothstep(1.05,.25,length(d)),.7);    // vinheta
+        c+=(h(vUv*vec2(720.,1280.)+fract(time*7.13)*100.)-.5)*.055; // grão de filme
         gl_FragColor=vec4(c,1.);}`
   });
   composer.addPass(grade);

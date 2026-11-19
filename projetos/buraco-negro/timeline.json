@@ -1,0 +1,342 @@
+{
+ "fps": 30,
+ "total": 42.596,
+ "lead": 0.8,
+ "titulos": {
+  "gancho": "E SE VOCÊ<br>CAÍSSE NUM<br><em>BURACO NEGRO?</em>",
+  "final": "VOCÊ<br><em>ENTRARIA?</em>"
+ },
+ "beats": [
+  {
+   "id": "gancho",
+   "tag": "",
+   "start": 0.8,
+   "end": 4.518,
+   "sentences": [
+    {
+     "text": "E se você caísse num buraco negro?",
+     "start": 0.8,
+     "end": 2.625
+    },
+    {
+     "text": "O Léo descobriu do pior jeito.",
+     "start": 3.048,
+     "end": 4.518
+    }
+   ]
+  },
+  {
+   "id": "cabo",
+   "tag": "",
+   "start": 4.949,
+   "end": 9.835,
+   "sentences": [
+    {
+     "text": "Ele estava consertando a nave quando o cabo de segurança arrebentou.",
+     "start": 4.949,
+     "end": 7.843
+    },
+    {
+     "text": "E a gravidade começou a puxar.",
+     "start": 8.285,
+     "end": 9.835
+    }
+   ]
+  },
+  {
+   "id": "luz",
+   "tag": "",
+   "start": 10.29,
+   "end": 13.265,
+   "sentences": [
+    {
+     "text": "Um buraco negro puxa tão forte que nem a luz consegue escapar.",
+     "start": 10.29,
+     "end": 13.265
+    }
+   ]
+  },
+  {
+   "id": "estica",
+   "tag": "",
+   "start": 13.667,
+   "end": 24.104,
+   "sentences": [
+    {
+     "text": "Perto de um buraco negro pequeno, os pés do Léo eram puxados com muito mais força do que a cabeça.",
+     "start": 13.667,
+     "end": 18.703
+    },
+    {
+     "text": "Ele começou a esticar, igual a um fio de macarrão.",
+     "start": 19.099,
+     "end": 21.472
+    },
+    {
+     "text": "Os cientistas chamam isso de espaguetificação.",
+     "start": 21.895,
+     "end": 24.104
+    }
+   ]
+  },
+  {
+   "id": "tripulacao",
+   "tag": "",
+   "start": 24.535,
+   "end": 32.63,
+   "sentences": [
+    {
+     "text": "Enquanto isso, a tripulação olhava pela janela.",
+     "start": 24.535,
+     "end": 26.702
+    },
+    {
+     "text": "Pra eles, o Léo ia ficando cada vez mais lento e mais vermelho, até parecer congelado na borda para sempre.",
+     "start": 27.122,
+     "end": 32.63
+    }
+   ]
+  },
+  {
+   "id": "galaxia",
+   "tag": "",
+   "start": 33.076,
+   "end": 38.343,
+   "sentences": [
+    {
+     "text": "E esse monstro existe de verdade.",
+     "start": 33.076,
+     "end": 34.548
+    },
+    {
+     "text": "No centro da nossa galáxia tem um com a massa de quatro milhões de sóis.",
+     "start": 34.974,
+     "end": 38.343
+    }
+   ]
+  },
+  {
+   "id": "fim",
+   "tag": "",
+   "start": 38.769,
+   "end": 40.796,
+   "sentences": [
+    {
+     "text": "Você entraria?",
+     "start": 38.769,
+     "end": 39.574
+    },
+    {
+     "text": "Comenta aí.",
+     "start": 39.971,
+     "end": 40.796
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 2.928,
+   "cena": "fora",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 0,
+   "start": 2.928,
+   "end": 4.829,
+   "cena": "rosto",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "expr": "serio"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 4.829,
+   "end": 6.609,
+   "cena": "fora",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "conserta": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 6.609,
+   "end": 8.165,
+   "cena": "cabo",
+   "camera": "static",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 1,
+   "start": 8.165,
+   "end": 10.17,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "expr": "susto"
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 10.17,
+   "end": 11.858,
+   "cena": "fora",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "deriva": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 2,
+   "start": 11.858,
+   "end": 13.547,
+   "cena": "buraco",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "raios": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 13.547,
+   "end": 16.264,
+   "cena": "puxa",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "setas": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 16.264,
+   "end": 18.979,
+   "cena": "rosto",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "expr": "susto",
+    "estica": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 18.979,
+   "end": 21.775,
+   "cena": "puxa",
+   "camera": "pull_out",
+   "impacto": false,
+   "args": {
+    "estica": 1
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 3,
+   "start": 21.775,
+   "end": 24.415,
+   "cena": "macarrao",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 24.415,
+   "end": 27.002,
+   "cena": "cabine",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 27.002,
+   "end": 28.686,
+   "cena": "janela",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 28.686,
+   "end": 30.821,
+   "cena": "relogio",
+   "camera": "static",
+   "impacto": true,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 4,
+   "start": 30.821,
+   "end": 32.956,
+   "cena": "janela",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "congelado": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 32.956,
+   "end": 34.854,
+   "cena": "galaxia",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {},
+   "descricao": ""
+  },
+  {
+   "beat": 5,
+   "start": 34.854,
+   "end": 38.649,
+   "cena": "galaxia",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "hud": true
+   },
+   "descricao": ""
+  },
+  {
+   "beat": 6,
+   "start": 38.649,
+   "end": 42.596,
+   "cena": "cabine",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "olha": true
+   },
+   "descricao": ""
+  }
+ ]
+}

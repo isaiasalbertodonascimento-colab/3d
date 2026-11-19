@@ -148,7 +148,9 @@ def main():
         for j in range(1, len(sl)):
             target = b0 + (b1 - b0) * j / len(sl)
             near = min(bounds, key=lambda x: abs(x - target)) if bounds else None
-            cuts.append(near if near is not None and abs(near - target) < 1.2 and (not cuts or near > cuts[-1] + 0.8) else target)
+            prev = cuts[-1] if cuts else b0
+            ok = near is not None and abs(near - target) < 1.2 and near - prev >= 1.2 and b1 - near >= 1.2 * (len(sl) - j)
+            cuts.append(near if ok else target)  # nunca deixa um shot com menos de ~1,2 s
         edges = [b0] + cuts + [b1]
         for j, s in enumerate(sl):
             shots.append({"beat": bi, "start": round(edges[j], 3), "end": round(edges[j + 1], 3), "cena": s["cena"],

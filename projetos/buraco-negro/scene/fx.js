@@ -22,7 +22,7 @@ export function camHud(ctx, fov) { return new THREE.PerspectiveCamera(fov, ctx.W
 export function hud(cam, txt, cor = '#ffd43b', y = 0.35, w = 1.05, x = 0) { const p = placa(txt, cor, w); p.position.set(x, y, -3); cam.add(p); return p; }
 export function espaco(ctx, top = '#1b0b3a', bottom = '#02010a', n = 500) {
   const { scene, key, rim } = studio(ctx, { top, bottom, floor: false, keyI: 2.2, rimColor: 0xb197fc, rimI: 2.5, envI: 0.35 });
-  const est = particles(n, [-12, -10, -14, 24, 22, 10], { color: 0xffffff, size: 0.06, rise: 0, opacity: 0.9 }); scene.add(est.points);
+  const est = particles(n, [-14, -12, -16, 28, 26, 5], { color: 0xffffff, size: 0.06, rise: 0, opacity: 0.9 }); est.update(0); scene.add(est.points); // posiciona as estrelas (sem isso ficam todas na origem)
   return { scene, key, rim, est };
 }
 export const anelNeon = (r, cor, t = 0.03) => new THREE.Mesh(new THREE.TorusGeometry(r, t, 10, 64), glow(cor, 1.0));

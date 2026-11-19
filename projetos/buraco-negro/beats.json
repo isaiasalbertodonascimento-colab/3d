@@ -1,21 +1,172 @@
 {
-  "titulo": "O que aconteceria se você caísse num buraco negro?",
+  "titulo": "E se você caísse num buraco negro?",
   "voz": "ElevenLabs: Will - Deep, Smooth and Affectionate",
-  "titulos": { "gancho": "E SE VOCÊ<br>CAÍSSE NUM<br><em>BURACO NEGRO?</em>", "final": "VOCÊ<br><em>ENTRARIA?</em>" },
+  "titulos": {
+    "gancho": "E SE VOCÊ<br>CAÍSSE NUM<br><em>BURACO NEGRO?</em>",
+    "final": "VOCÊ<br><em>ENTRARIA?</em>"
+  },
   "beats": [
-    { "id": "gancho", "tag": "E SE...", "narracao": "O que aconteceria se você caísse num buraco negro? A resposta é mais estranha do que você imagina.",
-      "shots": [ { "cena": "astronauta", "camera": "push_in" }, { "cena": "buraco", "camera": "orbit", "impacto": true }, { "cena": "astronauta", "camera": "static", "args": { "susto": true } } ] },
-    { "id": "luz", "tag": "NEM A LUZ", "narracao": "Um buraco negro tem uma gravidade tão forte que nem a luz consegue escapar.",
-      "shots": [ { "cena": "luz", "camera": "pan_right" }, { "cena": "luz", "camera": "push_in", "impacto": true, "args": { "hud": true } } ] },
-    { "id": "mare", "tag": "A GRAVIDADE", "narracao": "Perto de um buraco negro pequeno, a gravidade puxaria seus pés com muito mais força do que a sua cabeça.",
-      "shots": [ { "cena": "puxa", "camera": "orbit" }, { "cena": "puxa", "camera": "push_in", "args": { "setas": true } }, { "cena": "puxa", "camera": "static", "impacto": true, "args": { "setas": true, "estica": 0.3 } } ] },
-    { "id": "espaguete", "tag": "ESPAGUETIFICAÇÃO", "narracao": "Você seria esticado como um fio de macarrão. Os cientistas chamam isso, literalmente, de espaguetificação.",
-      "shots": [ { "cena": "puxa", "camera": "pull_out", "impacto": true, "args": { "estica": 1 } }, { "cena": "macarrao", "camera": "orbit" }, { "cena": "macarrao", "camera": "push_in", "args": { "hud": true } } ] },
-    { "id": "tempo", "tag": "O TEMPO", "narracao": "Mas quem estivesse te olhando de longe veria outra coisa. Você ficaria cada vez mais lento e mais vermelho, até parecer congelado na borda para sempre.",
-      "shots": [ { "cena": "observador", "camera": "push_in" }, { "cena": "relogio", "camera": "static", "impacto": true }, { "cena": "congela", "camera": "push_in" }, { "cena": "congela", "camera": "static", "args": { "hud": true } } ] },
-    { "id": "galaxia", "tag": "AQUI PERTO", "narracao": "E esse monstro não está tão longe. No centro da nossa galáxia existe um com a massa de quatro milhões de sóis.",
-      "shots": [ { "cena": "galaxia", "camera": "orbit" }, { "cena": "galaxia", "camera": "push_in", "impacto": true, "args": { "hud": true } } ] },
-    { "id": "fim", "tag": "E VOCÊ?", "narracao": "Você entraria num buraco negro? Comenta aí.",
-      "shots": [ { "cena": "astronauta", "camera": "pull_out" } ] }
+    {
+      "id": "gancho",
+      "tag": "",
+      "narracao": "E se você caísse num buraco negro? O Léo descobriu do pior jeito.",
+      "shots": [
+        {
+          "cena": "fora",
+          "camera": "push_in"
+        },
+        {
+          "cena": "rosto",
+          "camera": "static",
+          "args": {
+            "expr": "serio"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cabo",
+      "tag": "",
+      "narracao": "Ele estava consertando a nave quando o cabo de segurança arrebentou. E a gravidade começou a puxar.",
+      "shots": [
+        {
+          "cena": "fora",
+          "camera": "orbit",
+          "args": {
+            "conserta": true
+          }
+        },
+        {
+          "cena": "cabo",
+          "camera": "static",
+          "impacto": true
+        },
+        {
+          "cena": "rosto",
+          "camera": "push_in",
+          "impacto": true,
+          "args": {
+            "expr": "susto"
+          }
+        }
+      ]
+    },
+    {
+      "id": "luz",
+      "tag": "",
+      "narracao": "Um buraco negro puxa tão forte que nem a luz consegue escapar.",
+      "shots": [
+        {
+          "cena": "fora",
+          "camera": "pull_out",
+          "args": {
+            "deriva": true
+          }
+        },
+        {
+          "cena": "buraco",
+          "camera": "push_in",
+          "impacto": true,
+          "args": {
+            "raios": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "estica",
+      "tag": "",
+      "narracao": "Perto de um buraco negro pequeno, os pés do Léo eram puxados com muito mais força do que a cabeça. Ele começou a esticar, igual a um fio de macarrão. Os cientistas chamam isso de espaguetificação.",
+      "shots": [
+        {
+          "cena": "puxa",
+          "camera": "push_in",
+          "args": {
+            "setas": true
+          }
+        },
+        {
+          "cena": "rosto",
+          "camera": "static",
+          "impacto": true,
+          "args": {
+            "expr": "susto",
+            "estica": true
+          }
+        },
+        {
+          "cena": "puxa",
+          "camera": "pull_out",
+          "args": {
+            "estica": 1
+          }
+        },
+        {
+          "cena": "macarrao",
+          "camera": "push_in",
+          "impacto": true
+        }
+      ]
+    },
+    {
+      "id": "tripulacao",
+      "tag": "",
+      "narracao": "Enquanto isso, a tripulação olhava pela janela. Pra eles, o Léo ia ficando cada vez mais lento e mais vermelho, até parecer congelado na borda para sempre.",
+      "shots": [
+        {
+          "cena": "cabine",
+          "camera": "push_in"
+        },
+        {
+          "cena": "janela",
+          "camera": "push_in"
+        },
+        {
+          "cena": "relogio",
+          "camera": "static",
+          "impacto": true
+        },
+        {
+          "cena": "janela",
+          "camera": "static",
+          "args": {
+            "congelado": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "galaxia",
+      "tag": "",
+      "narracao": "E esse monstro existe de verdade. No centro da nossa galáxia tem um com a massa de quatro milhões de sóis.",
+      "shots": [
+        {
+          "cena": "galaxia",
+          "camera": "orbit"
+        },
+        {
+          "cena": "galaxia",
+          "camera": "push_in",
+          "impacto": true,
+          "args": {
+            "hud": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "fim",
+      "tag": "",
+      "narracao": "Você entraria? Comenta aí.",
+      "shots": [
+        {
+          "cena": "cabine",
+          "camera": "push_in",
+          "args": {
+            "olha": true
+          }
+        }
+      ]
+    }
   ]
 }
