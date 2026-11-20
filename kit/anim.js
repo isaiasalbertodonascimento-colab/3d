@@ -19,6 +19,10 @@ function bounce(u, t0, h = 1, dur = 1.2, n = 3) {
 function spring(u, t0, freq = 9, decay = 6) { if (u < t0) return 0; const x = u - t0; return 1 - Math.exp(-decay * x) * Math.cos(freq * x); }
 // Cenário reagindo: objeto treme quando alguém grita/pisa forte. Devolve [dx, dy, rotZ] (metros, radianos) para somar no mesh.
 function quake(t, t0, amt = .04, decay = 6) { if (t < t0) return [0, 0, 0]; const k = Math.exp(-(t - t0) * decay) * amt; return [Math.sin(t * 73) * k, Math.abs(Math.sin(t * 51)) * k * .6, Math.sin(t * 61) * k * 1.5]; }
+// Arcos de movimento com follow-through: o antebraço atrasa em relação ao braço (lag) e passa um pouco do ponto.
+function swing(p, a0, a1, e0, e1, lag = .18) { const k = ease(cl(p)), k2 = ease(cl((p - lag) / (1 - lag))), ov = Math.sin(cl(p) * Math.PI) * .12; return { a: lerp(a0, a1, k), e: lerp(e0, e1, k2) + (e1 - e0) * ov * (p < 1 ? 1 : 0) }; }
+// Hesitação: anda um pouco, para olhando para os lados, depois termina. Devolve {p (progresso 0..1), look}.
+function hesitate(u, t0, dur, pause = .6) { const x = u - t0; if (x < 0) return { p: 0, look: 0 }; const a = dur * .3, b = a + pause; if (x < a) return { p: ease(x / a) * .35, look: 0 }; if (x < b) { const q = (x - a) / pause; return { p: .35, look: Math.sin(q * Math.PI * 2) * .9 }; } return { p: .35 + ease(cl((x - b) / (dur - a))) * .65, look: 0 }; }
 // Tremedeira de medo/frio (graus ou px pequenos).
 function tremble(t, amt = 3) { return Math.sin(t * 61) * amt * .6 + Math.sin(t * 37 + 1) * amt * .4; }
 
