@@ -6,6 +6,16 @@
 Referência: vídeos estilo "Escola de Elementos" (personagens macios em quarto 3D aconchegante). Criar personagens e histórias **originais** nesse estilo, sem copiar personagens, nomes ou marcas do criador.
 - **Personagens:** `guy({style:'soft', ...})` do `kit/chars.js`. Sem contorno grosso, pele com degradê suave, olhinhos de ponto, sobrancelha fina, boca pequena, bochecha rosada, cabelo liso em formas lisas (`hairStyle:'bob'|'short'|'bun'|'curly'`), óculos finos marrons (`glasses`), agasalho de escola com listra colorida na manga (`kit.shirt`, `kit.sleeveStripe`), gola branca, tênis branco, corpo esguio. Cada personagem com cabelo/cor de listra próprios; broto na cabeça (`sprout`) ou outro símbolo pequeno para o "elemento".
 - **Cenário 3D:** quarto/dormitório aconchegante de internato: janela quadriculada (losangos) com luz de fim de tarde, cortinas roxas, paredes neutras, piso de madeira, tapete estampado, camas com cobertor azul-marinho, criado-mudo com despertador, copo d'água e livro, pôster de planeta, MUITAS plantas (samambaia grande, girassol no vaso, mudinhas no parapeito, trepadeira no chão). Luz quente e baixa, sombras arroxeadas, tom geral levemente roxo/dessaturado, vinheta e grão, aparência de pintura suave.
+- **Acabamento de cinema (o que dá o nível das referências):**
+  - profundidade de campo: fundo desfocado, foco no rosto (`BokehPass`);
+  - contraluz da janela: halo quente e borda de luz no personagem (`backlight(svg, cor, força)` no `kit/chars.js`; sprite com material transparente);
+  - bloom nas luzes;
+  - textura de papel/pintura por cima (`estilo/paper.png`);
+  - sombra gigante de um personagem fora de quadro projetada na parede (sprite invisível com `colorWrite=false` + spot atrás dele);
+  - formas limpas no rosto: poros e brilhinhos só se pedir;
+  - poses expressivas em close (`slump()` = debruçado na mesa).
+
+  Modelo pronto: `estilo/index.html`, planos `mesa` e `sombra`.
 - **Câmera e legendas:** câmera próxima e mexendo, close no rosto nas falas; legendas brancas grandes com destaque amarelo (como antes).
 
 ## Estilo que o usuário gosta

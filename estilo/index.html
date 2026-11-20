@@ -18,6 +18,7 @@ html,body{margin:0;padding:0;background:#000;overflow:hidden}
 </defs>
 <rect width="1080" height="1920" fill="#5b3d7a" opacity=".12" style="mix-blend-mode:multiply"/>
 <rect id="glow" width="1080" height="1920" fill="url(#sunglow)" style="mix-blend-mode:screen"/>
+<image href="paper.png" x="0" y="0" width="1080" height="1920" opacity=".22" style="mix-blend-mode:overlay"/>
 <image id="grain" href="../alcatraz/grain.png" x="-60" y="-60" width="1200" height="2040" opacity=".09" style="mix-blend-mode:overlay" preserveAspectRatio="none"/>
 <rect width="1080" height="1920" fill="url(#vig)"/>
 <g id="ui"></g>
@@ -31,6 +32,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
 await document.fonts.load('50px Anton');
 
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('gl'),antialias:true,preserveDrawingBuffer:true});
@@ -148,7 +150,7 @@ function bed(x,z,ry,col,body=0){const g=new THREE.Group();g.position.set(x,0,z);
 const BED1=bed(-2.33,-1.75,0,'#25304f');
 {const t=new THREE.Group();t.position.set(-2.33,0,-.35);ROOM.add(t);box(1.05,.42,.5,midWood,t,0,.21,0);box(1.07,.06,.52,darkWood,t,0,.42,0);for(const x of[-.4,.4])box(.06,.42,.52,std({color:'#2a2022',metalness:.6,roughness:.4}),t,x,.21,0);box(.1,.08,.03,std({color:'#c9a24a',metalness:.8}),t,0,.33,.26);}
 // 65-70 cama da direita com quem dorme
-const BED2=bed(1.15,-.15,0,'#1f2a46',.16);
+const BED2=bed(1.15,.4,0,'#1f2a46',.16);
 
 // 71-80 criado-mudo com gaveta, despertador vermelho, copo d'água, livros, vasinho
 const NS=new THREE.Group();NS.position.set(.05,0,-2.55);ROOM.add(NS);
@@ -205,23 +207,39 @@ for(const s of[-1,1]){const sl=M(new THREE.SphereGeometry(1,16,10),std({color:'#
 
 // ---------- personagens originais (estilo macio) ----------
 const K=.0021;
-function sprite(vb,res,par=ROOM){const [vx,vy,vw,vh]=vb,cw=Math.round(vw*res),ch=Math.round(vh*res);const c=document.createElement('canvas');c.width=cw;c.height=ch;const g=c.getContext('2d');
+function sprite(vb,res,par=ROOM,halo=false){const [vx,vy,vw,vh]=vb,cw=Math.round(vw*res),ch=Math.round(vh*res);const c=document.createElement('canvas');c.width=cw;c.height=ch;const g=c.getContext('2d');
   const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=8;const geo=new THREE.PlaneGeometry(vw*K,vh*K);geo.translate((vx+vw/2)*K,-(vy+vh/2)*K,0);
-  const mat=new THREE.MeshStandardMaterial({map:tex,alphaTest:.5,side:THREE.DoubleSide,roughness:1,metalness:0,emissive:'#ffffff',emissiveMap:tex,emissiveIntensity:.42});
+  const mat=new THREE.MeshStandardMaterial({map:tex,alphaTest:halo?.02:.5,transparent:halo,side:THREE.DoubleSide,roughness:1,metalness:0,emissive:'#ffffff',emissiveMap:tex,emissiveIntensity:.42});
   const m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=true;m.customDepthMaterial=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:tex,alphaTest:.5});par.add(m);
   return{mesh:m,last:'',async set(inner){if(inner===this.last)return;this.last=inner;const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(' ')}" width="${cw}" height="${ch}">${inner}</svg>`);await img.decode();g.clearRect(0,0,cw,ch);g.drawImage(img,0,0,cw,ch);tex.needsUpdate=true;}};}
 // Lia: cabelo ruivo em coque, agasalho verde-petróleo com listra mostarda. Theo (dormindo): cabelo preto cacheado.
 const LIA={hairStyle:'bun',hair:'#a8432a',skin:'#f0a468',shirt:'#22465a',pants:'#2b4a5e',sleeveStripe:'#e0b040'};
 const THEO={hairStyle:'curly',hair:'#241a17',skin:'#c98450',shirt:'#2c3566',sleeveStripe:'#e05a7a'};
-const LIA_S=sprite([-560,-600,1120,1360],.95),THEO_S=sprite([-200,-200,400,400],1.2);
+const LIA_S=sprite([-640,-680,1280,1520],.9,ROOM,true),THEO_S=sprite([-200,-200,400,400],1.2);
+const SLUMP_S=sprite([-680,-380,1080,760],1.1,ROOM,true);
+// professora alta (original) que não aparece na câmera, só projeta a sombra gigante na parede
+const TEACH_S=sprite([-560,-600,1120,1360],.5);TEACH_S.mesh.material.colorWrite=false;TEACH_S.mesh.material.depthWrite=false;
+const shadowL=new THREE.SpotLight('#ffcf8a',0,14,.7,.5,1);shadowL.castShadow=true;shadowL.shadow.mapSize.set(1024,1024);shadowL.shadow.radius=6;shadowL.shadow.bias=-.001;scene.add(shadowL,shadowL.target);
 // livro aberto com folha prensada no colo da Lia
 const bookT=ctex(512,320,(g,w,h)=>{g.fillStyle='#f3ead6';g.fillRect(0,0,w,h);g.fillStyle='#e6dabb';g.fillRect(w/2-4,0,8,h);g.strokeStyle='#b8a888';g.lineWidth=2;for(let i=0;i<9;i++){g.beginPath();g.moveTo(290,40+i*28);g.lineTo(480,40+i*28);g.stroke();}
   g.save();g.translate(130,160);g.rotate(-.5);g.fillStyle='#4f7a2e';g.beginPath();g.moveTo(0,-110);g.bezierCurveTo(60,-60,60,60,0,110);g.bezierCurveTo(-60,60,-60,-60,0,-110);g.fill();g.strokeStyle='#2f4a1e';g.lineWidth=3;g.beginPath();g.moveTo(0,-110);g.lineTo(0,110);g.stroke();for(let i=-4;i<5;i++){g.beginPath();g.moveTo(0,i*20);g.lineTo(40,i*20-20);g.moveTo(0,i*20);g.lineTo(-40,i*20-20);g.stroke();}g.restore();g.fillStyle='#8a6a4a';g.font='22px serif';g.fillText('Urtica dioica',300,300);});
 const BOOK=new THREE.Group();ROOM.add(BOOK);M(new THREE.PlaneGeometry(.42,.26),std({map:bookT,roughness:.8,side:THREE.DoubleSide}),BOOK).rotation.x=-Math.PI/2;box(.43,.02,.27,std({color:'#5a2a3a'}),BOOK,0,-.012,0);
 BOOK.position.set(-1.62,.9,-1.38);BOOK.rotation.set(-.45,.35,0);
 
+// ---------- mesa de estudo embaixo da janela ----------
+const SD=new THREE.Group();ROOM.add(SD);
+{box(1.6,.05,.62,midWood,SD,1.15,.78,-2.42);for(const[x,z]of[[.4,-2.68],[1.9,-2.68],[.4,-2.16],[1.9,-2.16]])box(.05,.76,.05,darkWood,SD,x,.38,z);box(1.5,.12,.02,darkWood,SD,1.15,.66,-2.12);
+ const bk=new THREE.Group();bk.position.set(1.5,.81,-2.3);bk.rotation.y=-.25;SD.add(bk);M(new THREE.PlaneGeometry(.46,.3),std({map:bookT,roughness:.8,side:THREE.DoubleSide}),bk).rotation.x=-Math.PI/2;box(.47,.018,.31,std({color:'#3f5a3a'}),bk,0,-.01,0);
+ const pc=cyl(.006,.006,.2,std({color:'#e8b83a'}),SD,1.38,.818,-2.2,8);pc.rotation.set(Math.PI/2,0,.9);M(new THREE.ConeGeometry(.006,.02,8),std({color:'#e8c49a'}),SD,1.31,.818,-2.13).rotation.set(Math.PI/2,0,.9+Math.PI);
+ for(let i=0;i<3;i++)box(.24,.03,.17,std({color:['#6a2d3a','#2f4f6a','#c9a24a'][i]}),SD,.62,.82+i*.03,-2.55).rotation.y=i*.15;
+ cyl(.045,.04,.1,std({color:'#e8e2d8',roughness:.4}),SD,.85,.85,-2.6);
+ // bambu (hastes com nós e folhas compridas) à direita da janela
+ const bb=new THREE.Group();bb.position.set(2.05,.81,-2.55);SD.add(bb);cyl(.1,.08,.16,std({color:'#e8dcc4'}),bb,0,.08,0);
+ for(let k=0;k<3;k++){const hgt=1.0+k*.35,x=(k-1)*.04;cyl(.014,.016,hgt,std({color:'#7cb342',roughness:.5}),bb,x,.16+hgt/2,0,10);for(let n=1;n<5;n++)cyl(.019,.019,.015,std({color:'#5a8f2e'}),bb,x,.16+n*hgt/5,0,10);for(let n=0;n<3;n++)leafAt(bb,V(x,.16+hgt*(.5+n*.2),0),V((n%2?1:-1)*.9,.5,(k-1)*.3),0,.32,.07,'#7cbc48');}
+ PLANTS.push({g:bb,a:4});}
 // ---------- pós-processamento ----------
 const composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,cam));
+const bokeh=new BokehPass(scene,cam,{focus:2,aperture:.004,maxblur:.008});composer.addPass(bokeh);
 const bloom=new UnrealBloomPass(new THREE.Vector2(540,960),.55,.6,.82);composer.addPass(bloom);composer.addPass(new OutputPass());
 
 // ---------- câmera e animação ----------
@@ -229,7 +247,9 @@ const SHOTS={
   wide:{p:V(2.15,2.95,2.5),l:V(-1.0,.55,-1.7),fov:58},
   lia:{p:V(-.55,1.25,.25),l:V(-1.9,.95,-1.45),fov:46},
   janela:{p:V(-.3,1.45,-.4),l:V(1.3,1.5,-2.9),fov:50},
-  theo:{p:V(.05,1.6,1.55),l:V(1.15,.72,-.75),fov:44}};
+  theo:{p:V(.05,1.6,2.1),l:V(1.15,.72,-.2),fov:44},
+  mesa:{p:V(1.3,1.0,-1.36),l:V(1.2,.99,-2.25),fov:42,focus:V(1.12,1.0,-2.2),ap:.03,bl:[1.0,.75,.7]},
+  sombra:{p:V(-.55,1.25,-.35),l:V(-1.05,1.55,-3),fov:52,focus:V(-.95,1.0,-1.95),ap:.006,bl:[.55,.6,.9]}};
 window.render=async function(t,shot='wide'){
   const S=SHOTS[shot]||SHOTS.wide;const dr=Math.sin(t*.25)*.06;
   cam.position.set(S.p.x+dr,S.p.y+Math.sin(t*.3)*.02,S.p.z);cam.fov=S.fov;cam.updateProjectionMatrix();cam.lookAt(S.l);
@@ -237,7 +257,7 @@ window.render=async function(t,shot='wide'){
   const LS=.78;LIA_S.mesh.scale.setScalar(LS);LIA_S.mesh.position.set(-1.6,HEADYs()*LS,-1.25);
   await LIA_S.set(guy({x:0,y:0,s:1,t,style:'soft',view:'side',dir:1,stance:'sit',bob:-45,kit:LIA,expr:Math.sin(t*.7)>.6?'happy':'neutral',aF:-62+Math.sin(t*2)*3,eF:-24,handF:'point',aB:-30,eB:-60,look:.6,lookY:.5,glasses:false,sprout:true,wind:.15,mouth:0}));
   // Theo dormindo (cabeça no travesseiro, cobertor por cima)
-  THEO_S.mesh.scale.setScalar(.62);THEO_S.mesh.position.set(1.15,.8+Math.sin(t*1.4)*.004,-.9);
+  THEO_S.mesh.scale.setScalar(.62);THEO_S.mesh.position.set(1.15,.8+Math.sin(t*1.4)*.004,-.35);
   await THEO_S.set(head({t,style:'soft',view:'3q',dir:1,expr:'sleep',hairStyle:'curly',hair:THEO.hair,skin:THEO.skin,blush:.7}));
   for(const s of[LIA_S,THEO_S]){const p=s.mesh.position;s.mesh.rotation.y=Math.atan2(cam.position.x-p.x,cam.position.z-p.z);}
   {const p=LIA_S.mesh.position,ry=LIA_S.mesh.rotation.y,Rv=V(Math.cos(ry),0,-Math.sin(ry)),F=V(Math.sin(ry),0,Math.cos(ry));
@@ -249,10 +269,26 @@ window.render=async function(t,shot='wide'){
   const dp=DUST.geometry.attributes.position;for(let i=0;i<400;i++){dp.setXYZ(i,.2+((rnd(i)*2.4+t*.03*rnd(i+3))%2.4)-1.0,.2+((rnd(i+1)*2.4+Math.sin(t*.4+i)*.1+t*.02)%2.4),-2.8+((rnd(i+2)*2.6+t*.04)%2.6));}dp.needsUpdate=true;
   STEAM.forEach((m,i)=>{const ph=(t*.35+i/5)%1;m.position.set(-2.65+Math.sin(t+i)*.02,.92+ph*.35,.0+.3+Math.cos(t*.7+i)*.02);m.scale.setScalar(.6+ph*1.6);m.material.opacity=.3*(1-ph);m.lookAt(cam.position);});
   RAYS.forEach((r,i)=>r.material.opacity=.09+.04*Math.sin(t*.6+i));
+  // close na mesa: Lia cansada debruçada, contraluz da janela
+  const MESA=shot==='mesa',SOMB=shot==='sombra';SLUMP_S.mesh.visible=MESA;LIA_S.mesh.visible=!MESA;SD.visible=true;
+  if(MESA){SLUMP_S.mesh.scale.setScalar(.4);SLUMP_S.mesh.position.set(1.14,.8+316*K*.4,-2.2);SLUMP_S.mesh.rotation.y=Math.atan2(cam.position.x-1.12,cam.position.z+2.2);
+    await SLUMP_S.set(backlight(slump({t,kit:LIA,glasses:true,sprout:true,expr:'bored'}),'#ffd49a',.8));}
+  // sombra gigante: Lia de costas olhando a parede, sombra enorme da professora (fora de quadro) cresce na parede
+  TEACH_S.mesh.visible=SOMB;shadowL.intensity=SOMB?50:0;
+  if(SOMB){LIA_S.mesh.scale.setScalar(.78);LIA_S.mesh.position.set(-.95,712*K*.78,-1.95);LIA_S.mesh.rotation.y=Math.atan2(cam.position.x+.95,cam.position.z+1.95);
+    await LIA_S.set(backlight(guy({x:0,y:0,s:1,t,style:'soft',view:'back',kit:LIA,sprout:true,handL:'fist',handR:'fist',aL:6,aR:6,rot:Math.sin(t*20)*.6}),'#e8b880',.45));
+    const tz=-1.25+Math.sin(t*.5)*.04;TEACH_S.mesh.scale.setScalar(1.05);TEACH_S.mesh.position.set(-.7,712*K*1.05,tz);TEACH_S.mesh.rotation.y=0;
+    await TEACH_S.set(guy({x:0,y:0,s:1,t,style:'soft',kit:{hairStyle:'bun',hair:'#2b2a33',shirt:'#3a2a3a'},gesture:'hips'}));
+    shadowL.position.set(-.6,.85,.75);shadowL.target.position.set(-.6,2.6,-3);shadowL.angle=.9;shadowL.penumbra=1;}
+  LIA_S.mesh.material.emissiveIntensity=SOMB?.62:.42;LIA_S.mesh.material.color.set(SOMB?'#3a3346':'#ffffff');
+  sun.intensity=SOMB?45:220;hemi.intensity=SOMB?.5:1.05;fillL.intensity=SOMB?1.5:6;RAYS.forEach(r=>r.visible=!SOMB);
+  const S2=SHOTS[shot]||SHOTS.wide;bokeh.uniforms.focus.value=cam.position.distanceTo(S2.focus||S2.l);bokeh.uniforms.aperture.value=S2.ap||.0025;bokeh.uniforms.maxblur.value=S2.ap?.012:.006;
+  const B=S2.bl||[.55,.6,.82];bloom.strength=B[0];bloom.radius=B[1];bloom.threshold=B[2];
   composer.render();
   const fr=Math.floor(t*30),gr=document.getElementById('grain');gr.setAttribute('x',(-60+rnd(fr)*60).toFixed(1));
 };
 function HEADYs(){return 712*K;} // pés no chão; o quadril fica na altura do colchão (bob:20)
+window.DBG={scene,ROOM,CH,FAIRY,STEAM,FLAMES,DESK,NS,SD,RAYS,DUST,LIA:LIA_S.mesh,TEACH:TEACH_S.mesh,SUNF,CURT,BOOK};
 window.ready=true;
 </script>
 </body></html>

@@ -548,7 +548,7 @@ function headSoft(c){
   const ear=(x,y,sx)=>`<g transform="translate(${x} ${y}) scale(${sx} 1)"><ellipse rx="21" ry="25" fill="${tone(sk,-.05)}"/><path d="M-6 -12 Q8 -6 2 8 Q-2 12 -6 6" stroke="${tone(sk,-.22)}" stroke-width="3.5" fill="none" stroke-linecap="round"/><ellipse cy="18" rx="9" ry="8" fill="${tone(sk,-.02)}"/><ellipse cx="2" cy="-2" rx="10" ry="12" fill="#f27a8a" opacity=".22"/>${c.earring?`<circle cy="30" r="5" fill="${c.earring}" stroke="${tone(c.earring,-.3)}" stroke-width="1.5"/><circle cx="-1.5" cy="28.5" r="1.4" fill="#fff"/>`:''}</g>`;
   if(SIDE)h+=ear(-14,16,1);else for(const sd of[-1,1])if(sd!==Q)h+=ear(Q?-Q*100:sd*106,16,-sd);
   // ----- rosto: degradê, contorno sutil, poros, brilho na testa, sombra do maxilar -----
-  h+=`<circle r="115" fill="url(#fg${u})"/><circle r="114" fill="none" stroke="${skD}" stroke-width="2" opacity=".45"/><circle r="112" fill="url(#sp${u})" opacity=".12"/>`;
+  h+=`<circle r="115" fill="url(#fg${u})"/><circle r="114" fill="none" stroke="${skD}" stroke-width="2" opacity=".45"/>${c.pores?`<circle r="112" fill="url(#sp${u})" opacity=".12"/>`:''}`;
   h+=`<ellipse cx="${f(-26+Q*12+(SIDE?20:0))}" cy="-58" rx="34" ry="18" fill="#fff" opacity=".13"/><path d="M-92 62 Q0 138 92 62 Q0 120 -92 62Z" fill="${skD}" opacity=".22"/>`;
   if(SIDE)h+=`<path d="M106 4 Q124 18 108 30" fill="${sk}"/><circle cx="110" cy="26" r="2" fill="${skD}" opacity=".6"/>`;
   // ----- olhos: íris, pupila, 2 brilhos, pálpebras, vinco, canto rosado, cílios, olheira, aperto ao sorrir -----
@@ -582,7 +582,7 @@ function headSoft(c){
   if(!(mo>.05)&&!happy)h+=`<circle cx="${mx+3}" cy="${f(my+6)}" r="1.4" fill="#fff" opacity=".6"/>`;
   if(!SIDE)h+=`<path d="M${mx-5} 80 Q${mx} 83 ${mx+5} 80" stroke="${skD}" stroke-width="2" fill="none" opacity=".35"/>`;
   // ----- bochechas em degradê com brilhinhos (sobem ao sorrir); sardas -----
-  const bs=c.blush??.6,bly=happy?24:28;for(const[ex,sxe]of E){const bx=ex+(SIDE?-6:(ex>fx?1:-1)*20)*sxe;h+=`<ellipse cx="${f(bx)}" cy="${bly}" rx="${f(22*sxe)}" ry="15" fill="url(#bg${u})" opacity="${f(bs*1.2)}"/>`;for(let k=0;k<3;k++)h+=`<circle cx="${f(bx-6+k*6)}" cy="${f(bly-4+(k%2)*5)}" r="1.1" fill="#fff" opacity=".55"/>`;}
+  const bs=c.blush??.6,bly=happy?24:28;for(const[ex,sxe]of E){const bx=ex+(SIDE?-6:(ex>fx?1:-1)*20)*sxe;h+=`<ellipse cx="${f(bx)}" cy="${bly}" rx="${f(22*sxe)}" ry="15" fill="url(#bg${u})" opacity="${f(bs*1.2)}"/>`;if(c.sparkle)for(let k=0;k<3;k++)h+=`<circle cx="${f(bx-6+k*6)}" cy="${f(bly-4+(k%2)*5)}" r="1.1" fill="#fff" opacity=".55"/>`;}
   if(c.freckles)for(const[ex,sxe]of E)for(let k=0;k<5;k++)h+=`<circle cx="${f(ex+(rnd(k+ex)-.5)*26*sxe)}" cy="${f(16+rnd(k+3)*12)}" r="1.6" fill="${tone(sk,-.35)}" opacity=".7"/>`;
   // ----- óculos: armação com brilho, plaquetas, reflexo na lente, sombra na bochecha -----
   if(c.glasses){for(const[ex,sxe]of E)h+=`<ellipse cx="${ex}" cy="5" rx="${f(25*sxe)}" ry="20" fill="${skD}" opacity=".12"/>`;
@@ -613,7 +613,7 @@ function sprout(t){const r=t===undefined?0:Math.sin(t*2.4)*8,dg=t===undefined?.6
 function softJacket(c,o,T){const sh=c.shirt,sd=tone(sh,-.22),sl=tone(sh,.22),em=o.emblem||c.sleeveStripe||'#e0b040',back=c.view==='back',id=sh.slice(1);
   const torso='M-124 150 Q-134 118 -94 112 L94 112 Q134 118 124 150 L118 432 Q0 452 -118 432Z';
   let h=`<defs><linearGradient id="jg${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient><pattern id="jw${id}" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="9" stroke="${sl}" stroke-width="1.2" opacity=".35"/></pattern></defs>`;
-  h+=`<path d="${torso}" fill="url(#jw${id})" opacity=".5"/><path d="${torso}" fill="url(#jg${id})"/>`;
+  h+=`<path d="${torso}" fill="url(#jw${id})" opacity=".25"/><path d="${torso}" fill="url(#jg${id})"/>`;
   h+=`<path d="M-118 150 Q-100 128 -78 120 M118 150 Q100 128 78 120" stroke="${sd}" stroke-width="3" fill="none" opacity=".6"/><path d="M-114 180 V420 M114 180 V420" stroke="${sd}" stroke-width="2.5" opacity=".35"/>`;
   h+=`<path d="M-100 126 Q-70 116 -40 118 M100 126 Q70 116 40 118" stroke="#fff" stroke-width="5" opacity=".14" fill="none" stroke-linecap="round"/>`;
   for(let x=-112;x<=112;x+=9)h+=`<line x1="${x}" y1="418" x2="${x}" y2="442" stroke="${sd}" stroke-width="2.4" opacity=".55"/>`;
@@ -622,7 +622,28 @@ function softJacket(c,o,T){const sh=c.shirt,sd=tone(sh,-.22),sl=tone(sh,.22),em=
   h+=`<ellipse cy="150" rx="46" ry="12" fill="#000" opacity=".14"/>`;
   h+=`<line x1="0" y1="162" x2="0" y2="434" stroke="${tone(sh,.35)}" stroke-width="3" stroke-dasharray="4 3"/><rect x="-5" y="168" width="10" height="24" rx="3" fill="#cfd2dc" stroke="#8a8e9a" stroke-width="1.5"/><circle cy="188" r="2.2" fill="#8a8e9a"/>`;
   if(o.charm)h+=`<g transform="translate(0 194) rotate(${f(T===undefined?0:Math.sin(T*3)*12)})"><line y2="16" stroke="#cfd2dc" stroke-width="2"/><path d="M0 16 l7 7 l-7 9 l-7 -9Z" fill="${o.charm}" stroke="${tone(o.charm,-.3)}" stroke-width="1.5"/></g>`;
-  h+=`<g transform="translate(64 206)"><circle r="21" fill="${em}"/><circle r="17" fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="3 3" opacity=".85"/><path d="M0 -11 C-9 -4 -8 7 0 12 C8 7 9 -4 0 -11Z" fill="#fff"/><path d="M0 -9 V10" stroke="${em}" stroke-width="1.6"/><path d="M-12 18 L12 18" stroke="${tone(em,-.3)}" stroke-width="2"/></g>`;
+  if(o.emblem!==false)h+=`<g transform="translate(64 206) scale(.8)" opacity=".85"><circle r="21" fill="${em}"/><circle r="17" fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="3 3" opacity=".85"/><path d="M0 -11 C-9 -4 -8 7 0 12 C8 7 9 -4 0 -11Z" fill="#fff"/><path d="M0 -9 V10" stroke="${em}" stroke-width="1.6"/><path d="M-12 18 L12 18" stroke="${tone(em,-.3)}" stroke-width="2"/></g>`;
   if(o.pins)h+=`<circle cx="-58" cy="196" r="9" fill="#e86fb5" stroke="#fff" stroke-width="2"/><path d="M-62 196 l3 3 l6 -6" stroke="#fff" stroke-width="2" fill="none"/><circle cx="-36" cy="214" r="8" fill="#5fc2ff" stroke="#fff" stroke-width="2"/><path d="M-36 208 l2 4 h4 l-3 3 l1 4 l-4 -2 l-4 2 l1 -4 l-3 -3 h4Z" fill="#fff"/>`;
   for(const px of[-100,36])h+=`<rect x="${px}" y="322" width="64" height="58" rx="10" fill="${tone(sh,-.06)}" stroke="${sd}" stroke-width="2.5"/><rect x="${px+5}" y="327" width="54" height="48" rx="7" fill="none" stroke="${sl}" stroke-width="1.5" stroke-dasharray="4 3" opacity=".7"/>`;
+  return h;}
+
+// ---------- contraluz: halo quente em volta + borda de luz no topo (luz vindo de trás/cima) ----------
+// Use no SVG inteiro do personagem; no sprite 3D use material transparente (o halo é semitransparente).
+function backlight(svg,col='#ffe0b0',k=1){const id='bk'+col.slice(1)+String(k).replace('.','');return `<defs><filter id="${id}" x="-25%" y="-25%" width="150%" height="150%"><feMorphology in="SourceAlpha" operator="dilate" radius="${f(4*k)}" result="d"/><feGaussianBlur in="d" stdDeviation="${f(12*k)}" result="b"/><feFlood flood-color="${col}" flood-opacity=".7"/><feComposite in2="b" operator="in" result="glow"/><feOffset in="SourceAlpha" dy="${f(7*k)}" dx="${f(2*k)}" result="sh"/><feComposite in="SourceAlpha" in2="sh" operator="out" result="edge"/><feGaussianBlur in="edge" stdDeviation="1.2" result="eb"/><feFlood flood-color="${col}"/><feComposite in2="eb" operator="in" result="ed"/><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/><feMergeNode in="ed"/></feMerge></filter></defs><g filter="url(#${id})">${svg}</g>`;}
+// ---------- pose de close: debruçado na mesa, cabeça apoiada no braço (cansado de estudar) ----------
+// slump({t, kit, expr, glasses, sprout, tilt, hx, hy}) — origem: centro do braço em y=250; braço tocando a mesa em y≈316.
+function slump(o={}){const c=Object.assign({},SOFTKIT,o.kit||{});if(!c.longSleeve)c.longSleeve=c.shirt;const T=o.t||0,br=Math.sin(T*1.5)*2.5,LS=c.longSleeve,sd=tone(LS,-.22),st=c.sleeveStripe||'#6dbb3c';
+  let h=`<defs><linearGradient id="sl${LS.slice(1)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${tone(LS,.12)}"/><stop offset=".55" stop-color="${LS}"/><stop offset="1" stop-color="${sd}"/></linearGradient></defs>`;
+  // costas/ombro curvados atrás da cabeça
+  h+=`<path d="M-640 330 Q-600 70 -330 ${f(30-br)} Q-80 0 120 ${f(110-br)} L190 330Z" fill="${sd}"/><path d="M-560 120 Q-420 40 -250 ${f(34-br)}" stroke="#fff" stroke-opacity=".08" stroke-width="16" fill="none" stroke-linecap="round"/>`;
+  // cabeça inclinada apoiada no braço
+  h+=`<g transform="translate(${o.hx??30} ${f((o.hy??58)+br)}) rotate(${o.tilt??-24}) scale(1.25)">`+headSoft(Object.assign({},c,{t:T,expr:o.expr||'bored',mouth:o.mouth??.16,glasses:o.glasses,sprout:o.sprout,look:.4,lookY:.5,blink:o.blink??blink(T,3)*.6}))+`</g>`;
+  // braço da frente deitado na horizontal, manga com listra, punho canelado
+  const ay=250;h+=`<path d="M-640 ${ay-60} Q-200 ${ay-70} 210 ${ay-52} Q262 ${ay} 210 ${ay+58} Q-200 ${ay+72} -640 ${ay+66}Z" fill="url(#sl${LS.slice(1)})"/>`;
+  h+=`<path d="M-600 ${ay-46} Q-200 ${ay-58} 200 ${ay-42}" stroke="#fff" stroke-opacity=".14" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+  h+=`<path d="M-560 ${ay+6} Q-200 ${ay-2} 170 ${ay+6}" stroke="${st}" stroke-width="24" fill="none" stroke-linecap="round"/><path d="M-560 ${ay+30} Q-200 ${ay+22} 170 ${ay+30}" stroke="${st}" stroke-width="5" fill="none" opacity=".75"/>`;
+  for(const x of[-120,40])h+=`<path d="M${x} ${ay-40} q16 18 2 40" stroke="${sd}" stroke-width="4" fill="none" opacity=".5"/>`;
+  h+=`<rect x="196" y="${ay-58}" width="54" height="118" rx="22" fill="${sd}"/>`+[0,1,2,3,4].map(k=>`<line x1="${204+k*9}" y1="${ay-48}" x2="${204+k*9}" y2="${ay+48}" stroke="${tone(sd,-.25)}" stroke-width="2.5"/>`).join('');
+  // mão com dedos repousando no livro
+  h+=`<g transform="translate(262 ${ay+6}) rotate(-90) scale(1.9) translate(0 -128)">${hand(-1,o.hand||'relaxed',T,-90,Object.assign({},c,{softHands:true}),'')}</g>`;
   return h;}
