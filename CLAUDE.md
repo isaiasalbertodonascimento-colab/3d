@@ -8,6 +8,7 @@
 ## Próximo vídeo: BEM MAIS ANIMADO (pedido explícito do usuário)
 O vídeo de Alcatraz foi considerado parado demais. No próximo, os personagens e a câmera precisam se mexer o tempo todo:
 - **Personagem se movimentando a TODO momento (pedido do usuário):** nunca fica parado, nem entre ações. Sempre passar `t` no `guy()` do `kit/chars.js` (respiração, balanço, braços, olhos, piscada).
+- **Mínimos detalhes (pedido do usuário):** cabelo balançando com o vento, barra da camiseta tremulando, poeira no ar, respiração. Vento no `guy()` com `wind`/`windDir`, mais forte ao ar livre e correndo.
 - **Personagens sempre em ação:** andar de verdade (pernas alternando, corpo balançando), correr, pular, gesticular com os dois braços, virar de lado; nada de ficar parado de pé por mais de ~1 s.
 - **Rosto vivo:** boca mexendo enquanto a legenda "fala", piscadas, mudanças rápidas de expressão (susto, riso, raiva, medo), olhos seguindo a ação.
 - **Squash & stretch e overshoot:** pulos com achatamento, impactos com tremida, objetos que quicam e giram.

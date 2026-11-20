@@ -28,7 +28,13 @@ function head(o={}){
   h+=`<path d="M-70 -60 Q-20 -95 40 -70" stroke="#ffffff" stroke-opacity=".18" stroke-width="18" fill="none" stroke-linecap="round"/>`;
   if(!c.hat){
     h+=`<path d="M-113 -18 Q-120 -128 0 -124 Q120 -128 113 -18 Q92 -66 0 -70 Q-92 -66 -113 -18Z" fill="${c.hair}"/>`;
-    for(let k=0;k<13;k++){const a=(196+k*12)*Math.PI/180;h+=`<circle cx="${f(Math.cos(a)*104)}" cy="${f(Math.sin(a)*104)}" r="${f(23+rnd(k)*6)}" fill="${c.hair}"/>`;}
+    // Vento no cabelo: com t definido, cachos balançam (mais nas pontas de cima) e fios soltos ondulam. wind 0..1.5, windDir ±1.
+    const T=c.t, wd=T===undefined?0:(c.wind??.45), dir=c.windDir??1;
+    for(let k=0;k<13;k++){const a=(196+k*12)*Math.PI/180, top=Math.max(0,-Math.sin(a)), ph=T===undefined?0:T*5.3+k*.8;
+      const dx=wd*(Math.sin(ph)*7*top+dir*5*top), dy=wd*Math.cos(ph*1.13)*3.5*top, rr=(23+rnd(k)*6)*(1+wd*.04*Math.sin(ph*1.7));
+      h+=`<circle cx="${f(Math.cos(a)*104+dx)}" cy="${f(Math.sin(a)*104+dy)}" r="${f(rr)}" fill="${c.hair}"/>`;}
+    if(wd>0)for(let k=0;k<3;k++){const bx=-30+k*30, w1=Math.sin(T*6.1+k*2)*wd, w2=Math.sin(T*7.3+k*1.3+1)*wd;
+      h+=`<path d="M${bx} -118 Q${f(bx+dir*20+w1*8)} ${f(-140-k*2+w2*4)} ${f(bx+dir*40+w2*12)} ${f(-130+w1*7)}" stroke="${c.hair}" stroke-width="9" fill="none" stroke-linecap="round"/>`;}
   }else{
     h+=`<path d="M-120 -28 Q-122 -158 0 -156 Q122 -158 120 -28Z" fill="#22355e"/><rect x="-124" y="-52" width="248" height="30" rx="8" fill="#16223e"/>`;
     h+=`<path d="M-70 -24 Q40 -12 160 -26 Q118 8 -40 2Z" fill="#101829"/><circle cy="-100" r="19" fill="#f2c230" stroke="#b88a10" stroke-width="4"/>`;
@@ -79,7 +85,7 @@ function arm(side,a,e,c,hold=''){
 }
 
 function guy(o){
-  // Novos: t (idle sempre vivo), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
+  // Novos: t (idle sempre vivo + vento no cabelo/camiseta), wind (0..1.5), windDir (±1), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
   const c=Object.assign({},ORANGE,o.kit||{});
   const {x,y,s=1,eL=-8,eR=-8,holdL='',holdR='',legs=true,rot=0,walk=null,run=false,sq=0,lean=0}=o;
   let {aL,aR,legL=0,legR=0,bob=0}=o;
@@ -97,7 +103,9 @@ function guy(o){
   h+=`<g transform="translate(0 712) scale(${(1+sq).toFixed(3)} ${(1-sq).toFixed(3)}) translate(0 ${f(-712+bob)}) rotate(${f(lean+idLean)} 0 420)">`;
   if(legs)h+=leg(-1,legL)+leg(1,legR);
   h+=`<rect x="-28" y="90" width="56" height="44" fill="${c.skinD}"/>`;
-  h+=`<path d="M-124 150 Q-134 118 -94 112 L94 112 Q134 118 124 150 L118 432 Q0 452 -118 432Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="6"/>`;
+  // Barra da camiseta tremulando com o vento (com t definido).
+  const hw=T===undefined?0:(o.wind??.45), hm1=Math.sin((T||0)*4.7+sd)*hw, hm2=Math.sin((T||0)*6.2+sd+1)*hw, dirH=o.windDir??1;
+  h+=`<path d="M-124 150 Q-134 118 -94 112 L94 112 Q134 118 124 150 L${f(118+dirH*hw*8)} ${f(432+hm1*6)} Q${f(60+hm2*14)} ${f(452+hm2*10)} 0 ${f(444+hm1*5)} Q${f(-60+hm1*14)} ${f(452-hm2*8)} ${f(-118+dirH*hw*8)} ${f(432-hm1*6)}Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="6"/>`;
   h+=`<path d="M-46 114 Q0 152 46 114" fill="none" stroke="${c.shirtD}" stroke-width="9"/>`;
   if(c.hat)h+=`<rect x="40" y="200" width="44" height="34" rx="6" fill="#f2c230"/>`;
   else if(c.tag!=='')h+=`<text x="0" y="300" font-family="Anton" font-size="44" fill="#4a4a55" text-anchor="middle" opacity=".75">${c.tag||''}</text>`;

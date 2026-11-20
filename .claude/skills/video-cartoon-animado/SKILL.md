@@ -28,6 +28,7 @@ Este repositório já tem as peças para animar de verdade, então não reinvent
 | Quero… | Use |
 |---|---|
 | personagem nunca parado (OBRIGATÓRIO em todo `guy`) | `guy({t, seed:2, ...})`. `seed` diferente por personagem; `blink`/`look` passados explicitamente têm prioridade. |
+| mínimos detalhes: cabelo e camiseta ao vento | vêm juntos com `t`. Ajuste por cena: `wind:0` (sala fechada) a `wind:1.5` (mar, telhado, corrida), `windDir:±1`. Correndo, use `wind` ≥1 e `windDir` contrário ao movimento. |
 | andar / correr | `guy({walk:t*1.8})`, `guy({walk:t*3, run:true, lean:12})`. Pernas, braços e balanço vêm juntos. |
 | pular com squash | `const j=hop(u,t0)`. Aplique `sq:j.sq` no `guy` e mova o **mesh** com `mesh.position.y+=-j.y*K`. |
 | esticar / achatar / inclinar | `sq` (+ achata, − estica), `lean` (graus), `bob` (px) |
