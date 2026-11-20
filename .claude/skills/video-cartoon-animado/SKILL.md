@@ -41,6 +41,7 @@ Este repositório já tem as peças para animar de verdade, então não reinvent
 | reações fortes | `lookCam:true` (olha para quem assiste), `tears:'drip'\|'stream'`, `rage:0..1` (rosto enche de vermelho; >0.6 solta fumaça nas orelhas), `melt:0..1` (derrete com poça), `frozen:true` (bloco de gelo tremendo), `perch:'bird'\|'butterfly'`. Ao falar (`mouth`), a cabeça balança sozinha. Sombra suave no queixo automática (`shade:false` tira). |
 | mais bichos | `birdy({t,sit,dir})`, `butterfly(t)`, `fish({t,dir})`, `chicken({t,walk,dir})`, `cow({t,walk,dir})`, `rat({t,walk,dir})`. |
 | pegadas 3D | `import {footprints, stepsAlong} from '../kit/props3d.js'`; `fp=footprints(THREE, grupo)`; a cada quadro `fp.set(stepsAlong(caminho, t))`. Exemplo: `kit/test_props3d.html`. |
+| realismo 2D | `light:{color,az,amt}` (luz do cenário: pôr do sol `#ffb070`, noite `#8fa8ff`, floresta `#b8e0a0`; `az` = de onde vem a luz). Gingado de ombros, dobras da roupa andando, peito respirando, cabelo em dois tons com brilho, grão na pele e cabelo/roupa atrasando no pouso: automáticos. `eyeRefl:'window'\|'sun'`, `dirt:0..1`, `scratch`, `bandage`, `sink:px` + `sinkType:'grass'\|'snow'`, `squeeze:0..1` (aperta o objeto na mão). Vento >0.9 cola a camiseta. |
 | andar / correr | `guy({walk:t*1.8})`, `guy({walk:t*3, run:true, lean:12})`. Pernas, braços e balanço vêm juntos. |
 | pular com squash | `const j=hop(u,t0)`. Aplique `sq:j.sq` no `guy` e mova o **mesh** com `mesh.position.y+=-j.y*K`. |
 | esticar / achatar / inclinar | `sq` (+ achata, − estica), `lean` (graus), `bob` (px) |
