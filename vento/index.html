@@ -430,12 +430,13 @@ async up(u,d,t){
   COW.mesh.visible=s.i===1||s.i===2||s.i===3;const ca=t*2.6+2.2;COW.mesh.position.set(TC.x+Math.cos(ca)*4.5,8+Math.sin(t*1.7)*2,TC.z+Math.sin(ca)*4.5);await COW.set(`<g transform="rotate(${f(t*260%360)})">${cowSVG(t)}</g>`);
   let h='';const LT=[.15,.4,6.9,7.05];const fl=Math.max(...LT.map(x=>u>x&&u<x+.12?1-(u-x)/.12:0));flashL.intensity=fl*4;
   if(s.i===0)camShot(v,s.d,V(70,2.2,4),V(72,2.6,0),V(82,12,-32),V(82,11,-32),{t,shake:shake(u,.1,.03,2)});
-  if(s.i===1){const a=ha-.6;camAt2(V(TC.x+Math.cos(a)*9,hy+1,TC.z+Math.sin(a)*9),HPw,t);}
-  if(s.i===2){const a=ha-.35;camAt2(V(TC.x+Math.cos(a)*5.3,hy+.3,TC.z+Math.sin(a)*5.3),HPw,t,shake(u,3.9,.05,1.5));FOVMUL=punch(u,3.92,.15);}
+  if(s.i===1){const a=ha-.7;camAt2(V(TC.x+Math.cos(a)*14,hy+5,TC.z+Math.sin(a)*14),V(HPw.x,HPw.y-1,HPw.z),t);}
+  if(s.i===2){const a=ha+.12;camAt2(V(TC.x+Math.cos(a)*4.6,hy+.15,TC.z+Math.sin(a)*4.6),HPw,t,shake(u,3.9,.05,1.5));FOVMUL=punch(u,3.92,.15);}
   if(s.i===3){const a=t*.9;camAt2(V(TC.x+Math.cos(a)*16,8+v*4,TC.z+Math.sin(a)*16),V(TC.x,11,TC.z),t);}
   if(s.i===4){camShot(v,s.d,V(TC.x+14,3.5,TC.z+16),V(TC.x+15,3,TC.z+17.5),HPw,HPw,{t});FOVMUL=punch(u,d-1.35,.12);}
   world(t,V(TC.x,0,TC.z+4));updRain(t,true);leaves(t,{c:V(TC.x,6,TC.z),swirl:7,h:14,n:240,life:2});
   if(fl>.3)h+=bolt(t,Math.floor(u*3)*7);
+  if(s.i>0&&v<.14)h+=`<rect width="1080" height="1920" fill="#fff" opacity="${f(.45*(1-v/.14))}"/>`+speedLines(1-v/.14);
   h+=counter(540,330,0,408,seg(u,2.0,4.0),{suf:' KM/H',size:140,fill:'#ff5a4d'});
   if(s.i===1&&v>.4){const q=proj(COW.mesh.position.x,COW.mesh.position.y+.7,COW.mesh.position.z);h+=popText('MUUU!',q.x,q.y-60,seg(v,.4,.65),{size:80,fill:'#fff'});}
   if(s.i===2){const q=proj(HPw.x,HPw.y+.3,HPw.z);h+=sweat(q.x,q.y-40,t);}

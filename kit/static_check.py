@@ -17,7 +17,9 @@ for i in range(len(d) + 1):
 print(f'movimento médio: {np.mean(d):.2f} | trechos parados (>=1 s, mudança < {thr}): {len(runs)}')
 for a, b in runs: print(f'  {a:5.1f}s - {b:5.1f}s')
 print(f'parado: {sum(b - a for a, b in runs):.1f}s de {len(d) / 2:.1f}s')
-cuts = [0] + [(i + 1) / 2 for i, v in enumerate(d) if v > 40] + [len(d) / 2]
+sc = subprocess.run(['ffmpeg', '-hide_banner', '-i', src, '-vf', 'scdet=threshold=10', '-an', '-f', 'null', '-'], capture_output=True, text=True).stderr
+import re
+cuts = [0] + sorted({round(float(x), 1) for x in re.findall(r'lavfi\.scd\.time: ([0-9.]+)', sc)}) + [len(d) / 2]
 longs = [(a, b) for a, b in zip(cuts, cuts[1:]) if b - a > 4]
 print(f'cortes: {len(cuts) - 2} | planos com mais de 4 s sem corte: {len(longs)}')
 for a, b in longs: print(f'  {a:5.1f}s - {b:5.1f}s ({b - a:.1f}s)')
