@@ -1,0 +1,563 @@
+{
+ "fps": 30,
+ "total": 61.733,
+ "lead": 0.8,
+ "titulos": {
+  "final": "CONTINUA<em>...</em>"
+ },
+ "beats": [
+  {
+   "id": "relogio",
+   "tag": "",
+   "start": 0.8,
+   "end": 6.117,
+   "sentences": [
+    {
+     "text": "Meu avô me deu um relógio velho.",
+     "start": 0.8,
+     "end": 3.183
+    },
+    {
+     "text": "E disse: *nunca aperte esse botão*.",
+     "start": 3.533,
+     "end": 6.117
+    }
+   ]
+  },
+  {
+   "id": "apertei",
+   "tag": "",
+   "start": 6.467,
+   "end": 8.467,
+   "sentences": [
+    {
+     "text": "Eu *apertei*.",
+     "start": 6.467,
+     "end": 8.467
+    }
+   ]
+  },
+  {
+   "id": "parou",
+   "tag": "",
+   "start": 8.817,
+   "end": 10.817,
+   "sentences": [
+    {
+     "text": "E o mundo *parou*.",
+     "start": 8.817,
+     "end": 10.817
+    }
+   ]
+  },
+  {
+   "id": "passaros",
+   "tag": "",
+   "start": 11.167,
+   "end": 16.483,
+   "sentences": [
+    {
+     "text": "Os pombos ficaram *presos no ar*.",
+     "start": 11.167,
+     "end": 13.617
+    },
+    {
+     "text": "A água da fonte virou *escultura*.",
+     "start": 13.967,
+     "end": 16.483
+    }
+   ]
+  },
+  {
+   "id": "menino",
+   "tag": "",
+   "start": 16.833,
+   "end": 19.817,
+   "sentences": [
+    {
+     "text": "Um menino ficou parado *no meio do pulo*.",
+     "start": 16.833,
+     "end": 19.817
+    }
+   ]
+  },
+  {
+   "id": "feliz",
+   "tag": "",
+   "start": 20.167,
+   "end": 23.483,
+   "sentences": [
+    {
+     "text": "Eu achei que era o *melhor dia* da minha vida.",
+     "start": 20.167,
+     "end": 23.483
+    }
+   ]
+  },
+  {
+   "id": "parede",
+   "tag": "",
+   "start": 23.833,
+   "end": 28.9,
+   "sentences": [
+    {
+     "text": "Até que eu tentei andar.",
+     "start": 23.833,
+     "end": 25.833
+    },
+    {
+     "text": "E o ar estava duro como uma *parede*.",
+     "start": 26.183,
+     "end": 28.9
+    }
+   ]
+  },
+  {
+   "id": "moleculas",
+   "tag": "",
+   "start": 29.25,
+   "end": 35.7,
+   "sentences": [
+    {
+     "text": "Se o tempo para, as moléculas do ar também param.",
+     "start": 29.25,
+     "end": 32.767
+    },
+    {
+     "text": "Elas viram uma *muralha invisível*.",
+     "start": 33.117,
+     "end": 35.7
+    }
+   ]
+  },
+  {
+   "id": "luz",
+   "tag": "",
+   "start": 36.05,
+   "end": 41.9,
+   "sentences": [
+    {
+     "text": "E tem pior: a luz também para.",
+     "start": 36.05,
+     "end": 38.3
+    },
+    {
+     "text": "Sem luz chegando nos olhos, eu fiquei *cega*.",
+     "start": 38.65,
+     "end": 41.9
+    }
+   ]
+  },
+  {
+   "id": "som",
+   "tag": "",
+   "start": 42.25,
+   "end": 47.583,
+   "sentences": [
+    {
+     "text": "Sem o ar se mexer, também não existe som.",
+     "start": 42.25,
+     "end": 45.233
+    },
+    {
+     "text": "*Silêncio total*.",
+     "start": 45.583,
+     "end": 47.583
+    }
+   ]
+  },
+  {
+   "id": "botao",
+   "tag": "",
+   "start": 47.933,
+   "end": 53.2,
+   "sentences": [
+    {
+     "text": "Eu apertei o botão de novo, desesperada.",
+     "start": 47.933,
+     "end": 50.85
+    },
+    {
+     "text": "*Nada*.",
+     "start": 51.2,
+     "end": 53.2
+    }
+   ]
+  },
+  {
+   "id": "ombro",
+   "tag": "",
+   "start": 53.55,
+   "end": 56.867,
+   "sentences": [
+    {
+     "text": "Então, no escuro, alguém tocou no *meu ombro*.",
+     "start": 53.55,
+     "end": 56.867
+    }
+   ]
+  },
+  {
+   "id": "alguem",
+   "tag": "",
+   "start": 57.217,
+   "end": 59.733,
+   "sentences": [
+    {
+     "text": "Tinha mais alguém *fora do tempo*.",
+     "start": 57.217,
+     "end": 59.733
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "beat": 0,
+   "start": 0.0,
+   "end": 2.116,
+   "cena": "sotao",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "entrega"
+   }
+  },
+  {
+   "beat": 0,
+   "start": 2.116,
+   "end": 3.413,
+   "cena": "sotao",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "acao": "avo",
+    "close": true
+   }
+  },
+  {
+   "beat": 0,
+   "start": 3.413,
+   "end": 6.347,
+   "cena": "relogio",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {}
+  },
+  {
+   "beat": 1,
+   "start": 6.347,
+   "end": 8.697,
+   "cena": "relogio",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "aperta": true
+   }
+  },
+  {
+   "beat": 2,
+   "start": 8.697,
+   "end": 9.872,
+   "cena": "praca",
+   "camera": "pull_out",
+   "impacto": true,
+   "args": {
+    "acao": "parou"
+   }
+  },
+  {
+   "beat": 2,
+   "start": 9.872,
+   "end": 11.047,
+   "cena": "praca",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "acao": "parado_wide"
+   }
+  },
+  {
+   "beat": 3,
+   "start": 11.047,
+   "end": 12.936,
+   "cena": "praca",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "pombos"
+   }
+  },
+  {
+   "beat": 3,
+   "start": 12.936,
+   "end": 14.824,
+   "cena": "praca",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "acao": "fonte"
+   }
+  },
+  {
+   "beat": 3,
+   "start": 14.824,
+   "end": 16.713,
+   "cena": "praca",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "acao": "gotas"
+   }
+  },
+  {
+   "beat": 4,
+   "start": 16.713,
+   "end": 18.38,
+   "cena": "praca",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "acao": "menino"
+   }
+  },
+  {
+   "beat": 4,
+   "start": 18.38,
+   "end": 20.047,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "expr": "surpresa",
+    "acao": "rosto"
+   }
+  },
+  {
+   "beat": 5,
+   "start": 20.047,
+   "end": 21.269,
+   "cena": "praca",
+   "camera": "pan_right",
+   "impacto": false,
+   "args": {
+    "acao": "corre"
+   }
+  },
+  {
+   "beat": 5,
+   "start": 21.269,
+   "end": 22.491,
+   "cena": "praca",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "acao": "pula"
+   }
+  },
+  {
+   "beat": 5,
+   "start": 22.491,
+   "end": 23.713,
+   "cena": "rosto",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "expr": "risada",
+    "acao": "comemorar"
+   }
+  },
+  {
+   "beat": 6,
+   "start": 23.713,
+   "end": 25.067,
+   "cena": "praca",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "acao": "anda"
+   }
+  },
+  {
+   "beat": 6,
+   "start": 25.067,
+   "end": 26.421,
+   "cena": "praca",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "acao": "bate"
+   }
+  },
+  {
+   "beat": 6,
+   "start": 26.421,
+   "end": 27.776,
+   "cena": "praca",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "acao": "empurra"
+   }
+  },
+  {
+   "beat": 6,
+   "start": 27.776,
+   "end": 29.13,
+   "cena": "rosto",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "expr": "raiva",
+    "acao": "empurrar"
+   }
+  },
+  {
+   "beat": 7,
+   "start": 29.13,
+   "end": 31.397,
+   "cena": "ciencia",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "modo": "ar"
+   }
+  },
+  {
+   "beat": 7,
+   "start": 31.397,
+   "end": 32.997,
+   "cena": "ciencia",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "modo": "ar_parado"
+   }
+  },
+  {
+   "beat": 7,
+   "start": 32.997,
+   "end": 35.93,
+   "cena": "ciencia",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "modo": "ar_parado",
+    "mao": true
+   }
+  },
+  {
+   "beat": 8,
+   "start": 35.93,
+   "end": 38.53,
+   "cena": "ciencia",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "modo": "luz"
+   }
+  },
+  {
+   "beat": 8,
+   "start": 38.53,
+   "end": 40.063,
+   "cena": "ciencia",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "modo": "luz_parada"
+   }
+  },
+  {
+   "beat": 8,
+   "start": 40.063,
+   "end": 42.13,
+   "cena": "escuro",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "cega": true
+   }
+  },
+  {
+   "beat": 9,
+   "start": 42.13,
+   "end": 45.463,
+   "cena": "ciencia",
+   "camera": "orbit",
+   "impacto": false,
+   "args": {
+    "modo": "som"
+   }
+  },
+  {
+   "beat": 9,
+   "start": 45.463,
+   "end": 47.813,
+   "cena": "escuro",
+   "camera": "static",
+   "impacto": false,
+   "args": {
+    "silencio": true
+   }
+  },
+  {
+   "beat": 10,
+   "start": 47.813,
+   "end": 51.08,
+   "cena": "relogio",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "aperta": true,
+    "escuro": true
+   }
+  },
+  {
+   "beat": 10,
+   "start": 51.08,
+   "end": 53.43,
+   "cena": "escuro",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "nada": true
+   }
+  },
+  {
+   "beat": 11,
+   "start": 53.43,
+   "end": 55.264,
+   "cena": "escuro",
+   "camera": "push_in",
+   "impacto": false,
+   "args": {
+    "ombro": true
+   }
+  },
+  {
+   "beat": 11,
+   "start": 55.264,
+   "end": 57.097,
+   "cena": "escuro",
+   "camera": "static",
+   "impacto": true,
+   "args": {
+    "ombro": true,
+    "close": true
+   }
+  },
+  {
+   "beat": 12,
+   "start": 57.097,
+   "end": 61.733,
+   "cena": "escuro",
+   "camera": "push_in",
+   "impacto": true,
+   "args": {
+    "figura": true
+   }
+  }
+ ],
+ "sem_voz": true
+}

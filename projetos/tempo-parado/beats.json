@@ -1,0 +1,32 @@
+{
+  "titulo": "Apertei o botão que parava o tempo",
+  "titulos": { "final": "CONTINUA<em>...</em>" },
+  "beats": [
+    { "id": "relogio", "narracao": "Meu avô me deu um relógio velho. E disse: *nunca aperte esse botão*.",
+      "shots": [ { "cena": "sotao", "camera": "push_in", "args": { "acao": "entrega" } }, { "cena": "sotao", "camera": "static", "args": { "acao": "avo", "close": true } }, { "cena": "relogio", "camera": "push_in" } ] },
+    { "id": "apertei", "narracao": "Eu *apertei*.",
+      "shots": [ { "cena": "relogio", "camera": "static", "impacto": true, "args": { "aperta": true } } ] },
+    { "id": "parou", "narracao": "E o mundo *parou*.",
+      "shots": [ { "cena": "praca", "camera": "pull_out", "impacto": true, "args": { "acao": "parou" } }, { "cena": "praca", "camera": "orbit", "args": { "acao": "parado_wide" } } ] },
+    { "id": "passaros", "narracao": "Os pombos ficaram *presos no ar*. A água da fonte virou *escultura*.",
+      "shots": [ { "cena": "praca", "camera": "push_in", "args": { "acao": "pombos" } }, { "cena": "praca", "camera": "orbit", "args": { "acao": "fonte" } }, { "cena": "praca", "camera": "static", "args": { "acao": "gotas" } } ] },
+    { "id": "menino", "narracao": "Um menino ficou parado *no meio do pulo*.",
+      "shots": [ { "cena": "praca", "camera": "orbit", "args": { "acao": "menino" } }, { "cena": "rosto", "camera": "push_in", "args": { "expr": "surpresa", "acao": "rosto" } } ] },
+    { "id": "feliz", "narracao": "Eu achei que era o *melhor dia* da minha vida.",
+      "shots": [ { "cena": "praca", "camera": "pan_right", "args": { "acao": "corre" } }, { "cena": "praca", "camera": "static", "args": { "acao": "pula" } }, { "cena": "rosto", "camera": "push_in", "args": { "expr": "risada", "acao": "comemorar" } } ] },
+    { "id": "parede", "narracao": "Até que eu tentei andar. E o ar estava duro como uma *parede*.",
+      "shots": [ { "cena": "praca", "camera": "push_in", "args": { "acao": "anda" } }, { "cena": "praca", "camera": "static", "impacto": true, "args": { "acao": "bate" } }, { "cena": "praca", "camera": "orbit", "args": { "acao": "empurra" } }, { "cena": "rosto", "camera": "static", "args": { "expr": "raiva", "acao": "empurrar" } } ] },
+    { "id": "moleculas", "narracao": "Se o tempo para, as moléculas do ar também param. Elas viram uma *muralha invisível*.",
+      "shots": [ { "cena": "ciencia", "camera": "orbit", "args": { "modo": "ar" } }, { "cena": "ciencia", "camera": "push_in", "impacto": true, "args": { "modo": "ar_parado" } }, { "cena": "ciencia", "camera": "static", "args": { "modo": "ar_parado", "mao": true } } ] },
+    { "id": "luz", "narracao": "E tem pior: a luz também para. Sem luz chegando nos olhos, eu fiquei *cega*.",
+      "shots": [ { "cena": "ciencia", "camera": "push_in", "args": { "modo": "luz" } }, { "cena": "ciencia", "camera": "static", "args": { "modo": "luz_parada" } }, { "cena": "escuro", "camera": "push_in", "impacto": true, "args": { "cega": true } } ] },
+    { "id": "som", "narracao": "Sem o ar se mexer, também não existe som. *Silêncio total*.",
+      "shots": [ { "cena": "ciencia", "camera": "orbit", "args": { "modo": "som" } }, { "cena": "escuro", "camera": "static", "args": { "silencio": true } } ] },
+    { "id": "botao", "narracao": "Eu apertei o botão de novo, desesperada. *Nada*.",
+      "shots": [ { "cena": "relogio", "camera": "push_in", "args": { "aperta": true, "escuro": true } }, { "cena": "escuro", "camera": "static", "impacto": true, "args": { "nada": true } } ] },
+    { "id": "ombro", "narracao": "Então, no escuro, alguém tocou no *meu ombro*.",
+      "shots": [ { "cena": "escuro", "camera": "push_in", "args": { "ombro": true } }, { "cena": "escuro", "camera": "static", "impacto": true, "args": { "ombro": true, "close": true } } ] },
+    { "id": "alguem", "narracao": "Tinha mais alguém *fora do tempo*.",
+      "shots": [ { "cena": "escuro", "camera": "push_in", "impacto": true, "args": { "figura": true } } ] }
+  ]
+}
