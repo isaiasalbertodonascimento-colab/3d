@@ -17,6 +17,8 @@ function bounce(u, t0, h = 1, dur = 1.2, n = 3) {
 }
 // Mola: vai de 0 a 1 com overshoot e assenta (entradas de objetos, zoom punch, cabeças virando).
 function spring(u, t0, freq = 9, decay = 6) { if (u < t0) return 0; const x = u - t0; return 1 - Math.exp(-decay * x) * Math.cos(freq * x); }
+// Cenário reagindo: objeto treme quando alguém grita/pisa forte. Devolve [dx, dy, rotZ] (metros, radianos) para somar no mesh.
+function quake(t, t0, amt = .04, decay = 6) { if (t < t0) return [0, 0, 0]; const k = Math.exp(-(t - t0) * decay) * amt; return [Math.sin(t * 73) * k, Math.abs(Math.sin(t * 51)) * k * .6, Math.sin(t * 61) * k * 1.5]; }
 // Tremedeira de medo/frio (graus ou px pequenos).
 function tremble(t, amt = 3) { return Math.sin(t * 61) * amt * .6 + Math.sin(t * 37 + 1) * amt * .4; }
 

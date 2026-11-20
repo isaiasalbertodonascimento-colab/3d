@@ -34,6 +34,10 @@ Este repositório já tem as peças para animar de verdade, então não reinvent
 | visual por personagem | `kit:{hairStyle:'curly'\|'straight'\|'afro'\|'ponytail'\|'bald', hair:'#cor'}`, `freckles`, `mole`, `glasses`, `cap` (+`capColor`), `phones`, `backpack`, `watch`, `shirtStyle:'stripes'\|'hoodie'` (+`kit.stripe`), `shorts`. Dê a cada personagem uma combinação própria. |
 | rosto extra | `expr:'tongue'` (careta), dentes automáticos em `laugh`/`happy`, baba no `sleep`, ruga de medo e veia 💢 de raiva automáticas, `eyeFx:'heart'\|'star'\|'spiral'`. Boca com vogais: `Object.assign(o, talkV(t))` no lugar de `mouth:talk(t)`. |
 | ação rápida | `trail(o, dx, dy, 3)` (cópias fantasmas atrás). Andando/correndo já solta poeira; `moveDir:±1` = lado para onde anda. |
+| gestos prontos | `gesture:'crossed'\|'hips'\|'scratch'\|'facepalm'\|'think'\|'shrug'\|'dance'`. Mão em qualquer ponto: `reachR:[x,y]` (cabeça = 0,0; pés = 712), com `front:'R'` para a mão passar na frente do rosto. |
+| outros personagens | criança: `kid:true, kit:KIDKIT`. Idoso: `kit:ELDER, hunch:true, holdR:cane()`. Bichos: `dog({t,walk,dir})`, `cat({t,walk,dir})` (patas tocam o chão em y=150). |
+| emoção e efeitos no boneco | `emote:'hearts'\|'cloud'\|'zzz'\|'stars'\|'idea'\|'question'`. `poof(p)` troca de roupa com fumaça (mude o visual em p>.5). `rim:'#ff9a5a', rimDir:±1` (luz de contorno no pôr do sol/noite). Unhas automáticas; `kit:{nailColor:'#e2283b'}` pinta. Sombra de contato nos pés automática. |
+| cenário reagindo | `const [dx,dy,rz]=quake(t,t0)` somado no mesh do objeto (grito, pisão, explosão). |
 | andar / correr | `guy({walk:t*1.8})`, `guy({walk:t*3, run:true, lean:12})`. Pernas, braços e balanço vêm juntos. |
 | pular com squash | `const j=hop(u,t0)`. Aplique `sq:j.sq` no `guy` e mova o **mesh** com `mesh.position.y+=-j.y*K`. |
 | esticar / achatar / inclinar | `sq` (+ achata, − estica), `lean` (graus), `bob` (px) |
