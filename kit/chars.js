@@ -32,7 +32,8 @@ function head(o={}){
   if(JG>0)for(const sd of[-1,1])h+=`<ellipse cx="${sd*84}" cy="44" rx="${f(26+JG*22)}" ry="${f(22+JG*8)}" fill="${c.skin}" stroke="${c.skinD}" stroke-width="5"/>`;
   // Orelhas: mexem com o vento e "saltam" no susto; dobra interna desenhada.
   const TT=c.t, ew=(TT===undefined?0:Math.sin(TT*7.3)*(c.wind??.45)*3)+(c.earFlap||0), es=e==='shock'?1.14:1;
-  for(const sd of[-1,1])h+=`<g transform="translate(${sd*112} 12) rotate(${f(sd*ew*3)}) scale(${es})"><circle r="28" fill="${c.skin}" stroke="${c.skinD}" stroke-width="5"/><path d="M${sd*-4} -12 Q${sd*12} 0 ${sd*-2} 12" stroke="${c.skinD}" stroke-width="5" fill="none" stroke-linecap="round"/></g>`;
+  const QD=c.view==='3q'?(c.dir??1):0;
+  for(const sd of[-1,1])if(sd!==QD)h+=`<g transform="translate(${QD?-QD*104:sd*112} 12) rotate(${f(sd*ew*3)}) scale(${es})"><circle r="28" fill="${c.skin}" stroke="${c.skinD}" stroke-width="5"/><path d="M${sd*-4} -12 Q${sd*12} 0 ${sd*-2} 12" stroke="${c.skinD}" stroke-width="5" fill="none" stroke-linecap="round"/></g>`;
   // Estilos de cabelo: hairStyle 'curly' (padrão) | 'straight' | 'afro' | 'ponytail' | 'bald'.
   const HS=c.hat?'none':(c.hairStyle||'curly'), hwd=TT===undefined?0:(c.wind??.45), hdir=c.windDir??1;
   if(HS==='afro')for(let k=0;k<22;k++){const a=k/22*Math.PI*2,ph=TT===undefined?0:TT*4+k;h+=`<circle cx="${f(Math.cos(a)*118+hwd*hdir*6+Math.sin(ph)*hwd*4)}" cy="${f(-38+Math.sin(a)*110)}" r="${f(44+rnd(k)*10)}" fill="${c.hair}"/>`;}
@@ -69,6 +70,7 @@ function head(o={}){
     h+=`<path d="M-70 -24 Q40 -12 160 -26 Q118 8 -40 2Z" fill="#101829"/><circle cy="-100" r="19" fill="#f2c230" stroke="#b88a10" stroke-width="4"/>`;
   }
   const W='#fffdf7',P='#2a1c17',L='#3a2722';
+  if(QD)h+=`<g transform="translate(${QD*24} 0) scale(.86 1)">`;
   if(e==='sleep'){
     h+=`<path d="M-64 0 Q-42 16 -20 0 M20 0 Q42 16 64 0" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
     h+=`<path d="M-14 58 Q0 66 14 58" stroke="${L}" stroke-width="6" fill="none" stroke-linecap="round"/>`;
@@ -95,6 +97,9 @@ function head(o={}){
     const V=c.vowel;let open='';
     if(mo>.05){if(V==='M')open=`<path d="M-20 62 Q0 ${f(58+mo*4)} 20 62" stroke="${L}" stroke-width="8" fill="none" stroke-linecap="round"/>`;
       else if(V==='E')open=`<ellipse cy="62" rx="${f(26+mo*10)}" ry="${f(4+mo*12)}" fill="#5a1717"/><rect x="${f(-20-mo*6)}" y="${f(58-mo*12)}" width="${f(40+mo*12)}" height="${f(4+mo*5)}" rx="3" fill="#fffdf7"/>`;
+      else if(V==='F')open=`<path d="M-20 58 Q0 54 20 58 L18 70 Q0 74 -18 70Z" fill="#5a1717"/><rect x="-16" y="54" width="32" height="9" rx="3" fill="#fffdf7"/><path d="M-20 70 Q0 66 20 70" stroke="#c85a6a" stroke-width="5" fill="none"/>`;
+      else if(V==='L')open=`<ellipse cy="${f(62+mo*4)}" rx="${f(14+mo*8)}" ry="${f(6+mo*18)}" fill="#5a1717"/><ellipse cy="${f(52+mo*2)}" rx="${f(7+mo*3)}" ry="5" fill="#ef7b8f"/>`;
+      else if(V==='U')open=`<ellipse cy="64" rx="${f(8+mo*3)}" ry="${f(9+mo*5)}" fill="#5a1717" stroke="#c85a6a" stroke-width="6"/>`;
       else if(V==='O')open=`<ellipse cy="64" rx="${f(11+mo*7)}" ry="${f(10+mo*16)}" fill="#5a1717"/><ellipse cy="${f(68+mo*10)}" rx="${f(6+mo*3)}" ry="${f(3+mo*4)}" fill="#ef7b8f"/>`;
       else open=`<ellipse cy="${f(62+mo*4)}" rx="${f(16+mo*10)}" ry="${f(4+mo*24)}" fill="#5a1717"/>`+(mo>.4?`<ellipse cy="${f(70+mo*14)}" rx="${f(8+mo*6)}" ry="${f(3+mo*5)}" fill="#ef7b8f"/>`:'');}
     if(e==='smirk'){
@@ -105,6 +110,13 @@ function head(o={}){
     }else if(e==='fear'){
       h+=`<path d="M-70 -44 Q-45 -50 -18 -66 M18 -66 Q45 -50 70 -44" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/>`;
       h+=open||`<path d="M-30 64 Q-20 54 -10 64 Q0 74 10 64 Q20 54 30 64" stroke="${L}" stroke-width="6" fill="none" stroke-linecap="round"/>`;
+    }else if(['halfsmile','suspicious','bored','disgust','smug'].includes(e)){
+      const lid=(k,up=true)=>up?`<path d="M-72 -36 H-12 V${f(-36+60*k)} H-72Z M12 -36 H72 V${f(-36+60*k)} H12Z" fill="${c.skin}"/><path d="M-70 ${f(-36+60*k)} H-14 M14 ${f(-36+60*k)} H70" stroke="${L}" stroke-width="6" stroke-linecap="round"/>`:`<path d="M-72 30 H-12 V${f(30-60*k)} H-72Z M12 30 H72 V${f(30-60*k)} H12Z" fill="${c.skin}"/><path d="M-70 ${f(30-60*k)} Q-42 ${f(24-60*k)} -14 ${f(30-60*k)} M14 ${f(30-60*k)} Q42 ${f(24-60*k)} 70 ${f(30-60*k)}" stroke="${L}" stroke-width="5" fill="none"/>`;
+      if(e==='halfsmile'){h+=`<path d="M-70 -50 Q-45 -60 -18 -50 M18 -54 Q45 -66 70 -54" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/>`;h+=open||`<path d="M-20 60 Q10 70 36 46" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M36 46 q8 2 8 10" stroke="${c.skinD}" stroke-width="4" fill="none"/>`;}
+      if(e==='suspicious'){h+=lid(.48)+`<path d="M-70 -42 L-18 -36 M18 -60 Q45 -74 70 -58" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/>`;h+=open||`<path d="M-22 62 L22 56" stroke="${L}" stroke-width="7" stroke-linecap="round"/>`;}
+      if(e==='bored'){h+=lid(.6)+`<path d="M-70 -34 L-18 -34 M18 -34 L70 -36" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/>`;h+=open||`<path d="M-22 64 Q0 60 22 64" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/>`;}
+      if(e==='disgust'){h+=lid(.38,false)+`<path d="M-70 -42 L-18 -52 M18 -52 L70 -42" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M-16 18 l8 -6 M8 12 l8 6" stroke="${c.skinD}" stroke-width="4" stroke-linecap="round"/>`;h+=`<path d="M-28 66 Q-14 54 -2 66 Q12 78 28 58" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M12 70 q8 14 16 2" fill="#ef7b8f" stroke="#c85a6a" stroke-width="3"/>`;}
+      if(e==='smug'){h+=`<path d="M-72 -36 H-12 V24 H-72Z M12 -36 H72 V24 H12Z" fill="${c.skin}"/><path d="M-64 0 Q-42 -12 -20 0 M20 0 Q42 -12 64 0" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M-70 -56 Q-45 -70 -18 -58 M18 -58 Q45 -70 70 -56" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/>`;h+=open||`<path d="M-30 54 Q12 78 44 42" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/>`;}
     }else if(e==='tongue'){
       h+=`<path d="M-70 -50 Q-45 -62 -18 -52 M18 -56 Q45 -70 70 -54" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/>`;
       const tw=TT===undefined?0:Math.sin(TT*8)*4;h+=`<path d="M-32 50 Q0 74 32 50" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M-15 62 Q${f(-17+tw)} 100 ${f(tw)} 102 Q${f(17+tw)} 100 15 62Z" fill="#ef7b8f" stroke="#c85a6a" stroke-width="4"/><path d="M0 68 L${f(tw*.6)} 90" stroke="#c85a6a" stroke-width="3"/>`;
@@ -122,7 +134,8 @@ function head(o={}){
   // Bochechas coradas: automático ao rir; blush:0..1 força (vergonha).
   const bs=c.blush??((e==='laugh'||e==='happy')?.55:0);
   if(bs>0)h+=`<ellipse cx="-64" cy="40" rx="22" ry="12" fill="#ff6f86" opacity="${f(bs*.6)}"/><ellipse cx="64" cy="40" rx="22" ry="12" fill="#ff6f86" opacity="${f(bs*.6)}"/>`;
-  h+=`<path d="M-6 26 Q4 36 12 26" stroke="${c.skinD}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  h+=QD?`<path d="M${QD*8} 4 Q${QD*36} 30 ${QD*8} 40" fill="${c.skin}" stroke="${c.skinD}" stroke-width="5"/>`:`<path d="M-6 26 Q4 36 12 26" stroke="${c.skinD}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  if(QD)h+='</g>';
   if(c.hat)h+=`<path d="M-42 40 Q-20 28 0 38 Q20 28 42 40 Q20 52 0 45 Q-20 52 -42 40Z" fill="#4e3322"/>`;
   // Ruga de preocupação (medo) e veia de raiva (pulsando).
   if(e==='fear')h+=`<path d="M-34 -92 q17 -7 34 0 q17 7 34 0 M-24 -104 q12 -5 24 0 q12 5 24 0" stroke="${c.skinD}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
@@ -137,6 +150,8 @@ function head(o={}){
   // Acessórios: glasses, cap (capColor), phones (fone de ouvido).
   if(c.glasses)h+=`<circle cx="-42" cy="-4" r="34" fill="#bfe6ff" fill-opacity=".18" stroke="#222" stroke-width="7"/><circle cx="42" cy="-4" r="34" fill="#bfe6ff" fill-opacity=".18" stroke="#222" stroke-width="7"/><path d="M-8 -8 Q0 -14 8 -8 M-76 -10 L-108 -16 M76 -10 L108 -16" stroke="#222" stroke-width="6" fill="none"/><path d="M-60 -24 l10 -8" stroke="#fff" stroke-width="5" opacity=".6"/>`;
   if(c.cap){const cc=c.capColor||'#e2574c',bd=c.capDir??1;h+=`<path d="M-118 -40 Q-120 -150 0 -146 Q120 -150 118 -40Z" fill="${cc}" stroke="#141414" stroke-opacity=".25" stroke-width="5"/><path d="M${bd*10} -48 Q${bd*110} -64 ${bd*175} -38 Q${bd*120} -20 ${bd*10} -30Z" fill="${cc}" stroke="#141414" stroke-opacity=".35" stroke-width="5"/><circle cy="-144" r="10" fill="${cc}"/><path d="M-60 -60 Q0 -150 60 -60" stroke="#fff" stroke-opacity=".25" stroke-width="6" fill="none"/>`;}
+  if(c.beanie){const bc=c.beanie,pp=TT===undefined?0:Math.sin(TT*5)*6;h+=`<path d="M-120 -40 Q-124 -160 0 -158 Q124 -160 120 -40Z" fill="${bc}"/><rect x="-126" y="-62" width="252" height="34" rx="14" fill="${tone(bc,-.2)}"/>${[...Array(9)].map((_,k)=>`<path d="M${-100+k*25} -66 v-70" stroke="${tone(bc,-.15)}" stroke-width="4"/>`).join('')}<circle cx="${f(pp)}" cy="-166" r="26" fill="#f4efe6"/>`;}
+  if(c.sunglasses)h+=`<path d="M-80 -24 Q-42 -36 -8 -24 L-12 10 Q-44 26 -74 10Z M80 -24 Q42 -36 8 -24 L12 10 Q44 26 74 10Z" fill="#141820" stroke="#000" stroke-width="5"/><path d="M-8 -20 Q0 -26 8 -20 M-80 -22 L-110 -26 M80 -22 L110 -26" stroke="#000" stroke-width="6" fill="none"/><path d="M-66 -16 l18 -4 M30 -16 l18 -4" stroke="#fff" stroke-width="5" opacity=".6" stroke-linecap="round"/>`;
   if(c.phones)h+=`<path d="M-120 0 Q-130 -170 0 -165 Q130 -170 120 0" stroke="#2b2b35" stroke-width="16" fill="none"/><rect x="-142" y="-22" width="38" height="62" rx="16" fill="${c.phoneColor||'#3f6fb5'}" stroke="#2b2b35" stroke-width="6"/><rect x="104" y="-22" width="38" height="62" rx="16" fill="${c.phoneColor||'#3f6fb5'}" stroke="#2b2b35" stroke-width="6"/>`;
   // Barba e bigode: beard:'#cor', mustache:true|'#cor'.
   if(c.beard)h+=`<path d="M-96 20 Q-100 120 0 140 Q100 120 96 20 Q80 70 40 66 Q0 90 -40 66 Q-80 70 -96 20Z" fill="${c.beard}"/><path d="M-24 66 Q0 ${f(74+mo*20)} 24 66" stroke="#5a1717" stroke-width="7" fill="none" stroke-linecap="round"/>`;
@@ -205,14 +220,22 @@ function arm(side,a,e,c,hold='',hp={}){
   const wt=hp.watch&&side<0?`<rect x="-26" y="92" width="52" height="20" rx="6" fill="#2b2b35"/><circle cy="102" r="13" fill="#e9eef7" stroke="#2b2b35" stroke-width="4"/>`:'';
   const hd=wt+(hp.fingers===false?`<circle cy="128" r="28" fill="${c.skin}"/>${hold}`:hand(side,pose,hp.t,r+re,hp.squeeze?Object.assign({},c,{squeeze:hp.squeeze}):c,hold));
   const fz=c.fuzz?`<path d="M-8 40 l-6 -8 M6 70 l-6 -8 M-6 100 l-6 -8" stroke="${c.skinD}" stroke-width="2.5" stroke-linecap="round" opacity=".6"/>`:'';
-  return `<g transform="translate(${hp.sx??side*106} 150) rotate(${f(r)})"><line y2="135" stroke="${c.skin}" stroke-width="44" stroke-linecap="round"/>${fz}<g transform="translate(0 135) rotate(${f(re)})"><line y2="118" stroke="${c.skin}" stroke-width="42" stroke-linecap="round"/>${hd}</g><path d="M-42 -24 Q0 -48 42 -24 L46 54 Q0 70 -46 54Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="5"/></g>`;
+  const LS=c.longSleeve;
+  return `<g transform="translate(${hp.sx??side*106} 150) rotate(${f(r)})"><line y2="135" stroke="${c.skin}" stroke-width="44" stroke-linecap="round"/>${LS?`<line y2="140" stroke="${LS}" stroke-width="54" stroke-linecap="round"/>`:fz}<g transform="translate(0 135) rotate(${f(re)})"><line y2="118" stroke="${c.skin}" stroke-width="42" stroke-linecap="round"/>${LS?`<line y2="96" stroke="${LS}" stroke-width="52" stroke-linecap="round"/><rect x="-28" y="90" width="56" height="18" rx="8" fill="${tone(LS,-.2)}"/>`:''}${hd}</g><path d="M-42 -24 Q0 -48 42 -24 L46 54 Q0 70 -46 54Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="5"/></g>`;
 }
+const OUTFIT={winter:{coat:'#3f6fb5',scarf:'#e2283b',beanie:'#e2283b',cold:true},beach:{shirtStyle:'hawaiian',shorts:true,flipflops:true,sunglasses:true}};
+function stancePreset(st,side){
+  if(side)return{sit:{legF:-88,legB:-84,kneeF:90,kneeB:88,bob:150},crouch:{legF:-60,legB:-30,kneeF:120,kneeB:100,bob:160,lean:10},kneel:{legF:-80,legB:10,kneeF:85,kneeB:80,bob:160}}[st]||{};
+  return{sit:{thighScale:.3,bob:115,legL:4,legR:-4,kneeL:-4,kneeR:4},crouch:{legL:42,kneeL:-84,legR:-42,kneeR:84,bob:95},lie:{rot:-90}}[st]||{};}
 function guy(o){
+  if(o.outfit)o=Object.assign({},OUTFIT[o.outfit],o);
+  if(o.stance)o=Object.assign({},stancePreset(o.stance,o.view==='side'),o);
   if(o.view==='side')return guySide(o);
-  if(o.gesture)o=Object.assign({},gesturePreset(o.gesture,o.t||0),o);
+  if(o.gesture){let G=gesturePreset(o.gesture,o.t||0);if((o.toward??1)<0&&['highfive','handshake','push','hug'].includes(o.gesture)){const M={};for(const[k,v]of Object.entries(G)){const k2=k.endsWith('R')?k.slice(0,-1)+'L':k.endsWith('L')?k.slice(0,-1)+'R':k;M[k2]=Array.isArray(v)?[-v[0],v[1]]:(k==='lean'?-v:v);}if(M.front)M.front=G.front;G=M;}o=Object.assign({},G,o);}
   if(o.hunch)o=Object.assign({},o,{lean:(o.lean||0)+12,bob:(o.bob||0)+22});
-  // Novos: view 'front'|'side'|'back' (de lado: dir ±1, aF/aB, eF/eB, legF/legB, handF/handB, holdF/holdB), weight, castShadow{type,shift,amt}, wet, snowCap, teary, pupil, fuzz, jiggle, light{color,az,amt}, eyeRefl, dirt, scratch, bandage, sink/sinkType, squeeze (na mão: handR com hold), skinTex:false, lookCam, tears ('drip'|'stream'), rage 0..1, melt 0..1, frozen, perch ('bird'|'butterfly'), shade:false, gesture, reachL/reachR, front, kid, hunch, emote, rim/rimDir, beard/mustache, nails/nailColor, hairStyle, eyeFx, glasses/cap/phones/backpack/watch, shirtStyle ('stripes'|'hoodie'), shorts, freckles/mole, vowel, expr 'tongue', blush, browUp, cold (vapor), air (sombra no pulo), handL/handR (pose da mão com dedos), fingers:false (mão antiga), t (idle sempre vivo + vento no cabelo/camiseta), wind (0..1.5), windDir (±1), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
-  const c=Object.assign({},ORANGE,o.kit||{},o.view?{view:o.view}:{},o.fuzz?{fuzz:true}:{});
+  // Novos: view '3q' (+dir), sxMul, stance 'sit'|'crouch'|'lie'|'kneel', kneeL/kneeR/kneeF/kneeB, thighScale, outfit 'winter'|'beach', coat, scarf, beanie, sunglasses, floatie, flipflops, shirtStyle 'hawaiian', carry, toward, expr halfsmile|suspicious|bored|disgust|smug, vowel F|L|U; view 'front'|'side'|'back' (de lado: dir ±1, aF/aB, eF/eB, legF/legB, handF/handB, holdF/holdB), weight, castShadow{type,shift,amt}, wet, snowCap, teary, pupil, fuzz, jiggle, light{color,az,amt}, eyeRefl, dirt, scratch, bandage, sink/sinkType, squeeze (na mão: handR com hold), skinTex:false, lookCam, tears ('drip'|'stream'), rage 0..1, melt 0..1, frozen, perch ('bird'|'butterfly'), shade:false, gesture, reachL/reachR, front, kid, hunch, emote, rim/rimDir, beard/mustache, nails/nailColor, hairStyle, eyeFx, glasses/cap/phones/backpack/watch, shirtStyle ('stripes'|'hoodie'), shorts, freckles/mole, vowel, expr 'tongue', blush, browUp, cold (vapor), air (sombra no pulo), handL/handR (pose da mão com dedos), fingers:false (mão antiga), t (idle sempre vivo + vento no cabelo/camiseta), wind (0..1.5), windDir (±1), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
+  const c=Object.assign({},ORANGE,o.kit||{},o.view?{view:o.view}:{},o.fuzz?{fuzz:true}:{},o.coat?{longSleeve:o.coat}:{});
+  const Q=o.view==='3q'?(o.dir??1):0;
   const {x,y,s=1,holdL='',holdR='',legs=true,rot=0,walk=null,run=false,sq=0,lean=0}=o;
   let {aL,aR,eL=-8,eR=-8,legL=0,legR=0,bob=0}=o;
   // t (tempo em s): movimento constante "idle" — respiração, balanço, braços e olhos vivos, piscada automática.
@@ -230,9 +253,12 @@ function guy(o){
   const WS=(T!==undefined&&walk===null&&o.weight!==false)?(o.weight??Math.tanh(Math.sin(T*.45+sd)*3)):0;
   legL+=-WS*3;legR+=WS*4;
   if(run&&walk!==null)o=Object.assign({},o,{earFlap:Math.sin(walk*4*Math.PI)*14});
-  const leg=(sd,a)=>`<g transform="translate(${sd*52} 400) rotate(${f(a)})">`+(o.shorts?`<rect x="-30" y="120" width="60" height="180" rx="26" fill="${c.skin}"/><rect x="-46" y="0" width="92" height="160" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/><rect x="-26" y="262" width="52" height="26" rx="8" fill="#f7f5f0"/>`:`<rect x="-44" y="0" width="88" height="296" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`)+`<g transform="rotate(${f(-a*.75)} ${sd*6} 300) translate(${sd*6} 300) scale(${f(1-Math.max(0,Math.abs(a)-12)/120)} 1) translate(${-sd*6} -300)"><ellipse cx="${sd*6}" cy="311" rx="64" ry="15" fill="#e9e3d6"/><ellipse cx="${sd*6}" cy="300" rx="62" ry="24" fill="#3a302c"/><path d="M${sd*6-14} 284 l10 7 l10 -7 M${sd*6-14} 294 l10 7 l10 -7" stroke="#f4f0e6" stroke-width="4" fill="none" stroke-linecap="round"/></g>`+(o.dirt?`<ellipse cx="${sd*10}" cy="230" rx="22" ry="14" fill="#6b4a2f" opacity="${f(.4*o.dirt)}"/>`:'')+`</g>`;
+  const TS=o.thighScale??1, FF=o.flipflops===true?'#e2574c':o.flipflops;
+  const foot=(sd,tot)=>`<g transform="rotate(${f(-tot*.75)} ${sd*6} 150) translate(${sd*6} 150) scale(${f(1-Math.max(0,Math.abs(tot)-12)/120)} 1) translate(${-sd*6} -150)">`+(FF?`<ellipse cx="${sd*6}" cy="162" rx="64" ry="10" fill="${FF}"/><ellipse cx="${sd*6}" cy="148" rx="50" ry="17" fill="${c.skin}" stroke="${c.skinD}" stroke-width="4"/>${[0,1,2,3].map(k=>`<circle cx="${sd*6-20+k*13}" cy="160" r="6.5" fill="${c.skin}" stroke="${c.skinD}" stroke-width="2"/>`).join('')}<path d="M${sd*6} 140 l-20 16 M${sd*6} 140 l20 16" stroke="${FF}" stroke-width="7" stroke-linecap="round"/>`:`<ellipse cx="${sd*6}" cy="161" rx="64" ry="15" fill="#e9e3d6"/><ellipse cx="${sd*6}" cy="150" rx="62" ry="24" fill="#3a302c"/><path d="M${sd*6-14} 134 l10 7 l10 -7 M${sd*6-14} 144 l10 7 l10 -7" stroke="#f4f0e6" stroke-width="4" fill="none" stroke-linecap="round"/>`)+`</g>`;
+  // Perna com joelho: a = quadril, kn = joelho (graus). thighScale encurta a coxa (sentado de frente).
+  const leg=(sd,a,kn=0)=>`<g transform="translate(${sd*52} 400) rotate(${f(a)})"><g transform="translate(0 ${f(150*TS)}) rotate(${f(kn)})">`+(o.shorts||FF?(o.shorts?`<rect x="-30" y="-24" width="60" height="170" rx="26" fill="${c.skin}"/>`+(FF?'':`<rect x="-26" y="112" width="52" height="26" rx="8" fill="#f7f5f0"/>`):`<rect x="-44" y="-16" width="88" height="150" rx="28" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`):`<rect x="-44" y="-16" width="88" height="162" rx="28" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`)+foot(sd,a+kn)+(o.dirt?`<ellipse cx="${sd*10}" cy="80" rx="22" ry="14" fill="#6b4a2f" opacity="${f(.4*o.dirt)}"/>`:'')+`</g>`+(o.shorts?`<rect x="-46" y="0" width="92" height="${f(160*TS)}" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`:`<rect x="-44" y="0" width="88" height="${f(170*TS)}" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`)+`</g>`;
   const ML=o.melt||0,SQ=sq+ML*.38,FZ=o.frozen&&T!==undefined?Math.sin(T*60)*3:0;
-  let h=`<g transform="translate(${f(x+FZ)} ${f(y)}) rotate(${f(rot)}) scale(${s})">`;
+  let h=`<g transform="translate(${f(x+FZ)} ${f(y)}) rotate(${f(rot)}) scale(${f(s*(o.sxMul??1))} ${s})">`;
   if(ML>0)h+=`<ellipse cy="714" rx="${f(150+ML*190)}" ry="${f(16+ML*16)}" fill="${c.skin}" opacity=".9"/><ellipse cx="-40" cy="708" rx="${f(40+ML*60)}" ry="6" fill="#fff" opacity=".35"/>`;
   const air=Math.max(0,o.air||0);
   if(legs)h+=`<ellipse cx="0" cy="${f(712+air)}" rx="${f(170*KID*(1+sq)*(1+bob/400)/(1+air/500))}" ry="${f(26/(1+air/500))}" fill="#000" opacity="${f(.18/(1+air/400))}"/>`;
@@ -242,19 +268,28 @@ function guy(o){
   // Rastro de poeira ao andar/correr (moveDir = lado para onde anda; dust:false desliga).
   if(KID<1)h+=`<g transform="translate(0 712) scale(${KID}) translate(0 -712)">`;
   if(walk!==null&&o.dust!==false&&legs){const md=o.moveDir??1;for(let k=0;k<4;k++){const p=((walk*2)+k/4)%1;h+=`<circle cx="${f(-md*(40+p*(run?220:120)))}" cy="${f(705-p*(run?70:35))}" r="${f(10+p*(run?34:20))}" fill="#d9cfbb" opacity="${f((1-p)*(run?.6:.4))}"/>`;}}
-  if(legs)h+=leg(-1,legL)+leg(1,legR);
+  if(legs)h+=leg(-1,legL,o.kneeL??-legL*.25)+leg(1,legR,o.kneeR??-legR*.25);
   if(o.backpack)h+=`<rect x="-112" y="130" width="224" height="250" rx="40" fill="${o.backpack===true?'#3f6fb5':o.backpack}" stroke="#141414" stroke-opacity=".3" stroke-width="6"/><rect x="-60" y="112" width="120" height="40" rx="18" fill="${o.backpack===true?'#2f5590':o.backpack}"/>`;
   // Gingado: ombros e tronco acompanham os passos (sway). Respiração no peito.
   const WK=walk===null?0:Math.sin(walk*Math.PI*2), SW=`rotate(${f(WK*(run?4:3))} 0 420)`, BR=T===undefined?0:Math.sin(T*2.6+sd);
   h+=`<g transform="${SW}">`;
+  const FR0=o.front||'';const cbk=Object.assign({},c,{skin:tone(c.skin,-.14),skinD:tone(c.skinD,-.14),shirt:tone(c.shirt,-.1),shirtD:tone(c.shirtD,-.1),longSleeve:c.longSleeve?tone(c.longSleeve,-.12):undefined});
+  if(Q)h+=Q>0?arm(-1,aL,eL,cbk,holdL,{pose:o.handL,t:T,sx:-78}):arm(1,aR,eR,cbk,holdR,{pose:o.handR,t:T,sx:78});
+  h+=`<g transform="translate(${f(-Q*8)} 0) scale(${Q?.9:1} 1)">`;
   h+=`<rect x="-28" y="90" width="56" height="44" fill="${c.skinD}"/>`;
   h+=`<g transform="translate(0 112) scale(${f(1+BR*.012)} ${f(1+BR*.02)}) translate(0 -112)">`;
   // Barra da camiseta tremulando com o vento (com t definido).
   const hw=T===undefined?0:(o.wind??.45), hm1=Math.sin((T||0)*4.7+sd)*hw, hm2=Math.sin((T||0)*6.2+sd+1)*hw, dirH=o.windDir??1;
   h+=`<path d="M-124 150 Q-134 118 -94 112 L94 112 Q134 118 124 150 L${f(118+dirH*hw*8)} ${f(432+hm1*6+Math.max(0,SQ)*60)} Q${f(60+hm2*14)} ${f(452+hm2*10+Math.max(0,SQ)*70)} 0 ${f(444+hm1*5+Math.max(0,SQ)*70)} Q${f(-60+hm1*14)} ${f(452-hm2*8)} ${f(-118+dirH*hw*8)} ${f(432-hm1*6)}Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="6"/>`;
   if(o.shirtStyle==='stripes'){h+=`<clipPath id="tsc"><path d="M-124 150 Q-134 118 -94 112 L94 112 Q134 118 124 150 L118 432 Q0 452 -118 432Z"/></clipPath><g clip-path="url(#tsc)">`;for(let y=170;y<450;y+=38)h+=`<rect x="-140" y="${y}" width="280" height="15" fill="${c.stripe||'#3f6fb5'}" opacity=".85"/>`;h+='</g>';}
+  if(o.shirtStyle==='hawaiian'){h+=`<clipPath id="tsh"><path d="M-124 150 Q-134 118 -94 112 L94 112 Q134 118 124 150 L118 432 Q0 452 -118 432Z"/></clipPath><g clip-path="url(#tsh)">`;for(let k=0;k<12;k++){const fx=-110+rnd(k+90)*220,fy=150+rnd(k+91)*280,fc=['#e2283b','#ffd23f','#ff8a3d','#e86fb5'][k%4];for(let p=0;p<5;p++){const a=p/5*Math.PI*2;h+=`<circle cx="${f(fx+Math.cos(a)*13)}" cy="${f(fy+Math.sin(a)*13)}" r="10" fill="${fc}"/>`;}h+=`<circle cx="${f(fx)}" cy="${f(fy)}" r="7" fill="#fff6c8"/><path d="M${f(fx+20)} ${f(fy+10)} q20 6 30 -10" stroke="#3f8f3f" stroke-width="8" fill="none"/>`;}h+='</g>';}
   if(o.shirtStyle==='hoodie')h+=`<path d="M-92 118 Q-120 60 -70 40 L70 40 Q120 60 92 118 Q0 150 -92 118Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="6"/><path d="M-22 130 L-26 205 M22 130 L26 205" stroke="${c.shirtD}" stroke-width="6" stroke-linecap="round"/><circle cx="-26" cy="210" r="6" fill="${c.shirtD}"/><circle cx="26" cy="210" r="6" fill="${c.shirtD}"/><path d="M-70 330 L70 330 L82 400 L-82 400Z" fill="none" stroke="${c.shirtD}" stroke-width="5"/>`;
   h+=c.view==='back'?`<path d="M-40 114 Q0 128 40 114" fill="none" stroke="${c.shirtD}" stroke-width="9"/><path d="M0 130 V420" stroke="${c.shirtD}" stroke-width="3" opacity=".35"/>`:`<path d="M-46 114 Q0 152 46 114" fill="none" stroke="${c.shirtD}" stroke-width="9"/>`;
+  if(o.coat){const cc=o.coat,cd=tone(cc,-.25);h+=`<path d="M-132 150 Q-142 110 -96 104 L96 104 Q142 110 132 150 L130 472 Q0 488 -130 472Z" fill="${cc}" stroke="${cd}" stroke-width="6"/>`;
+    if(c.view!=='back')h+=`<path d="M-24 110 L24 110 L20 470 L-20 470Z" fill="${c.shirt}"/><path d="M-22 112 V470 M22 112 V470" stroke="${cd}" stroke-width="5"/><rect x="-104" y="330" width="62" height="54" rx="8" fill="none" stroke="${cd}" stroke-width="5"/><rect x="42" y="330" width="62" height="54" rx="8" fill="none" stroke="${cd}" stroke-width="5"/>`;
+    for(let k=0;k<9;k++)h+=`<circle cx="${-88+k*22}" cy="${f(108-Math.sin(k/8*Math.PI)*10)}" r="17" fill="#f4efe6"/>`;}
+  if(o.scarf){const sc=o.scarf,sw=T===undefined?0:Math.sin(T*6)*(o.wind??.45)*30,dw=(o.windDir??1);h+=`<path d="M-74 108 Q0 146 74 108 L74 132 Q0 172 -74 132Z" fill="${sc}" stroke="${tone(sc,-.25)}" stroke-width="5"/><path d="M34 140 Q${f(50+dw*sw)} 220 ${f(40+dw*(o.wind??.45)*70+sw)} 300 L${f(80+dw*(o.wind??.45)*70+sw)} 300 Q${f(86+dw*sw)} 220 70 136Z" fill="${sc}" stroke="${tone(sc,-.25)}" stroke-width="5"/><path d="M${f(42+dw*(o.wind??.45)*70+sw)} 300 v14 M${f(56+dw*(o.wind??.45)*70+sw)} 300 v16 M${f(70+dw*(o.wind??.45)*70+sw)} 300 v14" stroke="${sc}" stroke-width="5"/>`;}
+  if(o.floatie)h+=`<path d="M-176 400 A176 70 0 0 0 176 400 A176 70 0 0 0 -176 400Z M-110 396 A110 38 0 0 1 110 396 A110 38 0 0 1 -110 396Z" fill-rule="evenodd" fill="${o.floatie===true?'#e2283b':o.floatie}" stroke="#a3122b" stroke-width="5"/><path d="M-150 436 l30 -40 M-30 466 l20 -40 M100 452 l30 -44" stroke="#fff" stroke-width="22"/>`;
   if(o.backpack&&c.view!=='back')h+=`<path d="M-92 120 Q-80 220 -86 330 M92 120 Q80 220 86 330" stroke="#2b2b35" stroke-width="18" fill="none" stroke-linecap="round"/>`;
   const wr=.35+Math.min(1,(Math.abs(lean)+Math.abs(sq)*120+Math.abs(WK)*8)/25)*.65, fw=WK*10;
   h+=`<path d="M-104 178 q16 ${f(12+fw)} 34 6 M-98 206 q12 8 26 4 M104 178 q-16 ${f(12-fw)} -34 6 M98 206 q-12 8 -26 4 M-44 396 q22 ${f(6+wr*6+fw*.5)} 44 0 q22 ${f(-6-wr*6)} 44 0 M${f(-30+fw*2)} 300 q20 -10 40 4" stroke="${c.shirtD}" stroke-width="4" fill="none" stroke-linecap="round" opacity="${f(wr)}"/>`;
@@ -269,7 +304,8 @@ function guy(o){
   if(c.view==='back'){}
   else if(c.hat)h+=`<rect x="40" y="200" width="44" height="34" rx="6" fill="#f2c230"/>`;
   else if(c.tag!=='')h+=`<text x="0" y="300" font-family="Anton" font-size="44" fill="#4a4a55" text-anchor="middle" opacity=".75">${c.tag||''}</text>`;
-  const FR=o.front||'', AL=arm(-1,aL,eL,c,holdL,{pose:o.handL,t:T,fingers:o.fingers,watch:o.watch,squeeze:o.squeeze}), AR=arm(1,aR,eR,c,holdR,{pose:o.handR,t:T,fingers:o.fingers,squeeze:o.squeeze});
+  h+='</g>';
+  const FR=o.front||'', AL=Q>0?'':arm(-1,aL,eL,c,holdL,{pose:o.handL,t:T,fingers:o.fingers,watch:o.watch,squeeze:o.squeeze}), AR=Q<0?'':arm(1,aR,eR,c,holdR,{pose:o.handR,t:T,fingers:o.fingers,squeeze:o.squeeze});
   if(!FR.includes('L'))h+=AL;if(!FR.includes('R'))h+=AR;
   if(o.snowCap>0)for(const sd2 of[-1,1])h+=`<ellipse cx="${sd2*100}" cy="${f(116-o.snowCap*6)}" rx="${f(44*o.snowCap+8)}" ry="${f(14*o.snowCap+3)}" fill="#f8fbff" stroke="#d6e6f5" stroke-width="3"/>`;
   h+='</g>';
@@ -279,6 +315,7 @@ function guy(o){
   h+=`<g transform="${SW} rotate(${f(Math.sin((T||0)*9)*3.5*tk+(o.lookCam?-4:0))} 0 80) translate(0 ${f(-tk*Math.abs(Math.sin((T||0)*9))*7)})">`+head(Object.assign({},c,o,{sqLag:Math.max(0,SQ),wet:o.wet,snowCap:o.snowCap}))+'</g>';
   if(o.emote)h+=emote(o.emote,T||0);
   if(KID<1)h+='</g><g transform="translate(0 712) scale('+KID+') translate(0 -712)">';
+  if(o.carry)h+=`<g transform="translate(0 330)"><rect x="-130" y="-92" width="260" height="176" rx="10" fill="#c9935a" stroke="#8a5a2a" stroke-width="7"/><path d="M-130 -30 H130 M-30 -92 V84" stroke="#e6c48e" stroke-width="18" opacity=".8"/><path d="M-90 40 l20 -20 M60 50 l24 -18" stroke="#8a5a2a" stroke-width="4"/></g>`;
   if(FR)h+=`<g transform="${SW}">`+(FR.includes('L')?AL:'')+(FR.includes('R')?AR:'')+'</g>';
   if(KID<1)h+='</g>';
   h+='</g>';
@@ -334,6 +371,11 @@ function gesturePreset(g,t){const s=Math.sin(t*9),c=Math.cos(t*7);
     case 'facepalm':return{reachR:[14,6],handR:'open',front:'R',expr:'neutral'};
     case 'think':return{reachR:[22,96],handR:'fist',front:'R',reachL:[70,300],handL:'fist',lookY:-.7,look:.6};
     case 'shrug':return{reachL:[-215,250],reachR:[215,250],handL:'open',handR:'open',bob:-14,browUp:.8};
+    case 'carry':return{reachL:[-104,322],reachR:[104,322],handL:'open',handR:'open',front:'LR',carry:true,lean:-4};
+    case 'highfive':return{reachR:[235,-120],handR:'open',expr:'happy'};
+    case 'handshake':return{reachR:[215,330+Math.sin(t*14)*12],handR:'open'};
+    case 'push':return{reachL:[200,250],reachR:[245,262],handL:'open',handR:'open',lean:10,front:'LR'};
+    case 'hug':return{reachL:[150,232],reachR:[200,250],handL:'open',handR:'open',front:'LR',expr:'happy'};
     case 'dance':{const u=Math.sin(t*6);return{reachL:u>0?[-170,-170]:[-200,300],reachR:u>0?[200,300]:[170,-170],handL:'point',handR:'point',legL:u*18,legR:-u*18,bob:-Math.abs(u)*30,lean:u*8,expr:'laugh'};}
   }return{};}
 // ---------- personagens extras ----------
@@ -441,25 +483,28 @@ function headSide(c){const e=c.expr||'neutral',TT=c.t,bl=c.blink||0,mo=c.mouth||
   return h;}
 function guySide(o){
   const c=Object.assign({},ORANGE,o.kit||{},{view:'side'}),T=o.t,sd=o.seed||0,dir=o.dir??1;
+  if(o.gesture){const G={hug:{aF:-82,eF:-58,aB:-78,eB:-52,handF:'open',handB:'open'},push:{aF:-96,eF:-4,aB:-90,eB:-4,handF:'open',handB:'open',lean:12},handshake:{aF:-55,eF:-28+Math.sin((o.t||0)*14)*8,handF:'open'},highfive:{aF:-155,eF:-8,handF:'open'},carry:{aF:-72,eF:-42,aB:-68,eB:-44,handF:'open',handB:'open',carry:true,lean:-6}}[o.gesture];if(G)o=Object.assign({},G,o);}
   const {x,y,s=1,walk=null,run=false,rot=0,holdF='',holdB=''}=o;let {bob=0,lean=0,legF=0,legB=0,aF,aB,eF=-14,eB=-14}=o;const SQ=o.sq||0;
   if(T!==undefined){bob+=Math.sin(T*2.6+sd)*7;lean+=Math.sin(T*1.3+sd)*1.5;if(o.blink===undefined)o=Object.assign({},o,{blink:blink(T,sd)});}
   if(walk!==null){const w=Math.sin(walk*2*Math.PI),amp=run?50:30;legF=w*amp;legB=-w*amp;bob-=Math.abs(Math.cos(walk*2*Math.PI))*(run?26:12);lean+=run?12:3;
     if(aF===undefined)aF=-w*(run?65:30);if(aB===undefined)aB=w*(run?65:30);if(run){eF-=60;eB-=60;}}
   if(aF===undefined)aF=T===undefined?0:Math.sin(T*2.1+sd)*4;if(aB===undefined)aB=T===undefined?0:Math.sin(T*2.1+sd+1.7)*4;
   const cb=Object.assign({},c,{skin:tone(c.skin,-.14),skinD:tone(c.skinD,-.14),shirt:tone(c.shirt,-.1),shirtD:tone(c.shirtD,-.1),pants:tone(c.pants,-.15),pantsD:tone(c.pantsD,-.15)});
-  const legS=(k,a,cc)=>`<g transform="translate(${k} 400) rotate(${f(a)})"><rect x="-44" width="88" height="296" rx="30" fill="${cc.pants}" stroke="${cc.pantsD}" stroke-width="5"/><g transform="rotate(${f(-a*.75)} 0 300)"><ellipse cx="24" cy="311" rx="74" ry="14" fill="#e9e3d6"/><ellipse cx="22" cy="300" rx="72" ry="24" fill="#3a302c"/><path d="M14 284 l10 7 l10 -7" stroke="#f4f0e6" stroke-width="4" fill="none"/></g></g>`;
+  const legS=(k,a,kn,cc)=>`<g transform="translate(${k} 400) rotate(${f(a)})"><g transform="translate(0 150) rotate(${f(kn)})"><rect x="-44" y="-16" width="88" height="162" rx="28" fill="${cc.pants}" stroke="${cc.pantsD}" stroke-width="5"/><g transform="rotate(${f(-(a+kn)*.75)} 0 150)">`+(o.flipflops?`<ellipse cx="24" cy="162" rx="72" ry="9" fill="#e2574c"/><ellipse cx="22" cy="148" rx="58" ry="16" fill="${cc.skin}" stroke="${cc.skinD}" stroke-width="4"/>`:`<ellipse cx="24" cy="161" rx="74" ry="14" fill="#e9e3d6"/><ellipse cx="22" cy="150" rx="72" ry="24" fill="#3a302c"/><path d="M14 134 l10 7 l10 -7" stroke="#f4f0e6" stroke-width="4" fill="none"/>`)+`</g></g><rect x="-44" width="88" height="170" rx="30" fill="${cc.pants}" stroke="${cc.pantsD}" stroke-width="5"/></g>`;
   const hw=T===undefined?0:(o.wind??.45),hm=Math.sin((T||0)*4.7+sd)*hw,br=T===undefined?0:Math.sin(T*2.6+sd);
-  let h=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${f(s*dir)} ${s})">`;
+  let h=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${f(s*dir*(o.sxMul??1))} ${s})">`;
   h+=`<ellipse cy="712" rx="150" ry="24" fill="#000" opacity=".18"/>`;
   for(const a of[legB,legF])h+=`<ellipse cx="${f(-Math.sin(a*Math.PI/180)*300+20)}" cy="718" rx="64" ry="9" fill="#000" opacity=".35"/>`;
   if(walk!==null&&o.dust!==false)for(let k=0;k<4;k++){const p=((walk*2)+k/4)%1;h+=`<circle cx="${f(-(40+p*(run?220:120)))}" cy="${f(705-p*(run?70:35))}" r="${f(10+p*(run?34:20))}" fill="#d9cfbb" opacity="${f((1-p)*(run?.6:.4))}"/>`;}
   h+=`<g transform="translate(0 712) scale(${f(1+SQ)} ${f(1-SQ)}) translate(0 ${f(-712+bob)}) rotate(${f(lean)} 0 420)">`;
   h+=arm(-1,aB,eB,cb,holdB,{pose:o.handB,t:T,sx:-6});
-  h+=legS(-10,legB,cb)+legS(10,legF,c);
+  const kB=o.kneeB??Math.max(0,legB)*1.1+(run?20:0),kF=o.kneeF??Math.max(0,legF)*1.1+(run?20:0);
+  h+=legS(-10,legB,kB,cb)+legS(10,legF,kF,c);
   h+=`<rect x="-24" y="90" width="52" height="44" fill="${c.skinD}"/>`;
   h+=`<g transform="translate(0 112) scale(${f(1+br*.02)} ${f(1+br*.02)}) translate(0 -112)"><path d="M-70 150 Q-76 116 -44 112 L52 112 Q84 116 82 150 L${f(86+br*3)} 300 Q90 400 74 ${f(432+hm*6)} Q0 ${f(452+hm*8)} ${f(-70-hw*10)} ${f(432-hm*6)} Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="6"/></g>`;
   h+=`<path d="M20 114 Q40 140 58 116" fill="none" stroke="${c.shirtD}" stroke-width="8"/><path d="M-50 330 q30 10 60 0" stroke="${c.shirtD}" stroke-width="4" fill="none" opacity=".5"/>`;
   h+=`<g transform="translate(14 0)">`+head(Object.assign({},c,o,{view:'side',windDir:-1}))+'</g>';
   if(o.emote)h+=`<g transform="translate(14 0)">${emote(o.emote,T||0)}</g>`;
+  if(o.carry)h+=`<g transform="translate(176 300)"><rect x="-90" y="-80" width="180" height="150" rx="10" fill="#c9935a" stroke="#8a5a2a" stroke-width="7"/><path d="M-90 -20 H90" stroke="#e6c48e" stroke-width="16" opacity=".8"/></g>`;
   h+=arm(-1,aF,eF,c,holdF,{pose:o.handF,t:T,sx:6});
   return h+'</g></g>';}

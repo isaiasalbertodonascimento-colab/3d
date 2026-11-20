@@ -40,12 +40,25 @@ function talk(t) {
 function talkV(t) {
   const G = window.GROUPS || [];
   for (const g of G) for (const w of g.words) if (t >= w.t0 && t < w.t1) {
-    const vs = w.w.toLowerCase().match(/[aeiouáàâãéêíóôõú]/g) || ['a'], k = (t - w.t0) / (w.t1 - w.t0), ph = k * vs.length, v = vs[Math.min(vs.length - 1, Math.floor(ph))];
-    const open = Math.abs(Math.sin(ph * Math.PI)), map = /[aáàâã]/.test(v) ? 'A' : /[eéêií]/.test(v) ? 'E' : 'O';
-    return { mouth: .15 + .85 * open, vowel: open < .25 ? 'M' : map };
+    const L = w.w.toLowerCase().replace(/[^a-záàâãéêíóôõúç]/g, '') || 'a', k = (t - w.t0) / (w.t1 - w.t0), i = Math.min(L.length - 1, Math.floor(k * L.length)), ch = L[i], ph = k * L.length;
+    const v = /[aáàâã]/.test(ch) ? 'A' : /[eéêií]/.test(ch) ? 'E' : /[oóôõ]/.test(ch) ? 'O' : /[uú]/.test(ch) ? 'U' : /[fv]/.test(ch) ? 'F' : /l/.test(ch) ? 'L' : /[mbp]/.test(ch) ? 'M' : 'E';
+    const open = /[AOE]/.test(v) && /[aeiouáàâãéêíóôõú]/.test(ch) ? .45 + .55 * Math.abs(Math.sin(ph * Math.PI)) : .3;
+    return { mouth: open, vowel: v };
   }
   return { mouth: 0, vowel: null };
 }
+// Virar o personagem: ângulo em graus (0 frente, 45 3/4, 90 lado, 180 costas, 270 lado oposto) -> {view, dir, sxMul}.
+// sxMul achata de leve na troca de vista para esconder o "pulo" entre desenhos.
+function turn(deg) {
+  const a = ((deg % 360) + 360) % 360; let view = 'front', dir = 1;
+  if (a >= 22.5 && a < 67.5) view = '3q'; else if (a >= 67.5 && a < 135) view = 'side'; else if (a >= 135 && a < 225) view = 'back';
+  else if (a >= 225 && a < 292.5) { view = 'side'; dir = -1; } else if (a >= 292.5 && a < 337.5) { view = '3q'; dir = -1; }
+  const dm = Math.min(...[22.5, 67.5, 135, 225, 292.5, 337.5].map(e => Math.abs(a - e))); return { view, dir, sxMul: .78 + .22 * Math.min(1, dm / 14) };
+}
+// Subir escada (de lado): fase do passo -> pernas/joelhos/bob. Suba o mesh em altura de degrau a cada meio ciclo.
+function climb(ph) { const w = Math.sin(ph * 2 * Math.PI), up = Math.max(0, w), dn = Math.max(0, -w); return { view: 'side', legF: -55 * up + 10 * dn, kneeF: 85 * up, legB: -55 * dn + 10 * up, kneeB: 85 * dn, aF: 25 * w, aB: -25 * w, lean: 8, bob: -10 * Math.abs(w) }; }
+// Pular obstáculo (de lado): p 0..1 -> pose + altura `lift` (unidades SVG; mova o mesh: mesh.y += -lift*K).
+function hurdle(p, h = 260) { const k = Math.sin(Math.min(1, Math.max(0, p)) * Math.PI); return { view: 'side', legF: -70 * k, kneeF: 100 * k, legB: 40 * k, kneeB: 90 * k, aF: -120 * k, eF: -10, aB: 40 * k, lean: 14 * k, lift: -h * k, sq: p < .08 ? .15 : (p > .92 ? .18 : -.08 * k) }; }
 // Piscada natural: ~0.12 s a cada 2.4–4 s (seed diferente por personagem).
 function blink(t, seed = 0) { const per = 2.4 + rnd(seed) * 1.6, p = (t + rnd(seed + 9) * per) % per; return p < .12 ? Math.sin(p / .12 * Math.PI) : 0; }
 // Olhar varrendo de um lado pro outro (nervoso).
