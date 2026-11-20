@@ -98,10 +98,10 @@ export default {
       corre: { rig: { target: V(0, 1.2, 0), dist: 6.0, pitch: 0.08, yaw: -0.9, fov: 40 }, lia: [0, 0, 0], dof: 0.004 },
       pula: { rig: { target: V(0, 1.5, 0.5), dist: 5.2, pitch: 0.05, yaw: 0.4, fov: 40 }, lia: [0, 0, 0.5], dof: 0.004 },
       anda: { rig: { target: V(2.5, 1.3, -0.5), dist: 5.4, pitch: 0.08, yaw: Math.PI - 0.35, fov: 38 }, lia: [2.5, 0, 0], dof: 0.004 },
-      bate: { rig: { target: V(0, 1.3, -0.5), dist: 5.4, pitch: 0.05, yaw: Math.PI - 0.75, fov: 38 }, lia: [0, 0, 0], dof: 0.005 },
-      empurra: { rig: { target: V(0, 1.3, -0.35), dist: 5.0, pitch: 0.05, yaw: Math.PI - 0.6, fov: 38 }, lia: [0, 0, 0], dof: 0.005 },
+      bate: { rig: { target: V(0, 1.3, 0.5), dist: 5.4, pitch: 0.05, yaw: 0.75, fov: 38 }, lia: [0, 0, 0], dof: 0.005 },
+      empurra: { rig: { target: V(0, 1.3, 0.35), dist: 5.0, pitch: 0.05, yaw: 0.6, fov: 38 }, lia: [0, 0, 0], dof: 0.005 },
     }[a];
-    l.position.set(...cfg.lia); l.rotation.y = a === 'corre' ? Math.PI / 2 : a === 'gotas' ? -2.4 : a === 'pombos' ? Math.PI * 0.85 : a === 'menino' ? -1.45 : a === 'fonte' ? -2.0 : Math.PI;
+    l.position.set(...cfg.lia); l.rotation.y = a === 'corre' ? Math.PI / 2 : a === 'gotas' ? -2.4 : a === 'pombos' ? Math.PI * 0.85 : a === 'menino' ? -1.45 : a === 'fonte' ? -2.0 : (a === 'bate' || a === 'empurra') ? 0 : Math.PI;
     return {
       scene: s, rig: cfg.rig, bloom: [0.35, 0.45, 0.8], dof: cfg.dof, desat: a === 'parou' ? 0 : 0.42,
       update(t, d, k) {
@@ -124,11 +124,11 @@ export default {
         else if (a === 'anda') { const lento = 1 - smooth(0.5, 1, k); l.position.x = 2.5; l.position.z = -k * 1.0 * lento - 0.3 * (1 - lento); pose(l, t, { acao: 'andar', vel: 7 * (0.3 + lento * 0.7), expr: k > 0.6 ? 'medo' : 'feliz' }); }
         else if (a === 'bate' || a === 'empurra') {
           const bate = a === 'bate' ? smooth(0.15, 0.25, k) : 1;
-          l.position.z = a === 'bate' ? (k < 0.22 ? -k * 1.5 : -0.33 + smooth(0.22, 0.4, k) * 0.25) : -0.1;
+          l.position.z = a === 'bate' ? (k < 0.22 ? k * 1.5 : 0.33 - smooth(0.22, 0.4, k) * 0.25) : 0.1;
           pose(l, t, { acao: a === 'bate' && k < 0.22 ? 'andar' : 'empurrar', expr: a === 'bate' ? (k < 0.25 ? 'feliz' : 'surpresa') : 'raiva' });
           const pm = new THREE.Vector3(); l.userData.maos[1].getWorldPosition(pm);
-          parede.position.set(0, 1.35, l.position.z - 0.55); parede.rotation.set(0, 0, 0); parede.material.opacity = (a === 'bate' ? (1 - smooth(0.25, 0.7, k)) * bate : 0.18 + 0.08 * Math.sin(t * 9)) * 0.35;
-          ondas.forEach((o, i) => { const c = ((t * 1.2) + i / 3) % 1; o.position.set(0, 1.35, l.position.z - 0.54); o.scale.setScalar(0.5 + c * 4); o.material.opacity = (1 - c) * 0.8 * (a === 'bate' ? bate * (1 - smooth(0.4, 0.8, k)) : 1); });
+          parede.position.set(0, 1.35, l.position.z + 0.55); parede.rotation.set(0, 0, 0); parede.material.opacity = (a === 'bate' ? (1 - smooth(0.25, 0.7, k)) * bate : 0.18 + 0.08 * Math.sin(t * 9)) * 0.35;
+          ondas.forEach((o, i) => { const c = ((t * 1.2) + i / 3) % 1; o.position.set(0, 1.35, l.position.z + 0.54); o.scale.setScalar(0.5 + c * 4); o.material.opacity = (1 - c) * 0.8 * (a === 'bate' ? bate * (1 - smooth(0.4, 0.8, k)) : 1); });
         }
       }
     };
