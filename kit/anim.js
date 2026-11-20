@@ -30,6 +30,16 @@ function talk(t) {
   }
   return 0;
 }
+// Boca com vogais: {mouth, vowel} sincronizados com a legenda. Uso: Object.assign(o, talkV(t)).
+function talkV(t) {
+  const G = window.GROUPS || [];
+  for (const g of G) for (const w of g.words) if (t >= w.t0 && t < w.t1) {
+    const vs = w.w.toLowerCase().match(/[aeiouáàâãéêíóôõú]/g) || ['a'], k = (t - w.t0) / (w.t1 - w.t0), ph = k * vs.length, v = vs[Math.min(vs.length - 1, Math.floor(ph))];
+    const open = Math.abs(Math.sin(ph * Math.PI)), map = /[aáàâã]/.test(v) ? 'A' : /[eéêií]/.test(v) ? 'E' : 'O';
+    return { mouth: .15 + .85 * open, vowel: open < .25 ? 'M' : map };
+  }
+  return { mouth: 0, vowel: null };
+}
 // Piscada natural: ~0.12 s a cada 2.4–4 s (seed diferente por personagem).
 function blink(t, seed = 0) { const per = 2.4 + rnd(seed) * 1.6, p = (t + rnd(seed + 9) * per) % per; return p < .12 ? Math.sin(p / .12 * Math.PI) : 0; }
 // Olhar varrendo de um lado pro outro (nervoso).
