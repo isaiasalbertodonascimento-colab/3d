@@ -1,5 +1,7 @@
 # Preferências do usuário para vídeos curtos
 
+> **PENDENTE (pedido do usuário):** quando ele disser que acabou, empacotar TUDO (kit/chars.js, kit/anim.js, kit/props3d.js, kit/static_check.py, estilo/ como modelo de cena, vento/ como exemplo de vídeo completo, skill video-cartoon-animado e estas preferências) numa skill da conta, via `anthropic-skills:skill-creator`, para usar em outras sessões. Ainda não acabou: continuar evoluindo até ele pedir.
+
 ## ESTILO VISUAL ATUAL (pedido do usuário, vale para todos os próximos vídeos)
 Referência: vídeos estilo "Escola de Elementos" (personagens macios em quarto 3D aconchegante). Criar personagens e histórias **originais** nesse estilo, sem copiar personagens, nomes ou marcas do criador.
 - **Personagens:** `guy({style:'soft', ...})` do `kit/chars.js`. Sem contorno grosso, pele com degradê suave, olhinhos de ponto, sobrancelha fina, boca pequena, bochecha rosada, cabelo liso em formas lisas (`hairStyle:'bob'|'short'|'bun'|'curly'`), óculos finos marrons (`glasses`), agasalho de escola com listra colorida na manga (`kit.shirt`, `kit.sleeveStripe`), gola branca, tênis branco, corpo esguio. Cada personagem com cabelo/cor de listra próprios; broto na cabeça (`sprout`) ou outro símbolo pequeno para o "elemento".
