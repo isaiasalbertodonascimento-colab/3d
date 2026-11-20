@@ -79,17 +79,22 @@ function arm(side,a,e,c,hold=''){
 }
 
 function guy(o){
-  // Novos: walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
+  // Novos: t (idle sempre vivo), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
   const c=Object.assign({},ORANGE,o.kit||{});
   const {x,y,s=1,eL=-8,eR=-8,holdL='',holdR='',legs=true,rot=0,walk=null,run=false,sq=0,lean=0}=o;
   let {aL,aR,legL=0,legR=0,bob=0}=o;
+  // t (tempo em s): movimento constante "idle" — respiração, balanço, braços e olhos vivos, piscada automática.
+  const T=o.t, sd=o.seed||0; let idL=0,idR=0,idLean=0;
+  if(T!==undefined){bob+=Math.sin(T*2.6+sd)*7;idLean=Math.sin(T*1.3+sd)*2.5;idL=Math.sin(T*2.1+sd)*5;idR=Math.sin(T*2.1+sd+1.7)*5;
+    if(o.blink===undefined)o=Object.assign({},o,{blink:blink(T,sd)});
+    if(o.look===undefined)o=Object.assign({},o,{look:Math.sin(T*.9+sd)*.6});}
   if(walk!==null){const w=Math.sin(walk*Math.PI*2),amp=run?48:28;legL=w*amp;legR=-w*amp;bob+=-Math.abs(Math.cos(walk*Math.PI*2))*(run?26:12);
     if(aL===undefined)aL=12-w*(run?55:24);if(aR===undefined)aR=12+w*(run?55:24);}
-  if(aL===undefined)aL=10;if(aR===undefined)aR=10;
+  if(aL===undefined)aL=10;if(aR===undefined)aR=10;aL+=idL;aR+=idR;
   const leg=(sd,a)=>`<g transform="translate(${sd*52} 400) rotate(${f(a)})"><rect x="-44" y="0" width="88" height="296" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/><ellipse cx="${sd*6}" cy="300" rx="62" ry="24" fill="#3a302c"/></g>`;
   let h=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${s})">`;
   if(legs)h+=`<ellipse cx="0" cy="712" rx="${f(170*(1+sq)*(1+bob/400))}" ry="26" fill="#000" opacity=".18"/>`;
-  h+=`<g transform="translate(0 712) scale(${(1+sq).toFixed(3)} ${(1-sq).toFixed(3)}) translate(0 ${f(-712+bob)}) rotate(${f(lean)} 0 420)">`;
+  h+=`<g transform="translate(0 712) scale(${(1+sq).toFixed(3)} ${(1-sq).toFixed(3)}) translate(0 ${f(-712+bob)}) rotate(${f(lean+idLean)} 0 420)">`;
   if(legs)h+=leg(-1,legL)+leg(1,legR);
   h+=`<rect x="-28" y="90" width="56" height="44" fill="${c.skinD}"/>`;
   h+=`<path d="M-124 150 Q-134 118 -94 112 L94 112 Q134 118 124 150 L118 432 Q0 452 -118 432Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="6"/>`;

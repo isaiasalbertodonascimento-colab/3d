@@ -2,11 +2,12 @@
 
 ## Estilo que o usuário gosta
 - Vídeo de curiosidade vertical 9:16 (TikTok/Reels/Shorts), estilo cartoon.
-- Personagens 2D chapados (cabeça redonda laranja, cabelo cacheado, camiseta branca) dentro de **cenário 3D** com câmera próxima e em movimento. Referência pronta: `alcatraz/video3d.html` + `alcatraz/chars.js`.
+- Personagens 2D chapados (cabeça redonda laranja, cabelo cacheado, camiseta branca) dentro de **cenário 3D** com câmera próxima e em movimento. Referência pronta: `alcatraz/video3d.html`. Para animar, usar `kit/chars.js` + `kit/anim.js` e a skill `video-cartoon-animado`.
 - **Sem narração** (sem voz): só legendas grandes branco/amarelo, música e efeitos sonoros.
 
 ## Próximo vídeo: BEM MAIS ANIMADO (pedido explícito do usuário)
 O vídeo de Alcatraz foi considerado parado demais. No próximo, os personagens e a câmera precisam se mexer o tempo todo:
+- **Personagem se movimentando a TODO momento (pedido do usuário):** nunca fica parado, nem entre ações. Sempre passar `t` no `guy()` do `kit/chars.js` (respiração, balanço, braços, olhos, piscada).
 - **Personagens sempre em ação:** andar de verdade (pernas alternando, corpo balançando), correr, pular, gesticular com os dois braços, virar de lado; nada de ficar parado de pé por mais de ~1 s.
 - **Rosto vivo:** boca mexendo enquanto a legenda "fala", piscadas, mudanças rápidas de expressão (susto, riso, raiva, medo), olhos seguindo a ação.
 - **Squash & stretch e overshoot:** pulos com achatamento, impactos com tremida, objetos que quicam e giram.
