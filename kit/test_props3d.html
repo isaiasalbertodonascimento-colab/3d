@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><script type="importmap">{"imports":{"three":"../alcatraz/lib/three.module.js"}}</script></head>
+<body style="margin:0"><canvas id="c" width="800" height="600"></canvas>
+<script type="module">
+// Teste das pegadas 3D (kit/props3d.js): um caminho em curva na grama.
+import * as THREE from 'three'; import { footprints, stepsAlong } from './props3d.js';
+const r=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true});const sc=new THREE.Scene();sc.background=new THREE.Color('#bcd9f2');
+const cam=new THREE.PerspectiveCamera(45,800/600,.1,100);cam.position.set(0,4,6);cam.lookAt(0,0,0);
+sc.add(new THREE.HemisphereLight('#fff','#5d7a45',1.5));
+const g=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.MeshStandardMaterial({color:'#6a9a42'}));g.rotation.x=-Math.PI/2;sc.add(g);
+const fp=footprints(THREE,sc,{color:'#2f4a20'});const path=t=>({x:-4+t*1.2,z:Math.sin(t*.8)*1.5});
+fp.set(stepsAlong(path,6,.35,10));r.render(sc,cam);window.ready=true;
+</script></body></html>

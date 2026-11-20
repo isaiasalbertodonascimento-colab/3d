@@ -38,6 +38,9 @@ Este repositório já tem as peças para animar de verdade, então não reinvent
 | outros personagens | criança: `kid:true, kit:KIDKIT`. Idoso: `kit:ELDER, hunch:true, holdR:cane()`. Bichos: `dog({t,walk,dir})`, `cat({t,walk,dir})` (patas tocam o chão em y=150). |
 | emoção e efeitos no boneco | `emote:'hearts'\|'cloud'\|'zzz'\|'stars'\|'idea'\|'question'`. `poof(p)` troca de roupa com fumaça (mude o visual em p>.5). `rim:'#ff9a5a', rimDir:±1` (luz de contorno no pôr do sol/noite). Unhas automáticas; `kit:{nailColor:'#e2283b'}` pinta. Sombra de contato nos pés automática. |
 | cenário reagindo | `const [dx,dy,rz]=quake(t,t0)` somado no mesh do objeto (grito, pisão, explosão). |
+| reações fortes | `lookCam:true` (olha para quem assiste), `tears:'drip'\|'stream'`, `rage:0..1` (rosto enche de vermelho; >0.6 solta fumaça nas orelhas), `melt:0..1` (derrete com poça), `frozen:true` (bloco de gelo tremendo), `perch:'bird'\|'butterfly'`. Ao falar (`mouth`), a cabeça balança sozinha. Sombra suave no queixo automática (`shade:false` tira). |
+| mais bichos | `birdy({t,sit,dir})`, `butterfly(t)`, `fish({t,dir})`, `chicken({t,walk,dir})`, `cow({t,walk,dir})`, `rat({t,walk,dir})`. |
+| pegadas 3D | `import {footprints, stepsAlong} from '../kit/props3d.js'`; `fp=footprints(THREE, grupo)`; a cada quadro `fp.set(stepsAlong(caminho, t))`. Exemplo: `kit/test_props3d.html`. |
 | andar / correr | `guy({walk:t*1.8})`, `guy({walk:t*3, run:true, lean:12})`. Pernas, braços e balanço vêm juntos. |
 | pular com squash | `const j=hop(u,t0)`. Aplique `sq:j.sq` no `guy` e mova o **mesh** com `mesh.position.y+=-j.y*K`. |
 | esticar / achatar / inclinar | `sq` (+ achata, − estica), `lean` (graus), `bob` (px) |

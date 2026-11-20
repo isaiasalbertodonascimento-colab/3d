@@ -21,7 +21,7 @@ const ORANGE={skin:'#f0913f',skinD:'#c96c24',shirt:'#f4f0e6',shirtD:'#cdc4b1',pa
 const GUARD={skin:'#eab48b',skinD:'#bb845c',shirt:'#2d416c',shirtD:'#1b2847',pants:'#222d4a',pantsD:'#151c30',hair:'#3a2722',hat:true};
 
 function head(o={}){
-  const c=Object.assign({},ORANGE,o), e=c.expr||'neutral', look=c.look||0, lookY=c.lookY||0, bl=c.blink||0, mo=c.mouth||0;
+  const c=Object.assign({},ORANGE,o), e=c.expr||'neutral', look=c.lookCam?0:(c.look||0), lookY=c.lookCam?0:(c.lookY||0), bl=c.blink||0, mo=c.mouth||0;
   let h='';
   // Orelhas: mexem com o vento e "saltam" no susto; dobra interna desenhada.
   const TT=c.t, ew=TT===undefined?0:Math.sin(TT*7.3)*(c.wind??.45)*3, es=e==='shock'?1.14:1;
@@ -31,6 +31,10 @@ function head(o={}){
   if(HS==='afro')for(let k=0;k<22;k++){const a=k/22*Math.PI*2,ph=TT===undefined?0:TT*4+k;h+=`<circle cx="${f(Math.cos(a)*118+hwd*hdir*6+Math.sin(ph)*hwd*4)}" cy="${f(-38+Math.sin(a)*110)}" r="${f(44+rnd(k)*10)}" fill="${c.hair}"/>`;}
   if(HS==='ponytail'){const sw=TT===undefined?0:Math.sin(TT*3.2)*10+hwd*hdir*18;h+=`<g transform="translate(${-hdir*112} -62) rotate(${f(-hdir*-50+sw)})"><path d="M0 -10 Q${-hdir*-10} 40 ${-hdir*-30} 120 Q${-hdir*-50} 190 ${-hdir*-20} 200 Q${-hdir*-5} 140 ${-hdir*10} 80 Q${-hdir*16} 30 0 -10Z" fill="${c.hair}"/></g><circle cx="${-hdir*112}" cy="-62" r="15" fill="${c.hairTie||'#e2574c'}"/>`;}
   h+=`<circle r="115" fill="${c.skin}" stroke="${c.skinD}" stroke-width="6"/>`;
+  // Meio-tom suave embaixo do queixo e na lateral (volume sem perder o estilo chapado). shade:false desliga.
+  if(c.shade!==false)h+=`<path d="M-98 58 Q0 150 98 58 Q0 128 -98 58Z" fill="${c.skinD}" opacity=".3"/><path d="M84 -70 Q118 0 84 72 Q104 0 84 -70Z" fill="${c.skinD}" opacity=".22"/>`;
+  // Raiva subindo (rage 0..1): o rosto enche de vermelho de baixo para cima.
+  if(c.rage>0)h+=`<clipPath id="fcl"><circle r="112"/></clipPath><rect clip-path="url(#fcl)" x="-120" y="${f(115-c.rage*235)}" width="240" height="240" fill="#ff2a1f" opacity=".55"/>`;
   // Sardas e pinta.
   if(c.freckles)for(let k=0;k<7;k++)for(const sd of[-1,1])h+=`<circle cx="${f(sd*(50+rnd(k)*30))}" cy="${f(22+rnd(k+9)*22)}" r="${f(2.5+rnd(k+3)*2)}" fill="${c.skinD}" opacity=".7"/>`;
   if(c.mole)h+=`<circle cx="52" cy="58" r="5" fill="#4a2a1a"/>`;
@@ -70,7 +74,7 @@ function head(o={}){
   }else{
     const erx=f(26*(1+bl*.25));
     h+=`<ellipse cx="-42" cy="-4" rx="${erx}" ry="${f(28*(1-bl)+2)}" fill="${W}" stroke="${L}" stroke-width="4.5"/><ellipse cx="42" cy="-4" rx="${erx}" ry="${f(28*(1-bl)+2)}" fill="${W}" stroke="${L}" stroke-width="4.5"/>`;
-    const pr=e==='fear'?7:11;
+    const pr=e==='fear'?7:(c.lookCam?13.5:11);
     if(bl<.8)h+=`<circle cx="${f(-42+look*9)}" cy="${f(lookY*9)}" r="${pr}" fill="${P}"/><circle cx="${f(42+look*9)}" cy="${f(lookY*9)}" r="${pr}" fill="${P}"/>`;
     if(bl<.8)h+=`<circle cx="${f(-46+look*9)}" cy="${f(lookY*9-4)}" r="${f(pr*.38)}" fill="#fff"/><circle cx="${f(38+look*9)}" cy="${f(lookY*9-4)}" r="${f(pr*.38)}" fill="#fff"/>`;
     const V=c.vowel;let open='';
@@ -122,6 +126,16 @@ function head(o={}){
   // Barba e bigode: beard:'#cor', mustache:true|'#cor'.
   if(c.beard)h+=`<path d="M-96 20 Q-100 120 0 140 Q100 120 96 20 Q80 70 40 66 Q0 90 -40 66 Q-80 70 -96 20Z" fill="${c.beard}"/><path d="M-24 66 Q0 ${f(74+mo*20)} 24 66" stroke="#5a1717" stroke-width="7" fill="none" stroke-linecap="round"/>`;
   if(c.mustache)h+=`<path d="M-46 46 Q-24 30 0 42 Q24 30 46 46 Q24 58 0 50 Q-24 58 -46 46Z" fill="${c.mustache===true?(c.beard||c.hair):c.mustache}"/>`;
+  // Lágrimas: tears 'drip' (escorrendo) | 'stream' (cascata cômica).
+  if(c.tears&&TT!==undefined){if(c.tears==='stream')for(const sd of[-1,1])for(let k=0;k<9;k++){const p=(TT*2.2+k/9)%1;h+=`<circle cx="${f(sd*(52+p*190))}" cy="${f(6-p*70+p*p*300)}" r="${f(15-p*5)}" fill="#5cc4ff" stroke="#1d7fc0" stroke-width="3"/>`;}
+    else for(const sd of[-1,1]){const p=(TT*.7+(sd>0?.5:0))%1;h+=`<path d="M${sd*44} 22 Q${sd*46} ${f(22+p*40)} ${sd*48} ${f(26+p*70)}" stroke="#7fd0ff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".8"/><path transform="translate(${sd*48} ${f(30+p*76)})" d="M0 -12 Q9 2 0 9 Q-9 2 0 -12Z" fill="#7fd0ff"/>`;}}
+  // Fumaça saindo das orelhas quando a raiva passa de 60%.
+  if(c.rage>.6&&TT!==undefined)for(const sd of[-1,1])for(let k=0;k<3;k++){const p=(TT*1.4+k/3)%1;h+=`<circle cx="${f(sd*(130+p*70))}" cy="${f(4-p*90)}" r="${f(12+p*26)}" fill="#f4f4f4" opacity="${f((1-p)*.8)}"/>`;}
+  // Derretendo: gotas de suor escorrendo pelo rosto.
+  if(c.melt>0&&TT!==undefined)for(let k=0;k<3;k++){const p=(TT*1.1+k/3)%1;h+=`<path transform="translate(${-80+k*80} ${f(-60+p*150)})" d="M0 -12 Q9 2 0 9 Q-9 2 0 -12Z" fill="#8fd3ff" opacity="${f(1-p)}"/>`;}
+  // Bichinho pousado na cabeça: perch 'bird' | 'butterfly'.
+  if(c.perch==='bird')h+=`<g transform="translate(20 -150)">${birdy({t:TT||0,sit:true})}</g>`;
+  if(c.perch==='butterfly')h+=`<g transform="translate(-30 -138)">${butterfly(TT||0,1)}</g>`;
   // Respiração visível no frio (cold:true).
   if(c.cold&&TT!==undefined)for(let k=0;k<3;k++){const p=(TT*.45+k*.12)%1;if(p<.75)h+=`<circle cx="${f(18+p*110)}" cy="${f(72-p*50)}" r="${f(10+p*30)}" fill="#fff" opacity="${f((1-p/.75)*.55)}"/>`;}
   // Sobrancelhas expressivas: browUp (-1..1), sobem no susto, tremem de raiva.
@@ -168,7 +182,7 @@ function arm(side,a,e,c,hold='',hp={}){
 function guy(o){
   if(o.gesture)o=Object.assign({},gesturePreset(o.gesture,o.t||0),o);
   if(o.hunch)o=Object.assign({},o,{lean:(o.lean||0)+12,bob:(o.bob||0)+22});
-  // Novos: gesture, reachL/reachR, front, kid, hunch, emote, rim/rimDir, beard/mustache, nails/nailColor, hairStyle, eyeFx, glasses/cap/phones/backpack/watch, shirtStyle ('stripes'|'hoodie'), shorts, freckles/mole, vowel, expr 'tongue', blush, browUp, cold (vapor), air (sombra no pulo), handL/handR (pose da mão com dedos), fingers:false (mão antiga), t (idle sempre vivo + vento no cabelo/camiseta), wind (0..1.5), windDir (±1), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
+  // Novos: lookCam, tears ('drip'|'stream'), rage 0..1, melt 0..1, frozen, perch ('bird'|'butterfly'), shade:false, gesture, reachL/reachR, front, kid, hunch, emote, rim/rimDir, beard/mustache, nails/nailColor, hairStyle, eyeFx, glasses/cap/phones/backpack/watch, shirtStyle ('stripes'|'hoodie'), shorts, freckles/mole, vowel, expr 'tongue', blush, browUp, cold (vapor), air (sombra no pulo), handL/handR (pose da mão com dedos), fingers:false (mão antiga), t (idle sempre vivo + vento no cabelo/camiseta), wind (0..1.5), windDir (±1), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
   const c=Object.assign({},ORANGE,o.kit||{});
   const {x,y,s=1,holdL='',holdR='',legs=true,rot=0,walk=null,run=false,sq=0,lean=0}=o;
   let {aL,aR,eL=-8,eR=-8,legL=0,legR=0,bob=0}=o;
@@ -184,12 +198,14 @@ function guy(o){
   if(o.reachR){const r=reach(1,o.reachR[0],o.reachR[1]);aR=r.a+idR*.3;eR=r.e;}
   const KID=o.kid?.74:1;
   const leg=(sd,a)=>`<g transform="translate(${sd*52} 400) rotate(${f(a)})">`+(o.shorts?`<rect x="-30" y="120" width="60" height="180" rx="26" fill="${c.skin}"/><rect x="-46" y="0" width="92" height="160" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/><rect x="-26" y="262" width="52" height="26" rx="8" fill="#f7f5f0"/>`:`<rect x="-44" y="0" width="88" height="296" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`)+`<ellipse cx="${sd*6}" cy="311" rx="64" ry="15" fill="#e9e3d6"/><ellipse cx="${sd*6}" cy="300" rx="62" ry="24" fill="#3a302c"/><path d="M${sd*6-14} 284 l10 7 l10 -7 M${sd*6-14} 294 l10 7 l10 -7" stroke="#f4f0e6" stroke-width="4" fill="none" stroke-linecap="round"/></g>`;
-  let h=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${s})">`;
+  const ML=o.melt||0,SQ=sq+ML*.38,FZ=o.frozen&&T!==undefined?Math.sin(T*60)*3:0;
+  let h=`<g transform="translate(${f(x+FZ)} ${f(y)}) rotate(${f(rot)}) scale(${s})">`;
+  if(ML>0)h+=`<ellipse cy="714" rx="${f(150+ML*190)}" ry="${f(16+ML*16)}" fill="${c.skin}" opacity=".9"/><ellipse cx="-40" cy="708" rx="${f(40+ML*60)}" ry="6" fill="#fff" opacity=".35"/>`;
   const air=Math.max(0,o.air||0);
   if(legs)h+=`<ellipse cx="0" cy="${f(712+air)}" rx="${f(170*KID*(1+sq)*(1+bob/400)/(1+air/500))}" ry="${f(26/(1+air/500))}" fill="#000" opacity="${f(.18/(1+air/400))}"/>`;
   // Sombra de contato: bem escura e pequena embaixo de cada pé (some no ar).
   if(legs&&air<60)for(const[sd2,la]of[[-1,legL],[1,legR]])h+=`<ellipse cx="${f((sd2*52-Math.sin(la*Math.PI/180)*300)*KID)}" cy="${f(718+air)}" rx="${f(54*KID)}" ry="9" fill="#000" opacity="${f(.38*(1-air/60))}"/>`;
-  h+=`<g transform="translate(0 712) scale(${(1+sq).toFixed(3)} ${(1-sq).toFixed(3)}) translate(0 ${f(-712+bob)}) rotate(${f(lean+idLean)} 0 420)">`;
+  h+=`<g transform="translate(0 712) scale(${(1+SQ).toFixed(3)} ${(1-SQ).toFixed(3)}) translate(0 ${f(-712+bob)}) rotate(${f(lean+idLean)} 0 420)">`;
   // Rastro de poeira ao andar/correr (moveDir = lado para onde anda; dust:false desliga).
   if(KID<1)h+=`<g transform="translate(0 712) scale(${KID}) translate(0 -712)">`;
   if(walk!==null&&o.dust!==false&&legs){const md=o.moveDir??1;for(let k=0;k<4;k++){const p=((walk*2)+k/4)%1;h+=`<circle cx="${f(-md*(40+p*(run?220:120)))}" cy="${f(705-p*(run?70:35))}" r="${f(10+p*(run?34:20))}" fill="#d9cfbb" opacity="${f((1-p)*(run?.6:.4))}"/>`;}}
@@ -210,12 +226,17 @@ function guy(o){
   const FR=o.front||'', AL=arm(-1,aL,eL,c,holdL,{pose:o.handL,t:T,fingers:o.fingers,watch:o.watch}), AR=arm(1,aR,eR,c,holdR,{pose:o.handR,t:T,fingers:o.fingers});
   if(!FR.includes('L'))h+=AL;if(!FR.includes('R'))h+=AR;
   if(KID<1)h+=`</g><g transform="translate(0 ${f(712*(1-KID))}) scale(.97)">`;
-  h+=head(Object.assign({},c,o));
+  // Ao falar (mouth > 0), a cabeça balança e inclina junto com a boca.
+  const tk=T===undefined?0:Math.min(1,(o.mouth||0)*1.3);
+  h+=`<g transform="rotate(${f(Math.sin((T||0)*9)*3.5*tk+(o.lookCam?-4:0))} 0 80) translate(0 ${f(-tk*Math.abs(Math.sin((T||0)*9))*7)})">`+head(Object.assign({},c,o))+'</g>';
   if(o.emote)h+=emote(o.emote,T||0);
   if(KID<1)h+='</g><g transform="translate(0 712) scale('+KID+') translate(0 -712)">';
   if(FR.includes('L'))h+=AL;if(FR.includes('R'))h+=AR;
   if(KID<1)h+='</g>';
-  h+='</g></g>';
+  h+='</g>';
+  // Congelado: bloco de gelo translúcido com brilho e pingentes.
+  if(o.frozen)h+=`<rect x="-230" y="-200" width="460" height="940" rx="46" fill="#bfe9ff" fill-opacity=".42" stroke="#eafaff" stroke-width="10"/><path d="M-180 -150 L-120 -150 M-190 -120 L-160 -120 M150 200 L190 160 M120 560 L180 500" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity=".8"/><path d="M-200 -200 l20 50 l20 -50 l20 70 l20 -70 l20 40 l20 -40" fill="#dff6ff" opacity=".9"/>`;
+  h+='</g>';
   if(o.rim){const id='rim'+String(o.rim).replace(/[^a-z0-9]/gi,''),dx=(o.rimDir??1)*5;return `<defs><filter id="${id}" x="-20%" y="-20%" width="140%" height="140%"><feMorphology in="SourceAlpha" operator="dilate" radius="2" result="d"/><feOffset in="d" dx="${dx}" dy="-3" result="o"/><feFlood flood-color="${o.rim}" flood-opacity=".9"/><feComposite in2="o" operator="in"/></filter></defs><g filter="url(#${id})">${h}</g>${h}`;}
   return h;
 }
@@ -290,3 +311,27 @@ function emote(k,t){let h='';
 function poof(p,cx=0,cy=300){if(p<=0||p>=1)return'';let h='';const k=Math.sin(p*Math.PI);
   for(let i=0;i<10;i++){const a=i/10*Math.PI*2,d=120+p*200;h+=`<circle cx="${f(cx+Math.cos(a)*d*.8)}" cy="${f(cy+Math.sin(a)*d)}" r="${f(80+k*90)}" fill="#f4f1ea" opacity="${f(k*.95)}"/>`;}
   return h+`<circle cx="${cx}" cy="${cy}" r="${f(260*k)}" fill="#fff" opacity="${f(k)}"/><text x="${cx}" y="${cy+40}" font-family="Anton" font-size="${f(160*k)}" text-anchor="middle" fill="#ffd23f" stroke="#141414" stroke-width="12" paint-order="stroke">PUF!</text>`;}
+
+// ---------- mais bichos (vista de lado; origem = centro do corpo; chão em y=150 para os que andam) ----------
+function butterfly(t,s=1){const w=.3+.7*Math.abs(Math.sin(t*14));return `<g transform="scale(${s})"><ellipse rx="${f(34*w+4)}" ry="26" cx="${f(-20*w)}" cy="-8" fill="#ff8a3d" stroke="#2b2b35" stroke-width="4"/><ellipse rx="${f(34*w+4)}" ry="26" cx="${f(20*w)}" cy="-8" fill="#ff8a3d" stroke="#2b2b35" stroke-width="4"/><ellipse rx="${f(22*w+3)}" ry="16" cx="${f(-14*w)}" cy="18" fill="#ffd23f" stroke="#2b2b35" stroke-width="4"/><ellipse rx="${f(22*w+3)}" ry="16" cx="${f(14*w)}" cy="18" fill="#ffd23f" stroke="#2b2b35" stroke-width="4"/><rect x="-5" y="-24" width="10" height="52" rx="5" fill="#2b2b35"/><path d="M-3 -24 q-10 -20 -16 -22 M3 -24 q10 -20 16 -22" stroke="#2b2b35" stroke-width="3" fill="none"/></g>`;}
+function birdy(o={}){const t=o.t||0,fl=o.sit?Math.sin(t*3)*6:Math.sin(t*16)*45,d=o.dir??1,col=o.color||'#3fa0e0',hb=o.sit?Math.sin(t*2.3)*8:0;
+  return `<g transform="scale(${d} 1)"><path d="M-30 -2 l-34 -10 l6 16Z" fill="${col}"/><ellipse rx="38" ry="28" fill="${col}"/><ellipse cx="6" cy="10" rx="22" ry="14" fill="#fff4d0"/><g transform="translate(-4 -6) rotate(${f(-fl)})"><path d="M0 0 Q-20 -40 -44 -30 Q-30 -6 0 0Z" fill="${col}" stroke="#1f5f8a" stroke-width="3"/></g><g transform="translate(26 -22) rotate(${f(hb)})"><circle r="20" fill="${col}"/><circle cx="7" cy="-4" r="5" fill="#141414"/><circle cx="8" cy="-6" r="1.8" fill="#fff"/><path d="M18 0 l16 4 l-16 5Z" fill="#ffb02e"/></g>${o.sit?'<path d="M-8 26 v12 M8 26 v12" stroke="#ffb02e" stroke-width="5"/>':''}</g>`;}
+function fish(o={}){const t=o.t||0,d=o.dir??1,col=o.color||'#ff8a3d',w=Math.sin(t*9)*18;
+  return `<g transform="scale(${d} 1) rotate(${f(Math.sin(t*4)*4)})"><path d="M-60 0 L-110 ${f(-34+w)} L-104 ${f(w*.3)} L-110 ${f(34+w)}Z" fill="${col}" stroke="#a84a14" stroke-width="5"/><ellipse rx="72" ry="42" fill="${col}" stroke="#a84a14" stroke-width="5"/><path d="M-10 -40 Q10 -70 30 -40" fill="${col}" stroke="#a84a14" stroke-width="5"/><path d="M-20 -30 Q-8 0 -20 30 M0 -36 Q12 0 0 36" stroke="#ffd2a8" stroke-width="5" fill="none"/><circle cx="40" cy="-8" r="11" fill="#fff"/><circle cx="43" cy="-8" r="6" fill="#141414"/><path d="M62 12 q-8 6 -14 0" stroke="#a84a14" stroke-width="4" fill="none"/>${Math.sin(t*3)>.6?`<circle cx="${f(90+(t*40)%60)}" cy="${f(-30-(t*60)%80)}" r="8" fill="none" stroke="#bfe9ff" stroke-width="3"/>`:''}</g>`;}
+function chicken(o={}){const t=o.t||0,w=o.walk??null,d=o.dir??1,lg=k=>w===null?0:Math.sin(w*2*Math.PI+k*Math.PI)*25,pk=Math.max(0,Math.sin(t*5))*16;
+  let h=`<g transform="scale(${d} 1)"><ellipse cy="150" rx="80" ry="12" fill="#000" opacity=".18"/>`;
+  for(const[x,k]of[[-14,0],[14,1]])h+=`<g transform="translate(${x} 50) rotate(${f(lg(k))})"><path d="M0 0 V92 M0 92 l-16 8 M0 92 l18 6 M0 92 l2 12" stroke="#ffb02e" stroke-width="8" stroke-linecap="round" fill="none"/></g>`;
+  h+=`<path d="M-70 -10 Q-110 -60 -80 -80 Q-70 -40 -50 -30Z" fill="#f4f1ea" stroke="#d0c8b8" stroke-width="4"/><ellipse rx="78" ry="62" fill="#fbfaf5" stroke="#d0c8b8" stroke-width="5"/><path d="M-30 -10 Q0 30 30 -6" stroke="#d0c8b8" stroke-width="5" fill="none"/>`;
+  h+=`<g transform="translate(60 ${f(-60+pk)}) rotate(${f(pk*1.5)})"><circle r="34" fill="#fbfaf5" stroke="#d0c8b8" stroke-width="4"/><path d="M-14 -30 q6 -24 14 -6 q6 -22 14 -2 q8 -16 10 6Z" fill="#e2283b"/><path d="M30 -2 l24 8 l-24 8Z" fill="#ffb02e"/><path d="M26 16 q4 18 -6 22 q-6 -12 6 -22Z" fill="#e2283b"/><circle cx="10" cy="-6" r="6" fill="#141414"/><circle cx="12" cy="-8" r="2" fill="#fff"/></g>`;
+  return h+'</g>';}
+function cow(o={}){const t=o.t||0,w=o.walk??null,d=o.dir??1,lg=k=>w===null?0:Math.sin(w*2*Math.PI+k*Math.PI)*22,tl=Math.sin(t*3)*20;
+  let h=`<g transform="scale(${d} 1)"><ellipse cy="150" rx="210" ry="18" fill="#000" opacity=".18"/><path d="M-190 -40 Q${f(-230+tl)} 20 ${f(-220+tl)} 80" stroke="#f4f1ea" stroke-width="12" fill="none"/><circle cx="${f(-220+tl)}" cy="84" r="12" fill="#333"/>`;
+  for(const[x,k]of[[-140,0],[-100,1],[100,1],[140,0]])h+=`<g transform="translate(${x} 40) rotate(${f(lg(k))})"><rect x="-16" width="32" height="96" rx="12" fill="#f4f1ea" stroke="#333" stroke-width="5"/><rect x="-16" y="86" width="32" height="22" rx="6" fill="#333"/></g>`;
+  h+=`<ellipse rx="200" ry="100" fill="#f4f1ea" stroke="#333" stroke-width="7"/><ellipse cx="-60" cy="-30" rx="55" ry="38" fill="#222"/><ellipse cx="80" cy="30" rx="45" ry="32" fill="#222"/><ellipse cx="-20" cy="92" rx="34" ry="16" fill="#f3a6b4" stroke="#333" stroke-width="4"/>`;
+  h+=`<g transform="translate(210 -60) rotate(${f(Math.sin(t*1.5)*6)})"><ellipse rx="80" ry="68" fill="#f4f1ea" stroke="#333" stroke-width="7"/><ellipse cx="30" cy="38" rx="56" ry="34" fill="#f3a6b4" stroke="#333" stroke-width="5"/><circle cx="12" cy="36" r="7" fill="#333"/><circle cx="50" cy="36" r="7" fill="#333"/><circle cx="-6" cy="-14" r="15" fill="#fff" stroke="#333" stroke-width="4"/><circle cx="34" cy="-14" r="15" fill="#fff" stroke="#333" stroke-width="4"/><circle cx="-4" cy="-12" r="6"/><circle cx="36" cy="-12" r="6"/><path d="M-40 -56 l-24 -30 M40 -60 l18 -34" stroke="#c9b48a" stroke-width="14" stroke-linecap="round"/><ellipse cx="-70" cy="-30" rx="30" ry="14" fill="#f4f1ea" stroke="#333" stroke-width="5" transform="rotate(${f(-20+Math.sin(t*4)*12)} -60 -30)"/></g>`;
+  return h+'</g>';}
+function rat(o={}){const t=o.t||0,w=o.walk??null,d=o.dir??1,col=o.color||'#9a9aa6',lg=k=>w===null?0:Math.sin(w*2*Math.PI+k*Math.PI)*30,sn=Math.sin(t*20)*3;
+  let h=`<g transform="scale(${d} 1)"><ellipse cy="150" rx="70" ry="10" fill="#000" opacity=".18"/><path d="M-60 90 Q-130 ${f(120+Math.sin(t*4)*20)} -150 70" stroke="#f3a6b4" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+  for(const[x,k]of[[-34,0],[30,1]])h+=`<g transform="translate(${x} 110) rotate(${f(lg(k))})"><rect x="-7" width="14" height="40" rx="6" fill="#f3a6b4"/></g>`;
+  h+=`<ellipse cy="90" rx="70" ry="40" fill="${col}"/><g transform="translate(60 70)"><path d="M0 -30 Q60 -6 ${f(70+sn)} 6 Q30 26 0 24Z" fill="${col}"/><circle cx="${f(72+sn)}" cy="6" r="7" fill="#f3a6b4"/><circle cx="-4" cy="-30" r="20" fill="${col}" stroke="#7a7a86" stroke-width="3"/><circle cx="-4" cy="-30" r="11" fill="#f3a6b4"/><circle cx="30" cy="-6" r="6" fill="#141414"/><path d="M56 4 l26 -8 M56 8 l28 4" stroke="#555" stroke-width="2"/></g>`;
+  return h+'</g>';}
