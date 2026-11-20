@@ -1,2 +1,5 @@
 node_modules/
 audio/raw_*.wav
+frames_road/
+logs/
+frames/

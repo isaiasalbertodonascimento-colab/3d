@@ -8,7 +8,7 @@ const fs = require('fs');
   const page = await browser.newPage({ viewport: { width: 720, height: 1280 }, deviceScaleFactor: 1 });
   page.on('console', m => { if (m.type() === 'error') console.error('PAGE:', m.text()); });
   page.on('pageerror', e => console.error('PAGEERR:', e.message));
-  await page.goto(`http://localhost:${port}/scene/index.html`);
+  await page.goto(`http://localhost:${port}/${process.env.SCENE || 'scene'}/index.html`);
   await page.waitForFunction(() => window.ready === true, null, { timeout: 120000 });
   await page.evaluate(() => document.fonts.ready);
   const el = await page.$('#wrap');
