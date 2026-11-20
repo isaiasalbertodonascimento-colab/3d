@@ -24,6 +24,10 @@ Este repositório já tem as peças para animar de verdade, então não reinvent
 6. **Prévia:** monte uma folha de contato com 2 quadros por plano (veja `alcatraz/preview3d.js` e `sheet.py`) e corrija o enquadramento.
 7. **Render**, depois **`python3 kit/static_check.py video.mp4`**. A entrega exige **0 trechos parados e 0 planos com mais de 4 s**. Se aparecer algum, volte ao beat sheet daquele trecho, adicione ação e renderize de novo.
 
+## Estilo padrão: macio
+Use `style:'soft'` em **todo** `guy()`, a não ser que o usuário peça outro visual. Ele traz pele em degradê, olhos de pontinho, agasalho com listra, tênis branco e corpo esguio. O cenário segue o `CLAUDE.md`: quarto aconchegante, plantas, luz de fim de tarde, tom roxo.
+Ajuste cada personagem com `kit:{hairStyle:'bob'|'short'|'bun'|'curly', hair:'#cor', skin:'#cor', shirt:'#cor', sleeveStripe:'#cor'}`, mais `glasses` e `sprout`.
+
 ## Referência rápida do kit
 | Quero… | Use |
 |---|---|

@@ -1,5 +1,11 @@
 # Preferências do usuário para vídeos curtos
 
+## ESTILO VISUAL ATUAL (pedido do usuário, vale para todos os próximos vídeos)
+Referência: vídeos estilo "Escola de Elementos" (personagens macios em quarto 3D aconchegante). Criar personagens e histórias **originais** nesse estilo, sem copiar personagens, nomes ou marcas do criador.
+- **Personagens:** `guy({style:'soft', ...})` do `kit/chars.js`. Sem contorno grosso, pele com degradê suave, olhinhos de ponto, sobrancelha fina, boca pequena, bochecha rosada, cabelo liso em formas lisas (`hairStyle:'bob'|'short'|'bun'|'curly'`), óculos finos marrons (`glasses`), agasalho de escola com listra colorida na manga (`kit.shirt`, `kit.sleeveStripe`), gola branca, tênis branco, corpo esguio. Cada personagem com cabelo/cor de listra próprios; broto na cabeça (`sprout`) ou outro símbolo pequeno para o "elemento".
+- **Cenário 3D:** quarto/dormitório aconchegante de internato: janela quadriculada (losangos) com luz de fim de tarde, cortinas roxas, paredes neutras, piso de madeira, tapete estampado, camas com cobertor azul-marinho, criado-mudo com despertador, copo d'água e livro, pôster de planeta, MUITAS plantas (samambaia grande, girassol no vaso, mudinhas no parapeito, trepadeira no chão). Luz quente e baixa, sombras arroxeadas, tom geral levemente roxo/dessaturado, vinheta e grão, aparência de pintura suave.
+- **Câmera e legendas:** câmera próxima e mexendo, close no rosto nas falas; legendas brancas grandes com destaque amarelo (como antes).
+
 ## Estilo que o usuário gosta
 - Vídeo de curiosidade vertical 9:16 (TikTok/Reels/Shorts), estilo cartoon.
 - Personagens 2D chapados (cabeça redonda laranja, cabelo cacheado, camiseta branca) dentro de **cenário 3D** com câmera próxima e em movimento. Referência pronta: `alcatraz/video3d.html`. Para animar, usar `kit/chars.js` + `kit/anim.js` e a skill `video-cartoon-animado`.
