@@ -79,13 +79,40 @@ function head(o={}){
   return h;
 }
 
-function arm(side,a,e,c,hold=''){
-  const r=side<0?a:-a, re=side<0?e:-e;
-  return `<g transform="translate(${side*106} 150) rotate(${f(r)})"><line y2="135" stroke="${c.skin}" stroke-width="44" stroke-linecap="round"/><g transform="translate(0 135) rotate(${f(re)})"><line y2="122" stroke="${c.skin}" stroke-width="42" stroke-linecap="round"/><circle cy="128" r="28" fill="${c.skin}"/>${hold}</g><path d="M-42 -24 Q0 -48 42 -24 L46 54 Q0 70 -46 54Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="5"/></g>`;
+// Mão com dedos. pose: 'relaxed' (padrão), 'open', 'wave', 'fist', 'point', 'thumb' (joinha, sempre para cima), 'peace', 'grip' (segurando objeto).
+// tot = rotação total do antebraço (graus), usada para o joinha apontar para cima. t = tempo (dedos mexem de leve).
+function hand(side,pose,t,tot,c,hold){
+  const ts=-side, wg=k=>t===undefined?0:Math.sin(t*3.1+k*1.7+side)*(pose==='wave'?9:4);
+  const O=[],F=[];
+  const fl=(x,y,a,len,w=14)=>{const r=a*Math.PI/180,x2=x-Math.sin(r)*len,y2=y+Math.cos(r)*len,L=`x1="${f(x)}" y1="${f(y)}" x2="${f(x2)}" y2="${f(y2)}" stroke-linecap="round"`;
+    O.push(`<line ${L} stroke="${c.skinD}" stroke-width="${w+6}"/>`);F.push(`<line ${L} stroke="${c.skin}" stroke-width="${w}"/>`);};
+  const bx=[ts*14,ts*4.5,-ts*5,-ts*14], ang=[-ts*10,-ts*3,ts*4,ts*12], len=[30,33,31,25];
+  const fingers=(ext)=>{for(let k=0;k<4;k++){const e=ext[k];fl(bx[k],150,ang[k]*(e>.5?1:.3)+wg(k),Math.max(9,len[k]*e),e>.5?13:15);}};
+  const thumbOut=()=>fl(ts*20,134,-ts*55+wg(5),24,13);
+  const thumbIn=()=>fl(ts*21,136,ts*40,18,13);
+  switch(pose){
+    case 'open':case 'wave':fingers([1,1,1,1]);fl(ts*20,134,-ts*70+wg(5),28,13);break;
+    case 'fist':fingers([0,0,0,0]);thumbIn();break;
+    case 'point':fingers([1.2,0,0,0]);thumbIn();break;
+    case 'peace':fingers([1.05,1,0,0]);thumbIn();break;
+    case 'thumb':{fingers([0,0,0,0]);const th=(tot||0)*Math.PI/180,x0=ts*15,y0=136,x2=x0-Math.sin(th)*38,y2=y0-Math.cos(th)*38,L=`x1="${x0}" y1="${y0}" x2="${f(x2)}" y2="${f(y2)}" stroke-linecap="round"`;
+      O.push(`<line ${L} stroke="${c.skinD}" stroke-width="20"/>`);F.push(`<line ${L} stroke="${c.skin}" stroke-width="14"/>`);break;}
+    case 'grip':fingers([.45,.45,.45,.4]);thumbIn();break;
+    default:fingers([.62,.66,.62,.58]);thumbOut();
+  }
+  const palm=`<ellipse cy="140" rx="25" ry="23" fill="${c.skin}" stroke="${c.skinD}" stroke-width="5"/>`;
+  const knuck=(pose==='fist'||pose==='thumb'||pose==='point'||pose==='peace')?`<path d="M-15 158 Q-10 163 -5 158 M-3 160 Q2 165 7 160 M9 158 Q13 162 17 157" stroke="${c.skinD}" stroke-width="3" fill="none" stroke-linecap="round"/>`:'';
+  const Z=x=>`<g transform="translate(0 128) scale(1.6) translate(0 -128)">${x}</g>`; // mão grande de desenho animado
+  if(pose==='grip')return Z(O.join('')+palm)+hold+Z(F.join(''));
+  return Z(O.join('')+palm+F.join('')+knuck)+hold;
 }
-
+function arm(side,a,e,c,hold='',hp={}){
+  const r=side<0?a:-a, re=side<0?e:-e, pose=hp.pose||(hold?'grip':'relaxed');
+  const hd=hp.fingers===false?`<circle cy="128" r="28" fill="${c.skin}"/>${hold}`:hand(side,pose,hp.t,r+re,c,hold);
+  return `<g transform="translate(${side*106} 150) rotate(${f(r)})"><line y2="135" stroke="${c.skin}" stroke-width="44" stroke-linecap="round"/><g transform="translate(0 135) rotate(${f(re)})"><line y2="118" stroke="${c.skin}" stroke-width="42" stroke-linecap="round"/>${hd}</g><path d="M-42 -24 Q0 -48 42 -24 L46 54 Q0 70 -46 54Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="5"/></g>`;
+}
 function guy(o){
-  // Novos: t (idle sempre vivo + vento no cabelo/camiseta), wind (0..1.5), windDir (±1), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
+  // Novos: handL/handR (pose da mão com dedos), fingers:false (mão antiga), t (idle sempre vivo + vento no cabelo/camiseta), wind (0..1.5), windDir (±1), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
   const c=Object.assign({},ORANGE,o.kit||{});
   const {x,y,s=1,eL=-8,eR=-8,holdL='',holdR='',legs=true,rot=0,walk=null,run=false,sq=0,lean=0}=o;
   let {aL,aR,legL=0,legR=0,bob=0}=o;
@@ -109,7 +136,7 @@ function guy(o){
   h+=`<path d="M-46 114 Q0 152 46 114" fill="none" stroke="${c.shirtD}" stroke-width="9"/>`;
   if(c.hat)h+=`<rect x="40" y="200" width="44" height="34" rx="6" fill="#f2c230"/>`;
   else if(c.tag!=='')h+=`<text x="0" y="300" font-family="Anton" font-size="44" fill="#4a4a55" text-anchor="middle" opacity=".75">${c.tag||''}</text>`;
-  h+=arm(-1,aL,eL,c,holdL)+arm(1,aR,eR,c,holdR);
+  h+=arm(-1,aL,eL,c,holdL,{pose:o.handL,t:T,fingers:o.fingers})+arm(1,aR,eR,c,holdR,{pose:o.handR,t:T,fingers:o.fingers});
   h+=head(Object.assign({},c,o));
   return h+'</g></g>';
 }
