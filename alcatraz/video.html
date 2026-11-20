@@ -1,0 +1,393 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Anton;src:url(fonts/anton.woff2) format('woff2');}
+html,body{margin:0;padding:0;background:#000;overflow:hidden}
+svg{display:block}
+.lb,.cap{font-family:Anton;paint-order:stroke;stroke-linejoin:round;letter-spacing:1px}
+</style></head>
+<body>
+<svg id="svg" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+<defs>
+ <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#efe2c2"/><stop offset="1" stop-color="#dac69f"/></linearGradient>
+ <linearGradient id="green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fa88f"/><stop offset="1" stop-color="#5c8670"/></linearGradient>
+ <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a9b93"/><stop offset="1" stop-color="#5f625d"/></linearGradient>
+ <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070d24"/><stop offset="1" stop-color="#2a3d78"/></linearGradient>
+ <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3566"/><stop offset="1" stop-color="#0a1330"/></linearGradient>
+ <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffbe8"/><stop offset="1" stop-color="#ffe7a6"/></linearGradient>
+ <linearGradient id="shaft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6d0" stop-opacity=".55"/><stop offset="1" stop-color="#fff6d0" stop-opacity="0"/></linearGradient>
+ <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff2a8" stop-opacity=".55"/><stop offset="1" stop-color="#fff2a8" stop-opacity="0"/></linearGradient>
+ <linearGradient id="cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3b0" stop-opacity=".75"/><stop offset="1" stop-color="#fff3b0" stop-opacity=".15"/></linearGradient>
+ <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff4c8" stop-opacity=".75"/><stop offset="1" stop-color="#fff4c8" stop-opacity="0"/></radialGradient>
+ <radialGradient id="spot" cx=".5" cy=".42" r=".6"><stop offset="0" stop-color="#4a4658"/><stop offset="1" stop-color="#121118"/></radialGradient>
+ <radialGradient id="vig" cx=".5" cy=".46" r=".72"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+ <clipPath id="corr"><rect x="780" y="0" width="300" height="1920"/></clipPath>
+</defs>
+<g id="root"></g>
+<image id="grain" href="grain.png" x="-60" y="-60" width="1200" height="2040" opacity=".09" style="mix-blend-mode:overlay" preserveAspectRatio="none"/>
+<rect width="1080" height="1920" fill="url(#vig)"/>
+<g id="caps"></g>
+</svg>
+<script src="timing.js"></script>
+<script>
+// ---------- helpers ----------
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const seg=(u,a,b)=>cl((u-a)/(b-a));
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eo=t=>1-Math.pow(1-t,3);
+const back=t=>{if(t<=0)return 0;if(t>=1)return 1;const c=1.9,c3=c+1;return 1+c3*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+const lerp=(a,b,t)=>a+(b-a)*t;
+const rnd=i=>{const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)};
+const f=n=>(+n).toFixed(1);
+
+function label(txt,y,o={}){
+  const {size=120,fill='#fff',p=1,x=540,stroke=18,rot=0}=o;
+  if(p<=0)return '';
+  const s=back(cl(p)),op=cl(p*3);
+  return `<g transform="translate(${f(x)} ${f(y)}) rotate(${rot}) scale(${s.toFixed(3)})" opacity="${op.toFixed(2)}"><text class="lb" y="6" font-size="${size}" fill="#000" opacity=".35" stroke="#000" stroke-width="${stroke}" text-anchor="middle">${txt}</text><text class="lb" font-size="${size}" fill="${fill}" stroke="#141414" stroke-width="${stroke}" text-anchor="middle">${txt}</text></g>`;
+}
+
+// ---------- characters ----------
+const ORANGE={skin:'#f0913f',skinD:'#c96c24',shirt:'#f4f0e6',shirtD:'#cdc4b1',pants:'#b9a17a',pantsD:'#8c7756',hair:'#3a2722',hat:false};
+const GUARD={skin:'#eab48b',skinD:'#bb845c',shirt:'#2d416c',shirtD:'#1b2847',pants:'#222d4a',pantsD:'#151c30',hair:'#3a2722',hat:true};
+
+function head(o={}){
+  const c=Object.assign({},ORANGE,o), e=c.expr||'neutral', look=c.look||0, bl=c.blink||0;
+  let h='';
+  h+=`<circle cx="-112" cy="12" r="28" fill="${c.skin}" stroke="${c.skinD}" stroke-width="5"/><circle cx="112" cy="12" r="28" fill="${c.skin}" stroke="${c.skinD}" stroke-width="5"/>`;
+  h+=`<circle r="115" fill="${c.skin}" stroke="${c.skinD}" stroke-width="6"/>`;
+  h+=`<path d="M-70 -60 Q-20 -95 40 -70" stroke="#ffffff" stroke-opacity=".18" stroke-width="18" fill="none" stroke-linecap="round"/>`;
+  if(!c.hat){
+    h+=`<path d="M-113 -18 Q-120 -128 0 -124 Q120 -128 113 -18 Q92 -66 0 -70 Q-92 -66 -113 -18Z" fill="${c.hair}"/>`;
+    for(let k=0;k<13;k++){const a=(196+k*12)*Math.PI/180;h+=`<circle cx="${f(Math.cos(a)*104)}" cy="${f(Math.sin(a)*104)}" r="${f(23+rnd(k)*6)}" fill="${c.hair}"/>`;}
+  }else{
+    h+=`<path d="M-120 -28 Q-122 -158 0 -156 Q122 -158 120 -28Z" fill="#22355e"/><rect x="-124" y="-52" width="248" height="30" rx="8" fill="#16223e"/>`;
+    h+=`<path d="M-70 -24 Q40 -12 160 -26 Q118 8 -40 2Z" fill="#101829"/><circle cy="-100" r="19" fill="#f2c230" stroke="#b88a10" stroke-width="4"/>`;
+  }
+  const W='#fffdf7',P='#2a1c17',L='#3a2722';
+  if(e==='sleep'){
+    h+=`<path d="M-64 0 Q-42 16 -20 0 M20 0 Q42 16 64 0" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+    h+=`<path d="M-14 58 Q0 66 14 58" stroke="${L}" stroke-width="6" fill="none" stroke-linecap="round"/>`;
+  }else if(e==='shock'){
+    h+=`<circle cx="-42" cy="-6" r="33" fill="${W}" stroke="${L}" stroke-width="5"/><circle cx="42" cy="-6" r="33" fill="${W}" stroke="${L}" stroke-width="5"/>`;
+    h+=`<circle cx="-42" cy="-6" r="9" fill="${P}"/><circle cx="42" cy="-6" r="9" fill="${P}"/>`;
+    h+=`<path d="M-72 -58 Q-45 -74 -18 -60 M18 -60 Q45 -74 72 -58" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+    h+=`<ellipse cy="64" rx="24" ry="33" fill="#5a1717"/><ellipse cy="80" rx="15" ry="11" fill="#ef7b8f"/>`;
+  }else{
+    h+=`<ellipse cx="-42" cy="-4" rx="26" ry="${f(28*(1-bl)+2)}" fill="${W}" stroke="${L}" stroke-width="4.5"/><ellipse cx="42" cy="-4" rx="26" ry="${f(28*(1-bl)+2)}" fill="${W}" stroke="${L}" stroke-width="4.5"/>`;
+    if(bl<.8)h+=`<circle cx="${f(-42+look*9)}" cy="0" r="11" fill="${P}"/><circle cx="${f(42+look*9)}" cy="0" r="11" fill="${P}"/>`;
+    if(e==='smirk'){
+      h+=`<path d="M-72 -10 L-12 -10 L-12 -40 L-72 -40Z M12 -14 L72 -14 L72 -40 L12 -40Z" fill="${c.skin}"/>`;
+      h+=`<path d="M-70 -10 L-14 -10 M14 -14 L70 -14" stroke="${L}" stroke-width="6" stroke-linecap="round"/>`;
+      h+=`<path d="M-70 -48 Q-45 -54 -18 -46 M18 -62 Q45 -76 70 -58" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+      h+=`<path d="M-26 58 Q6 70 36 46" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+    }else{
+      h+=`<path d="M-70 -50 Q-45 -60 -18 -50 M18 -50 Q45 -60 70 -50" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+      if(e==='happy')h+=`<path d="M-34 46 Q0 50 34 46 Q30 84 0 86 Q-30 84 -34 46Z" fill="#5a1717"/>`;
+      else h+=`<path d="M-24 56 Q0 70 24 56" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+    }
+  }
+  h+=`<path d="M-6 26 Q4 36 12 26" stroke="${c.skinD}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  if(c.hat)h+=`<path d="M-42 40 Q-20 28 0 38 Q20 28 42 40 Q20 52 0 45 Q-20 52 -42 40Z" fill="#4e3322"/>`;
+  return h;
+}
+
+function arm(side,a,e,c,hold=''){
+  const r=side<0?a:-a, re=side<0?e:-e;
+  return `<g transform="translate(${side*106} 150) rotate(${f(r)})"><line y2="135" stroke="${c.skin}" stroke-width="44" stroke-linecap="round"/><g transform="translate(0 135) rotate(${f(re)})"><line y2="122" stroke="${c.skin}" stroke-width="42" stroke-linecap="round"/><circle cy="128" r="28" fill="${c.skin}"/>${hold}</g><path d="M-42 -24 Q0 -48 42 -24 L46 54 Q0 70 -46 54Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="5"/></g>`;
+}
+
+function guy(o){
+  const c=Object.assign({},ORANGE,o.kit||{});
+  const {x,y,s=1,aL=10,aR=10,eL=-8,eR=-8,holdL='',holdR='',legs=true,rot=0}=o;
+  let h=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${s})">`;
+  if(legs){
+    h+=`<ellipse cx="0" cy="712" rx="170" ry="26" fill="#000" opacity=".18"/>`;
+    h+=`<rect x="-96" y="400" width="88" height="296" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/><rect x="8" y="400" width="88" height="296" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`;
+    h+=`<ellipse cx="-58" cy="700" rx="62" ry="24" fill="#3a302c"/><ellipse cx="58" cy="700" rx="62" ry="24" fill="#3a302c"/>`;
+  }
+  h+=`<rect x="-28" y="90" width="56" height="44" fill="${c.skinD}"/>`;
+  h+=`<path d="M-124 150 Q-134 118 -94 112 L94 112 Q134 118 124 150 L118 432 Q0 452 -118 432Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="6"/>`;
+  h+=`<path d="M-46 114 Q0 152 46 114" fill="none" stroke="${c.shirtD}" stroke-width="9"/>`;
+  if(c.hat)h+=`<rect x="40" y="200" width="44" height="34" rx="6" fill="#f2c230"/>`;
+  else h+=`<text x="0" y="300" font-family="Anton" font-size="44" fill="#4a4a55" text-anchor="middle" opacity=".75">1962</text>`;
+  h+=arm(-1,aL,eL,c,holdL)+arm(1,aR,eR,c,holdR);
+  h+=head(Object.assign({},c,o));
+  return h+'</g>';
+}
+const fakeHead=(x,y,s,rot=0,expr='sleep')=>`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${s})">${head({expr})}</g>`;
+
+// ---------- props ----------
+function tally(x,y,n,col='#4a3b2c'){
+  let h='';
+  for(let k=0;k<n;k++){
+    const g=Math.floor(k/5),m=k%5,gx=x+(g%3)*92,gy=y+Math.floor(g/3)*120;
+    if(m<4)h+=`<line x1="${gx+m*17}" y1="${gy}" x2="${gx+m*17+3}" y2="${gy+80}" stroke="${col}" stroke-width="6" stroke-linecap="round"/>`;
+    else h+=`<line x1="${gx-10}" y1="${gy+12}" x2="${gx+66}" y2="${gy+66}" stroke="${col}" stroke-width="6" stroke-linecap="round"/>`;
+  }
+  return h;
+}
+function cell(mode='day',opt={}){
+  let h=`<rect width="1080" height="1920" fill="url(#wall)"/>`;
+  h+=`<path d="M120 180 Q160 260 140 330 L180 400 M760 620 Q800 700 860 720 L900 800 M980 300 L940 380 Q960 420 930 470" stroke="#a48d68" stroke-width="4" fill="none"/>`;
+  h+=`<path d="M60 900 q40 -30 80 0 q-10 40 -60 30z M880 520 q50 -20 70 10 q-20 40 -70 20z" fill="#f7efdc" opacity=".8"/>`;
+  if(opt.tally!==0)h+=tally(60,520,opt.tally??22);
+  h+=`<rect y="1010" width="1080" height="340" fill="url(#green)"/><rect y="1004" width="1080" height="16" fill="#4c7660"/>`;
+  h+=`<path d="M200 1120 q40 -20 70 10 q-20 30 -70 -10z M760 1210 q50 -20 70 10 q-30 30 -70 -10z" fill="#d9e2d4" opacity=".7"/>`;
+  h+=`<rect y="1340" width="1080" height="580" fill="url(#floor)"/><path d="M0 1340 L1080 1340" stroke="#555852" stroke-width="6"/>`;
+  h+=`<path d="M0 1560 L1080 1500 M0 1760 L1080 1690 M300 1340 L200 1920 M760 1340 L860 1920" stroke="#6c6e68" stroke-width="3" opacity=".5"/>`;
+  if(opt.win!==false){
+    const night=mode==='night';
+    if(!night)h+=`<polygon points="660,470 900,470 1080,1500 420,1500" fill="url(#shaft)" opacity=".55"/>`;
+    h+=`<rect x="640" y="300" width="280" height="180" rx="6" fill="#bda983"/>`;
+    h+=`<rect x="656" y="316" width="248" height="148" fill="${night?'#16244d':'url(#glass)'}"/>`;
+    if(night)h+=`<circle cx="860" cy="350" r="26" fill="#f6efd0" opacity=".9"/>`;
+    for(let k=1;k<5;k++)h+=`<rect x="${650+k*50}" y="316" width="11" height="148" fill="#5a4a3a"/>`;
+    h+=`<rect x="656" y="384" width="248" height="10" fill="#5a4a3a"/>`;
+    if(!night)h+=`<circle cx="780" cy="390" r="330" fill="url(#glow)" opacity=".7"/>`;
+  }
+  return h;
+}
+function bed(x,y,w,lump=false){
+  let h=`<rect x="${x}" y="${y+50}" width="${w}" height="120" rx="10" fill="#2f3b58"/><rect x="${x+10}" y="${y+160}" width="24" height="60" fill="#232c43"/><rect x="${x+w-34}" y="${y+160}" width="24" height="60" fill="#232c43"/>`;
+  h+=`<rect x="${x}" y="${y}" width="${w}" height="76" rx="16" fill="#e6e2d8"/>`;
+  const bx=x+w*0.32,bw=w*0.68;
+  if(lump)h+=`<path d="M${bx-10} ${y+70} Q${bx+20} ${y-60} ${bx+bw*0.45} ${y-50} Q${bx+bw*0.8} ${y-40} ${x+w+8} ${y+70}Z" fill="#dfe6f2"/>`;
+  h+=`<rect x="${bx}" y="${y-4}" width="${bw+8}" height="88" rx="14" fill="#dfe6f2"/>`;
+  for(let k=0;k<3;k++)h+=`<rect x="${bx}" y="${y+12+k*24}" width="${bw+8}" height="9" fill="#4d6ba8"/>`;
+  if(lump)h+=`<path d="M${bx+40} ${y-10} Q${bx+bw*0.45} ${y-62} ${x+w-30} ${y-10}" stroke="#4d6ba8" stroke-width="9" fill="none"/>`;
+  return h;
+}
+function pillow(x,y){return `<ellipse cx="${x}" cy="${y}" rx="96" ry="40" fill="#f6f4ee" stroke="#cdc8bd" stroke-width="4"/>`;}
+function spoon(){return `<g transform="translate(0 128) rotate(170)"><rect x="-6" y="-10" width="12" height="110" rx="6" fill="#c9ced6" stroke="#7d848f" stroke-width="3"/><ellipse cy="112" rx="20" ry="30" fill="#dfe3e9" stroke="#7d848f" stroke-width="3"/></g>`;}
+function flashlight(){return `<g transform="translate(0 128) rotate(100)"><rect x="-14" y="-20" width="28" height="80" rx="6" fill="#30343c"/><rect x="-18" y="52" width="36" height="22" rx="4" fill="#4a505b"/></g>`;}
+function oar(){return `<g transform="translate(0 128) rotate(-20)"><line y1="-140" y2="150" stroke="#7a4f2c" stroke-width="12" stroke-linecap="round"/><ellipse cy="175" rx="24" ry="48" fill="#8e5d33"/></g>`;}
+function stars(n,u){let h='';for(let k=0;k<n;k++){const x=rnd(k)*1080,y=rnd(k+99)*900,tw=.4+.6*Math.abs(Math.sin(u*2+k));h+=`<circle cx="${f(x)}" cy="${f(y)}" r="${f(1.5+rnd(k+7)*3)}" fill="#fff" opacity="${tw.toFixed(2)}"/>`;}return h;}
+function waves(y0,u,n,col,amp=14,sp=1){
+  let h='';
+  for(let k=0;k<n;k++){const y=y0+k*70;let d=`M-20 ${y}`;for(let x=-20;x<=1100;x+=40)d+=` L${x} ${f(y+Math.sin(x/70+u*sp*1.6+k*1.3)*amp)}`;h+=`<path d="${d}" stroke="${col}" stroke-width="5" fill="none" opacity="${(.35-k*.03).toFixed(2)}" stroke-linecap="round"/>`;}
+  return h;
+}
+function island(x,y,s,u){
+  let h=`<g transform="translate(${x} ${y}) scale(${s})">`;
+  const a=u*1.3, len=900;
+  h+=`<g transform="translate(-160 -190) rotate(${f(Math.sin(a)*60-90+180)})"><polygon points="0,0 ${len},-90 ${len},90" fill="url(#beam)"/></g>`;
+  h+=`<path d="M-380 40 Q-330 -60 -200 -80 Q-80 -120 60 -110 Q220 -100 300 -40 Q360 0 400 40Z" fill="#141a2e"/>`;
+  h+=`<rect x="-120" y="-200" width="300" height="110" fill="#262f4d"/><rect x="-60" y="-250" width="160" height="60" fill="#2c3657"/>`;
+  for(let i=0;i<9;i++)for(let j=0;j<2;j++)h+=`<rect x="${-105+i*32}" y="${-175+j*40}" width="14" height="18" fill="#ffd36a" opacity="${(.5+.5*rnd(i*3+j)).toFixed(2)}"/>`;
+  h+=`<rect x="-180" y="-190" width="40" height="110" fill="#2c3657"/><rect x="-188" y="-210" width="56" height="24" fill="#3a4670"/><circle cx="-160" cy="-198" r="12" fill="#fff4b0"/>`;
+  return h+'</g>';
+}
+function seaNight(u,horizon,stN=60){
+  let h=`<rect width="1080" height="1920" fill="url(#sky)"/>`+stars(stN,u);
+  h+=`<circle cx="840" cy="330" r="160" fill="url(#glow)" opacity=".5"/><circle cx="840" cy="330" r="64" fill="#f6efd0"/><circle cx="822" cy="318" r="12" fill="#e2d9b8"/><circle cx="858" cy="348" r="8" fill="#e2d9b8"/>`;
+  return h;
+}
+function burst(x,y,r,p,col='#ffd23f'){
+  if(p<=0)return '';const s=back(p);let d='';
+  for(let k=0;k<24;k++){const a=k/24*Math.PI*2,rr=k%2?r*.62:r;d+=(k?'L':'M')+f(Math.cos(a)*rr)+' '+f(Math.sin(a)*rr);}
+  return `<g transform="translate(${x} ${y}) scale(${s.toFixed(3)})"><path d="${d}Z" fill="${col}" stroke="#141414" stroke-width="8"/></g>`;
+}
+function particles(x,y,u,n,seed,col){
+  let h='';
+  for(let k=0;k<n;k++){const ph=(u*1.4+rnd(k+seed))%1,px=x+(rnd(k*2+seed)-.5)*90+ph*(rnd(k+5)-.5)*80,py=y+ph*ph*420;h+=`<circle cx="${f(px)}" cy="${f(py)}" r="${f(3+rnd(k+3)*6)}" fill="${col}" opacity="${f(1-ph)}"/>`;}
+  return h;
+}
+
+// ---------- scenes ----------
+const SC=[
+// 1 hook
+(u,d)=>{
+  let h=cell('day',{tally:24});
+  h+=bed(40,1150,560)+pillow(140,1125)+fakeHead(150,1078,.62);
+  const pt=ease(seg(u,1.6,2.2));
+  h+=guy({x:800,y:640,s:.95,expr:'smirk',look:-1+pt*0,aL:lerp(12,62,pt),eL:lerp(-8,8,pt),aR:10,blink:(u%3.1>2.95)?1:0});
+  const tp=seg(u,2.3,2.7);
+  if(tp>0){h+=`<g opacity="${tp}"><path d="M310 940 Q260 990 210 1020" stroke="#ffd23f" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M196 994 L206 1028 L240 1020" stroke="#ffd23f" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+    h+=label('FALSA!',920,{size:78,fill:'#ffd23f',p:tp,x:360,rot:-6,stroke:14});}
+  h+=label('A FUGA DE',300,{size:110,p:1});
+  h+=label('ALCATRAZ',470,{size:190,fill:'#ffd23f',p:1});
+  return h;
+},
+// 2 island
+(u,d)=>{
+  let h=seaNight(u,1080);
+  h+=island(540,1110,1.15,u);
+  h+=`<rect y="1100" width="1080" height="820" fill="url(#sea)"/>`;
+  h+=waves(1130,u,8,'#8fb3ff',12);
+  const cp=seg(u,d*.6,d*.8);
+  for(let k=0;k<3;k++){const y=1220+k*90,off=-((u*180+k*90)%120);h+=`<path d="M${120+k*40} ${y} Q540 ${y-50} ${960-k*40} ${y}" stroke="#ffffff" stroke-width="9" fill="none" stroke-dasharray="60 60" stroke-dashoffset="${f(off)}" opacity="${f(.6*cp)}" stroke-linecap="round"/><path d="M${960-k*40-30} ${y-24} L${960-k*40} ${y} L${960-k*40-34} ${y+18}" stroke="#fff" stroke-width="9" fill="none" opacity="${f(.6*cp)}" stroke-linecap="round"/>`;}
+  h+=label('1962',380,{size:230,fill:'#ffd23f',p:seg(u,.05,.45)});
+  h+=label('ÁGUA GELADA',1270,{size:90,fill:'#9fe6ff',p:seg(u,d*.45,d*.55)});
+  h+=label('+ CORRENTES FORTES',1370,{size:62,p:seg(u,d*.68,d*.78)});
+  return h;
+},
+// 3 digging
+(u,d)=>{
+  const n=Math.floor(seg(u,.2,d-.4)*45);
+  let h=cell('day',{tally:0});
+  h+=tally(50,560,n);
+  const hp=seg(u,.3,d);
+  h+=`<rect x="${f(330-hp*30)}" y="${f(700-hp*24)}" width="${f(320+hp*60)}" height="${f(220+hp*48)}" rx="8" fill="#2a2420"/>`;
+  h+=`<rect x="340" y="710" width="300" height="200" fill="#8d8574" stroke="#5f584b" stroke-width="8"/>`;
+  for(let k=0;k<6;k++)h+=`<rect x="356" y="${726+k*30}" width="268" height="14" rx="4" fill="#3f3a33"/>`;
+  const cr=seg(u,.5,d*.8);
+  h+=`<path d="M640 700 L700 640 L740 660 L800 600 M640 910 L700 960 L690 1000 M340 700 L290 650 L300 600" stroke="#5a4a36" stroke-width="5" fill="none" stroke-dasharray="400" stroke-dashoffset="${f(400*(1-cr))}"/>`;
+  const sw=Math.sin(u*Math.PI*2*3.2);
+  h+=guy({x:880,y:700,s:.85,expr:'smirk',look:-1,aL:118+sw*7,eL:-22+sw*14,aR:12,holdL:spoon()});
+  h+=particles(650,830,u,14,7,'#cbbd9e');
+  h+=label('MESES CAVANDO',300,{size:100,p:seg(u,.05,.4)});
+  h+=label('COM COLHER!',440,{size:130,fill:'#ffd23f',p:seg(u,d*.6,d*.72)});
+  return h;
+},
+// 4 recipe
+(u,d)=>{
+  let h=cell('day',{tally:30});
+  h+=`<rect x="40" y="1170" width="1000" height="44" rx="10" fill="#8a5a3a"/><rect x="40" y="1206" width="1000" height="12" fill="#6b4329"/><rect x="90" y="1214" width="34" height="160" fill="#6b4329"/><rect x="956" y="1214" width="34" height="160" fill="#6b4329"/>`;
+  const T=[.33,.47,.68].map(k=>k*d), M=seg(u,d*.8,d*.92), mm=ease(M);
+  const items=[
+    [200,1100,()=>`<rect x="-80" y="-48" width="160" height="96" rx="26" fill="#f6b7c8" stroke="#c97a92" stroke-width="6"/><circle cx="-20" cy="-20" r="10" fill="#fff" opacity=".8"/><circle cx="34" cy="10" r="14" fill="#fff" opacity=".7"/>`,'SABÃO'],
+    [540,1070,()=>`<rect x="-64" y="-80" width="128" height="160" fill="#fbfaf6" stroke="#c9c4b6" stroke-width="6"/><ellipse cy="-80" rx="64" ry="20" fill="#fff" stroke="#c9c4b6" stroke-width="6"/><ellipse cy="-80" rx="20" ry="7" fill="#b9a789"/><path d="M64 40 Q90 70 60 110" stroke="#c9c4b6" stroke-width="5" fill="#fbfaf6"/>`,'PAPEL'],
+    [880,1100,()=>{let s='';for(let k=0;k<11;k++)s+=`<circle cx="${f((rnd(k)-.5)*120)}" cy="${f((rnd(k+20)-.5)*70)}" r="${f(24+rnd(k+4)*10)}" fill="#3a2722"/>`;return s;},'CABELO']
+  ];
+  items.forEach(([x,y,fn,name],i)=>{
+    const p=seg(u,T[i]-.1,T[i]+.25); if(p<=0)return;
+    const s=1.35*back(p)*(1-mm*.7), X=lerp(x,540,mm), Y=lerp(y,780,mm);
+    if(M<1)h+=`<g transform="translate(${f(X)} ${f(Y)}) scale(${s.toFixed(3)})" opacity="${f(1-M)}">${fn()}</g>`;
+    if(M<.3)h+=label(name,y-150,{size:64,p,x,stroke:12});
+  });
+  if(M<.3){h+=label('+',1100,{size:110,x:370,p:seg(u,T[1]-.1,T[1]+.2)})+label('+',1100,{size:110,x:710,p:seg(u,T[2]-.1,T[2]+.2)});}
+  const hp=seg(u,d*.9,d*.98);
+  if(hp>0){let r='';for(let k=0;k<12;k++){const a=k/12*Math.PI*2+u;r+=`<line x1="${f(540+Math.cos(a)*210)}" y1="${f(800+Math.sin(a)*210)}" x2="${f(540+Math.cos(a)*290)}" y2="${f(800+Math.sin(a)*290)}" stroke="#ffd23f" stroke-width="12" stroke-linecap="round" opacity="${f(hp)}"/>`;}
+    h+=r+fakeHead(540,800,1.25*back(hp),Math.sin(u*3)*4);}
+  h+=label('RECEITA DA',290,{size:100,p:seg(u,.05,.4)});
+  h+=label('CABEÇA FALSA',430,{size:140,fill:'#ffd23f',p:seg(u,.2,.6)});
+  return h;
+},
+// 5 night patrol
+(u,d)=>{
+  let h=cell('night',{tally:36});
+  h+=bed(60,1140,700,true)+pillow(170,1112)+fakeHead(180,1066,.6);
+  h+=`<rect width="1080" height="1920" fill="#0d1a44" opacity=".6"/>`;
+  h+=`<rect x="780" y="0" width="300" height="1920" fill="#0b1230"/>`;
+  const gx=u<d*.25?lerp(1260,950,ease(seg(u,.2,d*.25))):u<d*.72?950:lerp(950,1300,ease(seg(u,d*.72,d*.95)));
+  const sweep=Math.sin(seg(u,d*.25,d*.72)*Math.PI*2)*.5+.5, on=seg(u,d*.22,d*.3)*(1-seg(u,d*.68,d*.74));
+  const hx=gx-90, hy=900, tx=lerp(150,650,sweep), ty=1100;
+  if(on>0)h+=`<g style="mix-blend-mode:screen" opacity="${f(on)}"><polygon points="${f(hx)},${hy} ${f(tx-170)},${ty+70} ${f(tx+170)},${ty-50}" fill="url(#cone)" opacity=".5"/><ellipse cx="${f(tx)}" cy="${ty}" rx="190" ry="110" fill="#fff3b0" opacity=".35"/></g>`;
+  h+=`<g clip-path="url(#corr)"><g style="filter:brightness(.6)">${guy({x:gx,y:660,s:.8,kit:GUARD,expr:'neutral',look:-1,aL:20,eL:0,aR:8,holdL:flashlight()})}</g></g>`;
+  for(let k=0;k<5;k++)h+=`<rect x="${790+k*64}" y="0" width="22" height="1920" fill="#2b3142"/><rect x="${794+k*64}" y="0" width="6" height="1920" fill="#4a5470"/>`;
+  h+=`<rect x="780" y="560" width="300" height="26" fill="#2b3142"/><rect x="780" y="1290" width="300" height="26" fill="#2b3142"/>`;
+  for(let k=0;k<3;k++){const ph=(u*.6+k/3)%1;h+=`<text x="${f(250+ph*90+k*10)}" y="${f(980-ph*240)}" font-family="Anton" font-size="${f(44+ph*30)}" fill="#cfe0ff" opacity="${f(Math.sin(ph*Math.PI))}">Z</text>`;}
+  h+=label('RONDA DA NOITE',300,{size:100,p:seg(u,.05,.4)});
+  h+=label('TUDO NORMAL...',440,{size:110,fill:'#7dff9a',p:seg(u,d*.78,d*.88)});
+  return h;
+},
+// 6 morning roll
+(u,d)=>{
+  let h=cell('day',{tally:37});
+  h+=`<rect width="1080" height="1920" fill="#ffb35a" opacity=".1"/>`;
+  h+=bed(20,1150,560,true)+pillow(470,1122);
+  const P=seg(u,d*.48,d*.62), B=seg(u,d*.62,d*.74);
+  let hx=470,hy=1076,rot=0;
+  if(P>0){hx=lerp(470,330,P);hy=lerp(1076,1380,P*P);rot=-(470-hx)/70*57;}
+  if(B>0){hx=lerp(330,250,B);hy=1380-Math.sin(B*Math.PI)*70;rot=-(470-hx)/70*57;}
+  const shock=u>d*.5;
+  const reach=ease(seg(u,.3,d*.42))*(1-ease(seg(u,d*.5,d*.6)));
+  h+=guy({x:770,y:690,s:1,kit:GUARD,expr:shock?'shock':'neutral',look:-1,aL:lerp(10,48,reach),eL:lerp(-8,-20,reach),aR:shock?150:10,eR:shock?20:-8});
+  h+=fakeHead(hx,hy,.6,rot);
+  if(shock){const sp=seg(u,d*.5,d*.58);h+=label('!',460,{size:150,fill:'#ff4d4d',x:880,p:sp,rot:12})+label('!',470,{size:120,fill:'#ff4d4d',x:960,p:seg(u,d*.54,d*.62),rot:20});
+    h+=`<path d="M900 600 q14 26 0 40 q-14 -14 0 -40z" fill="#9ad8ff" opacity="${f(sp)}"/>`;}
+  const bp=seg(u,d*.6,d*.68);
+  if(bp>0){h+=burst(450,1220,120,bp*(1-seg(u,d*.92,d)));h+=label('PLOFT!',1245,{size:72,fill:'#ff4d4d',x:450,p:bp*(1-seg(u,d*.92,d)),stroke:12,rot:-8});}
+  h+=label('DE MANHÃ...',320,{size:120,p:seg(u,.05,.4)});
+  return h;
+},
+// 7 raft
+(u,d)=>{
+  let h=seaNight(u,900,40);
+  h+=island(820,930,.45,u);
+  h+=`<rect y="920" width="1080" height="1000" fill="url(#sea)"/>`;
+  h+=waves(950,u,5,'#8fb3ff',8,.7);
+  const bob=Math.sin(u*2.2)*12, rr=Math.sin(u*1.7)*3;
+  h+=`<g transform="translate(520 ${f(1180+bob)}) rotate(${f(rr)})">`;
+  h+=`<ellipse cx="0" cy="0" rx="380" ry="90" fill="#c99716"/>`;
+  [-210,0,210].forEach((x,k)=>{const sw=Math.sin(u*3.2+k*.8);h+=guy({x,y:-250,s:.42,legs:false,expr:k==1?'smirk':'neutral',look:k==2?-1:1,aL:30+sw*25,eL:10,aR:30-sw*25,eR:10,holdL:k!=1?oar():'',holdR:k==1?oar():''});});
+  h+=`<path d="M-400 -10 Q-390 80 -260 104 L260 104 Q390 80 400 -10 Q380 60 0 70 Q-380 60 -400 -10Z" fill="#f2c230" stroke="#a87c10" stroke-width="6"/>`;
+  for(let k=-3;k<=3;k++)h+=`<path d="M${k*110} 70 L${k*110+6} 104" stroke="#a87c10" stroke-width="5"/>`;
+  h+=`</g>`;
+  h+=`<path d="M0 1290 ${Array.from({length:28},(_,i)=>`L${i*40} ${f(1290+Math.sin(i*.6+u*2)*16)}`).join(' ')} L1080 1920 L0 1920Z" fill="#132552" opacity=".95"/>`;
+  h+=waves(1320,u,3,'#8fb3ff',10,1.2);
+  h+=label('JÁ ESTAVAM LONGE...',330,{size:96,p:seg(u,.05,.4)*(1-seg(u,d*.55,d*.62))});
+  h+=label('+50 CAPAS',330,{size:150,fill:'#ffd23f',p:seg(u,d*.6,d*.7)});
+  h+=label('DE CHUVA',470,{size:110,p:seg(u,d*.66,d*.76)});
+  return h;
+},
+// 8 wanted + CTA
+(u,d)=>{
+  let h=`<rect width="1080" height="1920" fill="url(#spot)"/>`;
+  for(let k=0;k<12;k++)h+=`<rect x="0" y="${k*170}" width="1080" height="3" fill="#000" opacity=".25"/>`;
+  const names=['MORRIS','J. ANGLIN','C. ANGLIN'],rots=[-5,2,6];
+  [200,540,880].forEach((x,k)=>{
+    const p=seg(u,.1+k*.18,.5+k*.18);if(p<=0)return;
+    const y=lerp(-400,830,eo(p));
+    h+=`<g transform="translate(${x} ${f(y)}) rotate(${rots[k]})"><rect x="-150" y="-200" width="300" height="400" fill="#efe1bd" stroke="#b9a27a" stroke-width="5"/><circle cy="-186" r="9" fill="#c33"/>`;
+    h+=`<text y="-120" font-family="Anton" font-size="50" fill="#b3261e" text-anchor="middle">PROCURADO</text>`;
+    h+=`<circle cy="-10" r="62" fill="#3c3530"/><path d="M-100 120 Q-100 50 0 50 Q100 50 100 120Z" fill="#3c3530"/><text y="20" font-family="Anton" font-size="90" fill="#efe1bd" text-anchor="middle">?</text>`;
+    h+=`<text y="175" font-family="Anton" font-size="38" fill="#3c3530" text-anchor="middle">${names[k]}</text></g>`;
+  });
+  const sp=seg(u,1.3,1.55);
+  if(sp>0){const s=lerp(2.2,1,eo(sp));h+=`<g transform="translate(540 840) rotate(-12) scale(${s.toFixed(3)})" opacity="${f(sp)}"><rect x="-430" y="-78" width="860" height="140" rx="14" fill="none" stroke="#e0332b" stroke-width="14"/><text y="36" font-family="Anton" font-size="104" fill="#e0332b" text-anchor="middle">NUNCA ENCONTRADOS</text></g>`;}
+  h+=label('MORRERAM...',300,{size:120,p:seg(u,d*.5,d*.6)});
+  h+=label('OU ESCAPARAM?',440,{size:130,fill:'#ffd23f',p:seg(u,d*.7,d*.8)});
+  const cp=seg(u,d-1.5,d-1.1);
+  if(cp>0){const pul=1+Math.sin(u*8)*.03;h+=`<g transform="translate(540 1290) scale(${(back(cp)*pul).toFixed(3)})"><rect x="-300" y="-70" width="600" height="130" rx="65" fill="#ff2d55" stroke="#141414" stroke-width="10"/><text y="28" class="lb" font-size="84" fill="#fff" text-anchor="middle">SIGA PARA MAIS</text></g>`;}
+  return h;
+}
+];
+
+// ---------- timeline & captions ----------
+const HL=[['CABEÇAS','FALSAS'],['1962','ALCATRAZ','GELADA'],['COLHERES','AFIADAS'],['SABÃO','PAPEL','HIGIÊNICO','CABELO'],['NADA'],['ROLOU','CHÃO'],['CINQUENTA','CAPAS'],['NUNCA','CONSEGUIRAM']];
+const A_OFF=.12, TR=.28;
+let SCN=[],GROUPS=[],TOTAL=0;
+const norm=w=>w.replace(/[^\wÀ-ÿ]/g,'');
+function setup(T){
+  let t=0;SCN=[];GROUPS=[];
+  T.forEach((b,i)=>{
+    const d=b.dur+A_OFF+.3+(i===T.length-1?1.6:0);
+    SCN.push({s:t,d});
+    const words=b.text.toUpperCase().split(/\s+/).filter(Boolean);
+    const tot=words.reduce((a,w)=>a+w.length+1,0);
+    let c=t+A_OFF,cur=[];
+    words.forEach((w,k)=>{
+      const wd=b.dur*(w.length+1)/tot, wo={w,t0:c,t1:c+wd,hl:HL[i].includes(norm(w))};c+=wd;cur.push(wo);
+      if(cur.length===3||/[.,:!?]$/.test(w)||k===words.length-1){GROUPS.push({words:cur,t0:cur[0].t0,end:t+d});cur=[];}
+    });
+    t+=d;
+  });
+  for(let g=0;g<GROUPS.length-1;g++)GROUPS[g].end=Math.min(GROUPS[g].end,GROUPS[g+1].t0);
+  GROUPS[GROUPS.length-1].end=t-1.6;
+  TOTAL=t;return {total:TOTAL,scenes:SCN};
+}
+function caption(t){
+  const g=GROUPS.find(g=>t>=g.t0&&t<g.end);if(!g)return '';
+  const p=seg(t,g.t0,g.t0+.16),s=.75+.25*back(p);
+  const len=g.words.reduce((a,w)=>a+w.w.length+1,0);
+  const sz=Math.min(112,940/(len*.47));
+  const sp=g.words.map(w=>{const col=t>=w.t0?(w.hl?'#ffd23f':'#ffffff'):'#d9d9d9';return `<tspan fill="${col}">${w.w}</tspan>`;}).join(' ');
+  return `<g transform="translate(540 1560) scale(${s.toFixed(3)})"><text class="cap" y="8" font-size="${f(sz)}" fill="#000" stroke="#000" stroke-width="18" opacity=".4" text-anchor="middle">${g.words.map(w=>w.w).join(' ')}</text><text class="cap" font-size="${f(sz)}" stroke="#111" stroke-width="18" text-anchor="middle">${sp}</text></g>`;
+}
+function sceneAt(i,u){const d=SCN[i].d,z=1+.05*cl(u/d);return `<g transform="translate(540 900) scale(${z.toFixed(4)}) translate(-540 -900)">${SC[i](u,d)}</g>`;}
+function render(t){
+  let i=SCN.findIndex(s=>t>=s.s&&t<s.s+s.d);if(i<0)i=SCN.length-1;
+  const u=t-SCN[i].s;let h='';
+  if(i>0&&u<TR){const p=ease(u/TR);h+=sceneAt(i-1,SCN[i-1].d);h+=`<g opacity="${p.toFixed(3)}" transform="translate(0 ${f((1-p)*70)})">${sceneAt(i,u)}</g><rect width="1080" height="1920" fill="#fff" opacity="${f(.28*(1-p))}"/>`;}
+  else h=sceneAt(i,u);
+  document.getElementById('root').innerHTML=h;
+  document.getElementById('caps').innerHTML=caption(t);
+  const fr=Math.floor(t*30);document.getElementById('grain').setAttribute('x',f(-60+rnd(fr)*60));document.getElementById('grain').setAttribute('y',f(-60+rnd(fr+5)*60));
+}
+window.INFO=setup(window.TIMING);
+window.ready=true;
+render(0);
+</script>
+</body></html>
