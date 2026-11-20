@@ -1,0 +1,258 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Anton;src:url(../alcatraz/fonts/anton.woff2) format('woff2');}
+html,body{margin:0;padding:0;background:#000;overflow:hidden}
+#wrap{position:relative;width:1080px;height:1920px;overflow:hidden}
+#gl{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+#ov{position:absolute;left:0;top:0}
+.lb,.cap{font-family:Anton;paint-order:stroke;stroke-linejoin:round;letter-spacing:1px}
+</style>
+<script type="importmap">{"imports":{"three":"../alcatraz/lib/three.module.js","three/addons/":"../node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<div id="wrap"><canvas id="gl"></canvas>
+<svg id="ov" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+<defs>
+ <radialGradient id="vig" cx=".5" cy=".45" r=".78"><stop offset=".5" stop-color="#140d22" stop-opacity="0"/><stop offset="1" stop-color="#140d22" stop-opacity=".62"/></radialGradient>
+ <radialGradient id="sunglow" cx=".72" cy=".2" r=".55"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".28"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1080" height="1920" fill="#5b3d7a" opacity=".12" style="mix-blend-mode:multiply"/>
+<rect id="glow" width="1080" height="1920" fill="url(#sunglow)" style="mix-blend-mode:screen"/>
+<image id="grain" href="../alcatraz/grain.png" x="-60" y="-60" width="1200" height="2040" opacity=".09" style="mix-blend-mode:overlay" preserveAspectRatio="none"/>
+<rect width="1080" height="1920" fill="url(#vig)"/>
+<g id="ui"></g>
+</svg></div>
+<script src="../kit/chars.js"></script>
+<script src="../kit/anim.js"></script>
+<script type="module">
+// Quarto aconchegante no estilo macio (personagens originais). Lista de detalhes em DETALHES.md.
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+await document.fonts.load('50px Anton');
+
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('gl'),antialias:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(1);renderer.setSize(1080,1920,false);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+const scene=new THREE.Scene();scene.fog=new THREE.FogExp2('#3a2c4e',.035);scene.background=new THREE.Color('#251c33');
+const cam=new THREE.PerspectiveCamera(52,1080/1920,.05,200);
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+let SEED=3;const R=()=>{SEED=(SEED*16807)%2147483647;return SEED/2147483647;};const TAU=Math.PI*2;
+// ---------- texturas pintadas ----------
+function ctex(w,h,draw,rep){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;if(rep){t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rep[0],rep[1]);}return t;}
+function strokes(g,w,h,n,cols,len=60,wd=10,a=.08){for(let i=0;i<n;i++){g.strokeStyle=cols[i%cols.length];g.globalAlpha=a*(.5+R());g.lineWidth=wd*(.5+R());g.lineCap='round';const x=R()*w,y=R()*h,an=(R()-.5)*.8;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+Math.cos(an)*len*.5,y+Math.sin(an)*len*.5+(R()-.5)*10,x+Math.cos(an)*len,y+Math.sin(an)*len);g.stroke();}g.globalAlpha=1;}
+function grainy(g,w,h,amt){const im=g.getImageData(0,0,w,h);for(let i=0;i<im.data.length;i+=4){const v=(R()-.5)*amt;im.data[i]+=v;im.data[i+1]+=v;im.data[i+2]+=v;}g.putImageData(im,0,0);}
+const std=o=>new THREE.MeshStandardMaterial(Object.assign({roughness:.9,metalness:0},o));
+function M(geo,mat,par,x=0,y=0,z=0,cast=true){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.castShadow=cast;m.receiveShadow=true;par.add(m);return m;}
+const box=(w,h,d,mat,par,x,y,z)=>M(new THREE.BoxGeometry(w,h,d),mat,par,x,y,z);
+const cyl=(rt,rb,h,mat,par,x,y,z,seg=20)=>M(new THREE.CylinderGeometry(rt,rb,h,seg),mat,par,x,y,z);
+const soft=ctex(256,256,g=>{const r=g.createRadialGradient(128,128,0,128,128,128);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.3,'rgba(255,255,255,.5)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,256,256);});
+const ROOM=new THREE.Group();scene.add(ROOM);
+
+// 1-4 parede de reboco pintado, lambri de madeira, rodapé, moldura no teto
+const plaster=ctex(1024,1024,(g,w,h)=>{g.fillStyle='#8f8597';g.fillRect(0,0,w,h);strokes(g,w,h,900,['#9d93a6','#80778b','#a59cad','#7a7186'],120,26,.12);grainy(g,w,h,12);for(let i=0;i<6;i++){g.strokeStyle='rgba(60,50,70,.25)';g.lineWidth=2;let x=R()*w,y=R()*h;g.beginPath();g.moveTo(x,y);for(let k=0;k<8;k++){x+=(R()-.5)*50;y+=R()*40;g.lineTo(x,y);}g.stroke();}},[2,1]);
+const woodT=(base,rep)=>ctex(512,512,(g,w,h)=>{g.fillStyle=base;g.fillRect(0,0,w,h);for(let i=0;i<220;i++){g.strokeStyle=`rgba(${R()>.5?'40,22,12':'150,100,60'},${.08+R()*.12})`;g.lineWidth=1+R()*3;const y=R()*h;g.beginPath();g.moveTo(0,y);g.bezierCurveTo(w*.3,y+(R()-.5)*14,w*.6,y+(R()-.5)*14,w,y+(R()-.5)*8);g.stroke();}grainy(g,w,h,16);},rep);
+const wallM=std({map:plaster,roughness:.95,color:'#c9bfd2'});
+const darkWood=std({map:woodT('#4a2d22',[2,1]),roughness:.7});
+const midWood=std({map:woodT('#6b4330',[1,1]),roughness:.6});
+const W=6,D=6,H=3.3;
+const wall=(w,h,x,y,z,ry)=>{const m=M(new THREE.PlaneGeometry(w,h),wallM,ROOM,x,y,z,false);m.rotation.y=ry;return m;};
+// parede do fundo com vão da janela (x .25..2.05, y .95..2.75)
+box(3.25,H,.2,wallM,ROOM,-1.375,H/2,-3.1);box(.95,H,.2,wallM,ROOM,2.525,H/2,-3.1);box(1.8,.95,.2,wallM,ROOM,1.15,.475,-3.1);box(1.8,.55,.2,wallM,ROOM,1.15,3.025,-3.1);
+wall(D,H,-3,H/2,0,Math.PI/2);wall(D,H,3,H/2,0,-Math.PI/2);wall(W,H,0,H/2,3,Math.PI);
+// lambri (painéis) e rodapé + moldura
+for(const[w,x,z,ry]of[[6,0,-2.99,0],[6,-2.99,0,Math.PI/2],[6,2.99,0,-Math.PI/2]]){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;ROOM.add(g);
+  box(w,.95,.04,darkWood,g,0,.475,0);for(let i=0;i<9;i++){const px=-w/2+.33+i*(w/9);if(z<-2.9&&px>-1.2+0.85&&px<2.6)continue;box(.5,.6,.03,midWood,g,px+.0,.5,.03);}
+  box(w,.08,.07,midWood,g,0,.98,.02);box(w,.14,.06,darkWood,g,0,.07,.03);box(w,.12,.08,darkWood,g,0,H-.06,.03);}
+// 5 piso de tábuas com verniz
+const floorT=ctex(1024,1024,(g,w,h)=>{const cols=['#5a3523','#663d28','#53301f','#6e4430'];for(let i=0;i<10;i++){g.fillStyle=cols[i%4];g.fillRect(0,i*102.4,w,102.4);for(let k=0;k<2;k++){g.fillStyle='rgba(20,10,5,.5)';g.fillRect((i*331+k*487)%w,i*102.4,3,102.4);}}strokes(g,w,h,500,['#8a5a3a','#3a2014'],200,4,.15);grainy(g,w,h,14);g.fillStyle='rgba(15,8,4,.6)';for(let i=0;i<=10;i++)g.fillRect(0,i*102.4-2,w,4);},[3,3]);
+const floor=M(new THREE.PlaneGeometry(W,D),std({map:floorT,roughness:.42,metalness:.05}),ROOM,0,0,0,false);floor.rotation.x=-Math.PI/2;
+// 6 teto com vigas
+const ceil=M(new THREE.PlaneGeometry(W,D),std({color:'#6f6378'}),ROOM,0,H,0,false);ceil.rotation.x=Math.PI/2;
+for(let i=0;i<4;i++)box(.22,.2,D,darkWood,ROOM,-2.2+i*1.5,H-.1,0);
+// 7-12 janela quadriculada (losangos de chumbo), batente de pedra, parapeito, vista lá fora
+const lattice=ctex(512,512,(g,w,h)=>{g.fillStyle='#fff3d6';g.fillRect(0,0,w,h);const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'rgba(255,255,255,.35)');gr.addColorStop(1,'rgba(200,170,120,.25)');g.fillStyle=gr;g.fillRect(0,0,w,h);g.strokeStyle='#2c2420';g.lineWidth=6;for(let i=-w;i<w*2;i+=64){g.beginPath();g.moveTo(i,0);g.lineTo(i+h,h);g.stroke();g.beginPath();g.moveTo(i,h);g.lineTo(i+h,0);g.stroke();}});
+const outside=ctex(1024,1024,(g,w,h)=>{const sk=g.createLinearGradient(0,0,0,h);sk.addColorStop(0,'#f6c98a');sk.addColorStop(.45,'#f9dfb4');sk.addColorStop(1,'#cfd6c2');g.fillStyle=sk;g.fillRect(0,0,w,h);
+  const hill=(y,col,amp,n)=>{g.fillStyle=col;g.beginPath();g.moveTo(0,h);for(let x=0;x<=w;x+=8)g.lineTo(x,y+Math.sin(x/w*Math.PI*n+y)*amp+Math.sin(x*.05)*amp*.2);g.lineTo(w,h);g.fill();};
+  hill(520,'#b9b7a5',40,2);hill(600,'#8e9a80',50,3);for(let i=0;i<70;i++){const x=R()*w,y=640+R()*120;g.fillStyle=['#5f7a55','#6c8a5e','#506b48'][i%3];g.beginPath();g.moveTo(x,y-60-R()*40);g.lineTo(x+18,y);g.lineTo(x-18,y);g.fill();}
+  hill(760,'#4f6b46',30,5);for(let i=0;i<10;i++){g.fillStyle='rgba(255,240,220,.25)';g.fillRect(0,480+i*30,w,14);}});
+const outM=new THREE.MeshBasicMaterial({map:outside,toneMapped:false,fog:false});M(new THREE.PlaneGeometry(3.6,3),outM,ROOM,1.15,1.8,-3.9,false);
+const glassM=new THREE.MeshStandardMaterial({map:lattice,transparent:true,opacity:.42,roughness:.15,metalness:.1,emissive:'#ffdcae',emissiveIntensity:.35,emissiveMap:lattice});
+M(new THREE.PlaneGeometry(1.8,1.8),glassM,ROOM,1.15,1.85,-3.05,false);
+const stone=std({color:'#8c8492',map:plaster,roughness:.95});
+box(2.05,.12,.42,stone,ROOM,1.15,.92,-2.88);box(.14,1.95,.3,stone,ROOM,.18,1.85,-3.02);box(.14,1.95,.3,stone,ROOM,2.12,1.85,-3.02);box(2.05,.16,.3,stone,ROOM,1.15,2.83,-3.02);
+box(.07,1.8,.08,darkWood,ROOM,1.15,1.85,-3.0);box(1.8,.07,.08,darkWood,ROOM,1.15,1.85,-3.0);
+// 13-16 cortinas de veludo roxo com dobras, varão com ponteiras, prendedor dourado
+const velvet=ctex(256,512,(g,w,h)=>{const gr=g.createLinearGradient(0,0,w,0);for(let i=0;i<=8;i++)gr.addColorStop(i/8,i%2?'#4a2a5e':'#62387a');g.fillStyle=gr;g.fillRect(0,0,w,h);grainy(g,w,h,10);});
+const CURT=[];for(const[x,s]of[[.05,-1],[2.25,1]]){const geo=new THREE.PlaneGeometry(.7,2.75,16,24);const p=geo.attributes.position;for(let i=0;i<p.count;i++){const px=p.getX(i),py=p.getY(i),k=(1.375-py)/2.75;const tie=Math.exp(-Math.pow((py+.25)/.35,2));p.setX(i,px*(1-tie*.55)+s*tie*.08);p.setZ(i,Math.sin(px*28)*.05*(1-tie*.6)+.03);}geo.computeVertexNormals();const m=M(geo,std({map:velvet,side:THREE.DoubleSide,roughness:.85}),ROOM,x,1.62,-2.86);CURT.push(m);
+  const tb=M(new THREE.TorusGeometry(.12,.025,8,20),std({color:'#c9a24a',metalness:.8,roughness:.3}),ROOM,x+s*.02,1.37,-2.84);tb.rotation.x=Math.PI/2;}
+cyl(.022,.022,2.7,std({color:'#2a2022',metalness:.6,roughness:.4}),ROOM,1.15,3.0,-2.86).rotation.z=Math.PI/2;
+for(const x of[-.2,2.5])M(new THREE.SphereGeometry(.05,12,8),std({color:'#c9a24a',metalness:.8,roughness:.3}),ROOM,x,3.0,-2.86);
+// 17-20 luz do pôr do sol projetando o quadriculado da janela no chão e na cama
+const sun=new THREE.SpotLight('#ffbf7a',220,30,.42,.55,1.3);sun.position.set(2.2,5.2,-8.5);sun.target.position.set(-.6,0,-.6);sun.map=lattice;sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.bias=-.0004;sun.shadow.radius=3;scene.add(sun,sun.target);
+const hemi=new THREE.HemisphereLight('#9f8fc8','#5a3a2a',1.05);scene.add(hemi);
+const fillL=new THREE.PointLight('#9c7cd6',6,12,1.6);fillL.position.set(-1.5,2.6,2.2);scene.add(fillL);
+// 21-24 feixes de luz (raios) e poeira dourada flutuando
+const rayTex=ctex(64,512,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'rgba(255,214,150,.9)');gr.addColorStop(1,'rgba(255,214,150,0)');g.fillStyle=gr;g.fillRect(0,0,w,h);const gx=g.createLinearGradient(0,0,w,0);gx.addColorStop(0,'rgba(0,0,0,1)');gx.addColorStop(.5,'rgba(0,0,0,0)');gx.addColorStop(1,'rgba(0,0,0,1)');g.globalCompositeOperation='destination-out';g.fillStyle=gx;g.fillRect(0,0,w,h);});
+const RAYS=[];for(let i=0;i<7;i++){const m=new THREE.Mesh(new THREE.PlaneGeometry(.35+R()*.35,4.2),new THREE.MeshBasicMaterial({map:rayTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:.1+R()*.07,side:THREE.DoubleSide,fog:false}));m.geometry.translate(0,-2.1,0);m.position.set(.4+i*.25,2.6,-2.9);m.rotation.set(-.62,.25,-.12+i*.03);ROOM.add(m);RAYS.push(m);}
+const DUST=new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(new Float32Array(400*3),3)),new THREE.PointsMaterial({color:'#ffe2b0',size:3,sizeAttenuation:false,transparent:true,opacity:.8,depthWrite:false}));ROOM.add(DUST);
+
+// ---------- plantas ----------
+const leafTex=ctex(128,256,(g,w,h)=>{g.fillStyle='#fff';g.beginPath();g.moveTo(64,0);g.bezierCurveTo(128,60,118,190,64,256);g.bezierCurveTo(10,190,0,60,64,0);g.fill();g.globalCompositeOperation='source-atop';const gr=g.createLinearGradient(0,0,w,0);gr.addColorStop(0,'#d8f0c0');gr.addColorStop(.5,'#ffffff');gr.addColorStop(1,'#c0dca8');g.fillStyle=gr;g.fillRect(0,0,w,h);g.strokeStyle='rgba(60,100,40,.55)';g.lineWidth=4;g.beginPath();g.moveTo(64,10);g.lineTo(64,250);g.stroke();for(let i=0;i<7;i++){g.lineWidth=2;g.beginPath();g.moveTo(64,40+i*28);g.lineTo(20,20+i*28);g.moveTo(64,40+i*28);g.lineTo(108,20+i*28);g.stroke();}});
+const leafM=new THREE.MeshStandardMaterial({map:leafTex,alphaTest:.5,side:THREE.DoubleSide,roughness:.6});
+const PLANTS=[];
+function leafAt(par,pos,dir,up,len,wid,col){const geo=new THREE.PlaneGeometry(wid,len);geo.translate(0,len/2,0);const m=new THREE.Mesh(geo,leafM.clone());m.material.color.set(col);m.position.copy(pos);const q=new THREE.Quaternion().setFromUnitVectors(V(0,1,0),dir.clone().normalize());m.quaternion.copy(q);m.rotateY(up);m.castShadow=true;m.receiveShadow=true;par.add(m);return m;}
+// 25-34 samambaia grande (frondes arqueadas com folíolos)
+function fern(x,z,s=1){const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(s);ROOM.add(g);
+  cyl(.28,.22,.5,std({color:'#a65a3a',roughness:.8}),g,0,.25,0,24);M(new THREE.TorusGeometry(.28,.04,8,24),std({color:'#b8683f'}),g,0,.5,0).rotation.x=Math.PI/2;cyl(.26,.26,.04,std({color:'#3a2a1f'}),g,0,.49,0);
+  for(let f2=0;f2<16;f2++){const a=f2/16*TAU+R()*.3,L=.9+R()*.5,pts=[];for(let k=0;k<=10;k++){const u=k/10;pts.push(V(Math.cos(a)*u*L*.9,.5+Math.sin(u*Math.PI*.75)*L*.75-u*u*L*.25,Math.sin(a)*u*L*.9));}
+    const cv=new THREE.CatmullRomCurve3(pts);M(new THREE.TubeGeometry(cv,16,.008,5),std({color:'#4f7a2e'}),g);const fr={g:new THREE.Group(),a};g.add(fr.g);
+    for(let k=1;k<26;k++){const u=k/26,p=cv.getPoint(u),tg=cv.getTangent(u),sd=V(-Math.sin(a),0,Math.cos(a)),sz=(1-u)*.9+.15;for(const sg of[-1,1]){const d=sd.clone().multiplyScalar(sg).add(tg.clone().multiplyScalar(.6)).add(V(0,-.25,0));leafAt(fr.g,p,d,0,.16*sz,.05*sz,['#6fae3e','#5f9e36','#7cbc48'][k%3]);}}
+    PLANTS.push(fr);}}
+fern(-2.55,-2.72,1.0);
+// 35-40 girassol alto no vaso de barro
+const SUNF=new THREE.Group();SUNF.position.set(2.55,0,-2.45);ROOM.add(SUNF);
+{cyl(.25,.19,.45,std({color:'#b4643c'}),SUNF,0,.225,0);M(new THREE.TorusGeometry(.25,.035,8,24),std({color:'#c27245'}),SUNF,0,.45,0).rotation.x=Math.PI/2;
+ const cv=new THREE.CatmullRomCurve3([V(0,.45,0),V(.05,1.0,0),V(-.04,1.6,.02),V(.06,2.15,.05)]);M(new THREE.TubeGeometry(cv,20,.025,8),std({color:'#5b8f34'}),SUNF);
+ for(let i=0;i<7;i++){const u=.15+i*.11,p=cv.getPoint(u),a=i*2.3;leafAt(SUNF,p,V(Math.cos(a),.5,Math.sin(a)),0,.34-i*.02,.22-i*.012,'#5f9e36');}
+ const head=new THREE.Group();head.position.copy(cv.getPoint(1));head.rotation.set(.3,-.6,0);SUNF.add(head);SUNF.userData.head=head;
+ const seeds=ctex(256,256,g=>{g.fillStyle='#4a2c16';g.fillRect(0,0,256,256);for(let i=0;i<500;i++){const a=i*2.39996,r=Math.sqrt(i)*5.5;g.fillStyle=i%2?'#6a4020':'#2e1a0c';g.beginPath();g.arc(128+Math.cos(a)*r,128+Math.sin(a)*r,3,0,7);g.fill();}});
+ const disk=M(new THREE.CircleGeometry(.17,32),std({map:seeds,roughness:.9}),head,0,0,.02);
+ const petalT=ctex(64,192,g=>{g.fillStyle='#fff';g.beginPath();g.ellipse(32,96,26,92,0,0,7);g.fill();});
+ for(let i=0;i<28;i++){const a=i/28*TAU,m=new THREE.Mesh(new THREE.PlaneGeometry(.07,.2),new THREE.MeshStandardMaterial({map:petalT,alphaTest:.5,side:THREE.DoubleSide,color:i%2?'#f7c531':'#f2b21f'}));m.geometry.translate(0,.1,0);m.position.set(Math.cos(a)*.15,Math.sin(a)*.15,i%2?.01:0);m.rotation.z=a-Math.PI/2;m.rotation.x=i%2?.15:.3;m.castShadow=true;head.add(m);}}
+// 41-46 mudinhas no parapeito em potinhos brancos
+for(let i=0;i<4;i++){const g=new THREE.Group();g.position.set(.5+i*.42,.98,-2.85);ROOM.add(g);cyl(.07,.055,.13,std({color:'#f1ece3',roughness:.5}),g,0,.065,0);cyl(.065,.065,.01,std({color:'#3a2a1f'}),g,0,.125,0);
+  M(new THREE.CylinderGeometry(.006,.006,.12+i*.03),std({color:'#6aa83e'}),g,0,.19+i*.015,0);for(let k=0;k<2+i%2;k++)leafAt(g,V(0,.22+i*.03,0),V(Math.cos(k*2.6),.9,Math.sin(k*2.6)),0,.08,.05,'#7cbc48');PLANTS.push({g,a:i});}
+// 47-52 trepadeira (hera) pelo chão subindo na cama
+{const pts=[V(-.4,.01,2.6),V(-.9,.01,1.6),V(-1.3,.01,.6),V(-1.75,.02,-.2),V(-1.86,.3,-.45),V(-1.86,.55,-.6)];const cv=new THREE.CatmullRomCurve3(pts);M(new THREE.TubeGeometry(cv,60,.008,5),std({color:'#4f7a2e'}),ROOM);
+ for(let k=0;k<44;k++){const u=k/44,p=cv.getPoint(u);leafAt(ROOM,p,V(Math.cos(k*1.7),.8,Math.sin(k*1.7)),k,.07,.06,['#6fae3e','#5f9e36'][k%2]);}}
+// 53-55 planta pendurada (macramê) e vaso pequeno no criado-mudo
+{const g=new THREE.Group();g.position.set(-.6,2.35,-2.2);ROOM.add(g);for(let i=0;i<3;i++){const a=i/3*TAU;const c=cyl(.004,.004,.9,std({color:'#e8dcc4'}),g,Math.cos(a)*.06,.45,Math.sin(a)*.06,4);c.rotation.z=Math.cos(a)*.12;c.rotation.x=-Math.sin(a)*.12;}
+ cyl(.13,.09,.16,std({color:'#e8dcc4'}),g,0,0,0);for(let k=0;k<14;k++){const a=k/14*TAU,len=.3+R()*.5;const cv=new THREE.CatmullRomCurve3([V(0,.06,0),V(Math.cos(a)*.15,0,Math.sin(a)*.15),V(Math.cos(a)*.2,-len,Math.sin(a)*.2)]);M(new THREE.TubeGeometry(cv,8,.004,4),std({color:'#4f7a2e'}),g);for(let q=1;q<6;q++){const p=cv.getPoint(q/6);leafAt(g,p,V(Math.cos(a+q),-.3,Math.sin(a+q)),q,.06,.05,'#6fae3e');}}PLANTS.push({g,a:9});}
+
+// ---------- móveis ----------
+// 56-64 cama da esquerda (cabeceira, colchão, travesseiro, cobertor caindo, baú no pé)
+const blanketT=(c1,c2)=>ctex(512,512,(g,w,h)=>{g.fillStyle=c1;g.fillRect(0,0,w,h);g.strokeStyle=c2;g.globalAlpha=.35;g.lineWidth=10;for(let i=0;i<w;i+=64){g.beginPath();g.moveTo(i,0);g.lineTo(i,h);g.stroke();g.beginPath();g.moveTo(0,i);g.lineTo(w,i);g.stroke();}g.globalAlpha=1;strokes(g,w,h,300,['#ffffff','#000000'],40,6,.04);grainy(g,w,h,10);});
+function blanket(w,l,drop,mat,par,x,y,z,body=0){const geo=new THREE.PlaneGeometry(w+drop*2,l+drop,24,30);geo.rotateX(-Math.PI/2);const p=geo.attributes.position;for(let i=0;i<p.count;i++){const px=p.getX(i),pz=p.getZ(i),ox=Math.max(0,Math.abs(px)-w/2),oz=Math.max(0,pz-l/2);let yy=-(ox+oz)*1.15+Math.sin(px*9+pz*7)*.012+body*Math.exp(-Math.pow(px/.32,2))*Math.max(0,Math.min(1,(pz+l/2+.05)/.3))*(.8+.2*Math.sin(pz*6));p.setY(i,yy);p.setX(i,px-Math.sign(px)*ox*.35);p.setZ(i,pz-oz*.35);}geo.computeVertexNormals();return M(geo,mat,par,x,y,z);}
+function bed(x,z,ry,col,body=0){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;ROOM.add(g);
+  box(1.25,.32,2.15,darkWood,g,0,.26,0);for(const[px,pz]of[[-.6,-1.05],[.6,-1.05],[-.6,1.05],[.6,1.05]])box(.09,.42,.09,darkWood,g,px,.21,pz);
+  box(1.3,1.0,.08,darkWood,g,0,.6,-1.1);box(1.3,.1,.12,midWood,g,0,1.12,-1.1);for(let i=0;i<5;i++)box(.06,.65,.03,midWood,g,-.5+i*.25,.62,-1.07);
+  box(1.3,.5,.06,darkWood,g,0,.42,1.1);
+  box(1.18,.18,2.05,std({color:'#e9e4ef',roughness:.9}),g,0,.51,0);
+  const pil=M(new THREE.SphereGeometry(1,24,14),std({color:'#f4f1f6',roughness:.9}),g,0,.66,-.82);pil.scale.set(.48,.09,.2);
+  blanket(1.18,body?1.75:1.35,.32,std({map:blanketT(col,'#ffffff'),roughness:.85,side:THREE.DoubleSide}),g,0,.63,body?.15:.35,body);
+  return g;}
+const BED1=bed(-2.33,-1.75,0,'#25304f');
+{const t=new THREE.Group();t.position.set(-2.33,0,-.35);ROOM.add(t);box(1.05,.42,.5,midWood,t,0,.21,0);box(1.07,.06,.52,darkWood,t,0,.42,0);for(const x of[-.4,.4])box(.06,.42,.52,std({color:'#2a2022',metalness:.6,roughness:.4}),t,x,.21,0);box(.1,.08,.03,std({color:'#c9a24a',metalness:.8}),t,0,.33,.26);}
+// 65-70 cama da direita com quem dorme
+const BED2=bed(1.15,-.15,0,'#1f2a46',.16);
+
+// 71-80 criado-mudo com gaveta, despertador vermelho, copo d'água, livros, vasinho
+const NS=new THREE.Group();NS.position.set(.05,0,-2.55);ROOM.add(NS);
+{box(.6,.6,.45,midWood,NS,0,.3,0);box(.62,.04,.47,darkWood,NS,0,.62,0);box(.5,.16,.02,darkWood,NS,0,.42,.23);M(new THREE.SphereGeometry(.025,10,8),std({color:'#c9a24a',metalness:.8,roughness:.3}),NS,0,.42,.25);
+ const ck=new THREE.Group();ck.position.set(-.16,.64,.05);ck.rotation.y=.4;NS.add(ck);const red=std({color:'#c8322e',roughness:.35,metalness:.3});
+ M(new THREE.CylinderGeometry(.08,.08,.05,24),red,ck,0,.1,0).rotation.x=Math.PI/2;const face=ctex(128,128,g=>{g.fillStyle='#fffaf0';g.beginPath();g.arc(64,64,60,0,7);g.fill();g.fillStyle='#333';for(let i=0;i<12;i++){const a=i/12*TAU;g.fillRect(64+Math.cos(a)*48-3,64+Math.sin(a)*48-3,6,6);}g.strokeStyle='#222';g.lineWidth=5;g.beginPath();g.moveTo(64,64);g.lineTo(64,28);g.moveTo(64,64);g.lineTo(90,70);g.stroke();});
+ M(new THREE.CircleGeometry(.066,24),std({map:face}),ck,0,.1,.026);for(const s of[-1,1]){M(new THREE.SphereGeometry(.04,12,8,0,TAU,0,Math.PI/2),red,ck,s*.05,.17,0).rotation.z=-s*.5;}M(new THREE.BoxGeometry(.005,.08,.005),std({color:'#ddd'}),ck,0,.19,0);for(const s of[-1,1])box(.012,.04,.012,std({color:'#222'}),ck,s*.05,.04,0);
+ const glass=M(new THREE.CylinderGeometry(.045,.04,.14,20,1,true),new THREE.MeshStandardMaterial({color:'#dff2ff',transparent:true,opacity:.28,roughness:.05,metalness:.2,side:THREE.DoubleSide}),NS,.05,.71,.08);
+ M(new THREE.CylinderGeometry(.042,.04,.09,20),new THREE.MeshStandardMaterial({color:'#9fd0ee',transparent:true,opacity:.45,roughness:.05}),NS,.05,.69,.08);
+ box(.26,.04,.19,std({color:'#6a2d3a'}),NS,.12,.66,-.08).rotation.y=.2;box(.24,.035,.17,std({color:'#2f4f6a'}),NS,.12,.695,-.08).rotation.y=-.1;
+ cyl(.06,.045,.08,std({color:'#e8dcc4'}),NS,.2,.68,.1);for(let k=0;k<5;k++)leafAt(NS,V(.2,.72,.1),V(Math.cos(k*1.3),.8,Math.sin(k*1.3)),0,.11,.06,'#6fae3e');}
+// 81-84 pôster de planeta, quadrinhos, mural de cortiça com bilhetes
+const posterT=ctex(400,560,(g,w,h)=>{g.fillStyle='#1c2552';g.fillRect(0,0,w,h);for(let i=0;i<140;i++){g.fillStyle=`rgba(255,255,255,${R()*.8})`;g.fillRect(R()*w,R()*h,2,2);}const p=g.createRadialGradient(170,250,10,200,280,110);p.addColorStop(0,'#e8c49a');p.addColorStop(1,'#8a5a3a');g.fillStyle=p;g.beginPath();g.arc(200,280,100,0,7);g.fill();g.strokeStyle='rgba(120,80,50,.6)';for(let i=0;i<6;i++){g.lineWidth=4;g.beginPath();g.ellipse(200,280+i*12-30,96-Math.abs(i-2.5)*10,6,0,0,7);g.stroke();}g.strokeStyle='#d9c0a0';g.lineWidth=8;g.beginPath();g.ellipse(200,285,175,38,-.15,0,7);g.stroke();g.strokeStyle='rgba(255,255,255,.5)';g.lineWidth=2;g.strokeRect(14,14,w-28,h-28);g.fillStyle='#cfd6ff';g.font='34px Anton';g.textAlign='center';g.fillText('SISTEMA SOLAR',w/2,520);});
+const poster=M(new THREE.PlaneGeometry(.62,.86),std({map:posterT,roughness:.7}),ROOM,-1.55,2.05,-2.98,false);for(const[x,y]of[[-1.84,2.45],[-1.26,2.45]])M(new THREE.SphereGeometry(.012,8,6),std({color:'#c8322e'}),ROOM,x,y,-2.97);
+const cork=ctex(256,200,(g,w,h)=>{g.fillStyle='#b98a5a';g.fillRect(0,0,w,h);grainy(g,w,h,40);g.strokeStyle='#6b4330';g.lineWidth=12;g.strokeRect(0,0,w,h);[['#fff6a8',30,30],['#bfe6ff',120,40],['#ffc8d8',70,110],['#fff',160,120]].forEach(([c,x,y],i)=>{g.save();g.translate(x+30,y+25);g.rotate((R()-.5)*.3);g.fillStyle=c;g.fillRect(-30,-25,60,50);g.fillStyle='#c8322e';g.beginPath();g.arc(0,-18,5,0,7);g.fill();g.strokeStyle='rgba(0,0,0,.3)';g.lineWidth=2;for(let k=0;k<3;k++){g.beginPath();g.moveTo(-20,-4+k*10);g.lineTo(18,-4+k*10);g.stroke();}g.restore();});});
+const crk=M(new THREE.PlaneGeometry(.75,.58),std({map:cork}),ROOM,-2.98,1.65,.9,false);crk.rotation.y=Math.PI/2;
+for(let i=0;i<2;i++){const pic=ctex(160,200,(g,w,h)=>{g.fillStyle='#3a2a20';g.fillRect(0,0,w,h);g.fillStyle=i?'#7aa6c8':'#d8a26a';g.fillRect(14,14,w-28,h-28);g.fillStyle=i?'#4f7a2e':'#8a5a3a';g.beginPath();g.moveTo(14,h-14);g.lineTo(w/2,h*.4);g.lineTo(w-14,h-14);g.fill();});const m=M(new THREE.PlaneGeometry(.28,.35),std({map:pic}),ROOM,2.98,1.8+i*.45,-1.6+i*.5,false);m.rotation.y=-Math.PI/2;}
+// 85-88 estante com livros, globo e vidros
+{const g=new THREE.Group();g.position.set(-2.88,0,1.9);g.rotation.y=Math.PI/2;ROOM.add(g);for(let s=0;s<4;s++)box(1.1,.04,.28,midWood,g,0,.35+s*.5,0);box(.04,1.9,.28,darkWood,g,-.55,.95,0);box(.04,1.9,.28,darkWood,g,.55,.95,0);
+ const bc=['#6a2d3a','#2f4f6a','#b98a3a','#3f6b3f','#5a3a6a','#8a3a2a','#c9a24a','#2a2a3a'];for(let s=0;s<3;s++){let x=-.5;while(x<.45){const w=.04+R()*.05,hh=.28+R()*.14;const b=box(w,hh,.2,std({color:bc[Math.floor(R()*8)],roughness:.7}),g,x+w/2,.37+s*.5+hh/2,0);if(R()<.15)b.rotation.z=.2;x+=w+.005;}}
+ M(new THREE.SphereGeometry(.12,24,16),std({map:ctex(256,128,(g2,w,h)=>{g2.fillStyle='#4a7ab5';g2.fillRect(0,0,w,h);g2.fillStyle='#c9b47a';for(let i=0;i<14;i++){g2.beginPath();g2.ellipse(R()*w,R()*h,20+R()*30,10+R()*20,R()*3,0,7);g2.fill();}})}),g,.2,1.98,0);cyl(.03,.06,.06,std({color:'#c9a24a',metalness:.8}),g,.2,1.86,0);
+ for(let k=0;k<3;k++)cyl(.05,.05,.14,new THREE.MeshStandardMaterial({color:['#bfe6ff','#ffe6b0','#d8f0c0'][k],transparent:true,opacity:.6,roughness:.1}),g,-.35+k*.13,1.94,0);}
+// 89-92 escrivaninha com luminária acesa, caneca fumegando, cadeira
+const DESK=new THREE.Group();DESK.position.set(-2.55,0,.3+0);DESK.rotation.y=Math.PI/2;ROOM.add(DESK);
+{box(1.2,.05,.6,midWood,DESK,0,.76,0);for(const[x,z]of[[-.55,-.25],[.55,-.25],[-.55,.25],[.55,.25]])box(.05,.74,.05,darkWood,DESK,x,.37,z);
+ const lamp=new THREE.Group();lamp.position.set(.4,.79,-.1);DESK.add(lamp);cyl(.08,.1,.03,std({color:'#2f4f3a',metalness:.5,roughness:.4}),lamp,0,.015,0);const arm1=cyl(.012,.012,.38,std({color:'#2f4f3a',metalness:.5}),lamp,0,.2,0);
+ const sh=M(new THREE.ConeGeometry(.13,.16,24,1,true),std({color:'#2f6a4a',side:THREE.DoubleSide,roughness:.5}),lamp,-.08,.4,0);sh.rotation.z=.6;
+ const bulb=M(new THREE.SphereGeometry(.035,12,8),new THREE.MeshBasicMaterial({color:'#fff1c8'}),lamp,-.1,.36,0);const ll=new THREE.PointLight('#ffc983',5,4,1.6);ll.position.set(-.12,.3,0);lamp.add(ll);
+ cyl(.045,.04,.1,std({color:'#e8e2d8',roughness:.4}),DESK,-.3,.84,.1);M(new THREE.TorusGeometry(.03,.008,6,12),std({color:'#e8e2d8'}),DESK,-.25,.84,.1);
+ box(.3,.02,.22,std({color:'#f4efe4'}),DESK,0,.79,.05).rotation.y=.1;box(.28,.03,.2,std({color:'#3f6b3f'}),DESK,-.05,.81,-.18);
+ const ch=new THREE.Group();ch.position.set(0,0,.5);DESK.add(ch);box(.45,.05,.45,darkWood,ch,0,.46,0);box(.45,.5,.04,darkWood,ch,0,.72,.21);for(const[x,z]of[[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]])box(.04,.46,.04,darkWood,ch,x,.23,z);
+ const bag=M(new THREE.SphereGeometry(1,16,12),std({color:'#7a3a2a',roughness:.8}),ch,0,.66,.28);bag.scale.set(.18,.22,.09);}
+const STEAM=[];for(let i=0;i<5;i++){const m=new THREE.Mesh(new THREE.PlaneGeometry(.06,.06),new THREE.MeshBasicMaterial({map:soft,transparent:true,opacity:.35,depthWrite:false,color:'#fff'}));ROOM.add(m);STEAM.push(m);}
+// 93-96 tapete persa com franja
+const rugT=ctex(1024,1024,(g,w,h)=>{g.fillStyle='#5e2c3c';g.fillRect(0,0,w,h);const band=(m,c,lw)=>{g.strokeStyle=c;g.lineWidth=lw;g.strokeRect(m,m,w-m*2,h-m*2);};band(30,'#2a2a5a',40);band(80,'#d9a85a',14);band(110,'#2a5a5a',26);
+  for(let i=0;i<16;i++){g.fillStyle=i%2?'#d9a85a':'#e8c58a';const x=160+i*44;g.beginPath();g.moveTo(x,55);g.lineTo(x+16,40);g.lineTo(x+32,55);g.lineTo(x+16,70);g.fill();g.beginPath();g.moveTo(x,h-55);g.lineTo(x+16,h-40);g.lineTo(x+32,h-55);g.lineTo(x+16,h-70);g.fill();}
+  g.fillStyle='#2a2a5a';g.beginPath();g.moveTo(w/2,250);g.lineTo(w-250,h/2);g.lineTo(w/2,h-250);g.lineTo(250,h/2);g.fill();g.fillStyle='#d9a85a';g.beginPath();g.moveTo(w/2,330);g.lineTo(w-330,h/2);g.lineTo(w/2,h-330);g.lineTo(330,h/2);g.fill();g.fillStyle='#5e2c3c';g.beginPath();g.arc(w/2,h/2,90,0,7);g.fill();
+  for(let i=0;i<40;i++){g.fillStyle=['#e8c58a','#2a5a5a'][i%2];g.beginPath();g.arc(180+R()*(w-360),180+R()*(h-360),6,0,7);g.fill();}grainy(g,w,h,24);strokes(g,w,h,400,['#000','#fff'],30,4,.05);});
+const rug=M(new THREE.PlaneGeometry(2.3,3.1),std({map:rugT,roughness:.95}),ROOM,-.55,.006,.55,false);rug.rotation.x=-Math.PI/2;
+for(let i=0;i<46;i++)for(const z of[-1,1]){const fr=box(.008,.002,.08,std({color:'#e8dcc4'}),ROOM,-1.68+i*.05,.007,.55+z*1.59);fr.castShadow=false;}
+// 97-101 lustre de ferro com velas e chamas tremulando
+const CH=new THREE.Group();CH.position.set(-1.2,2.55,-.9);ROOM.add(CH);const FLAMES=[];
+{const iron=std({color:'#1e1a1c',metalness:.7,roughness:.4});M(new THREE.TorusGeometry(.42,.02,8,40),iron,CH).rotation.x=Math.PI/2;for(let i=0;i<4;i++){const a=i/4*TAU;const c=cyl(.005,.005,.82,iron,CH,Math.cos(a)*.21,.38,Math.sin(a)*.21,4);c.rotation.set(Math.sin(a)*.47,0,-Math.cos(a)*.47);}
+ for(let i=0;i<6;i++){const a=i/6*TAU;cyl(.03,.03,.02,iron,CH,Math.cos(a)*.42,.02,Math.sin(a)*.42);cyl(.022,.022,.13,std({color:'#f2e8d0',roughness:.6}),CH,Math.cos(a)*.42,.1,Math.sin(a)*.42,10);
+   const fl=new THREE.Mesh(new THREE.PlaneGeometry(.05,.09),new THREE.MeshBasicMaterial({map:soft,color:'#ffbf5a',transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));fl.position.set(Math.cos(a)*.42,.2,Math.sin(a)*.42);CH.add(fl);FLAMES.push(fl);}
+ const cl=new THREE.PointLight('#ffb062',3,5,1.6);cl.position.set(0,.2,0);CH.add(cl);CH.userData.light=cl;}
+// 102-106 varal de luzinhas na parede do fundo
+const FAIRY=[];{const pts=[];for(let i=0;i<=40;i++){const u=i/40;pts.push(V(-2.9+u*2.8,2.9-Math.sin(u*Math.PI*3)*.12-.05,-2.95));}const cv=new THREE.CatmullRomCurve3(pts);M(new THREE.TubeGeometry(cv,60,.004,4),std({color:'#222'}),ROOM);
+ for(let i=0;i<22;i++){const p=cv.getPoint(i/21);const b=new THREE.Mesh(new THREE.SphereGeometry(.018,8,6),new THREE.MeshBasicMaterial({color:['#ffd27a','#ffb0c8','#bfe6ff','#ffd27a'][i%4]}));b.position.copy(p).add(V(0,-.03,.02));ROOM.add(b);const gl=new THREE.Mesh(new THREE.PlaneGeometry(.16,.16),new THREE.MeshBasicMaterial({map:soft,color:b.material.color,transparent:true,opacity:.6,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));gl.position.copy(b.position).add(V(0,0,.01));ROOM.add(gl);FAIRY.push(gl);}}
+// 107-110 chinelos, cachecol no gancho, porta, interruptor
+for(const s of[-1,1]){const sl=M(new THREE.SphereGeometry(1,16,10),std({color:'#c9a0d6',roughness:.9}),ROOM,-1.45+s*.09,.025,-.55);sl.scale.set(.05,.03,.12);sl.rotation.y=.3;}
+{const d=new THREE.Group();d.position.set(2.98,0,1.7);d.rotation.y=-Math.PI/2;ROOM.add(d);box(1.0,2.2,.06,midWood,d,0,1.1,0);box(1.14,2.3,.04,darkWood,d,0,1.15,-.02);for(let i=0;i<2;i++)for(let j=0;j<3;j++)box(.36,.55,.02,darkWood,d,-.2+i*.4,.5+j*.65,.04);M(new THREE.SphereGeometry(.035,10,8),std({color:'#c9a24a',metalness:.8,roughness:.3}),d,.38,1.05,.07);
+ box(.04,.04,.12,std({color:'#c9a24a',metalness:.8}),d,-.7,1.75,.06);const sc=M(new THREE.BoxGeometry(.12,.7,.02),std({color:'#c8322e',map:blanketT('#c8322e','#f2e8d0')}),d,-.7,1.42,.1);sc.rotation.z=.05;box(.08,.12,.02,std({color:'#e8e2d8'}),d,.62,1.15,.04);}
+
+// ---------- personagens originais (estilo macio) ----------
+const K=.0021;
+function sprite(vb,res,par=ROOM){const [vx,vy,vw,vh]=vb,cw=Math.round(vw*res),ch=Math.round(vh*res);const c=document.createElement('canvas');c.width=cw;c.height=ch;const g=c.getContext('2d');
+  const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=8;const geo=new THREE.PlaneGeometry(vw*K,vh*K);geo.translate((vx+vw/2)*K,-(vy+vh/2)*K,0);
+  const mat=new THREE.MeshStandardMaterial({map:tex,alphaTest:.5,side:THREE.DoubleSide,roughness:1,metalness:0,emissive:'#ffffff',emissiveMap:tex,emissiveIntensity:.42});
+  const m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=true;m.customDepthMaterial=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:tex,alphaTest:.5});par.add(m);
+  return{mesh:m,last:'',async set(inner){if(inner===this.last)return;this.last=inner;const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(' ')}" width="${cw}" height="${ch}">${inner}</svg>`);await img.decode();g.clearRect(0,0,cw,ch);g.drawImage(img,0,0,cw,ch);tex.needsUpdate=true;}};}
+// Lia: cabelo ruivo em coque, agasalho verde-petróleo com listra mostarda. Theo (dormindo): cabelo preto cacheado.
+const LIA={hairStyle:'bun',hair:'#a8432a',skin:'#f0a468',shirt:'#22465a',pants:'#2b4a5e',sleeveStripe:'#e0b040'};
+const THEO={hairStyle:'curly',hair:'#241a17',skin:'#c98450',shirt:'#2c3566',sleeveStripe:'#e05a7a'};
+const LIA_S=sprite([-560,-600,1120,1360],.95),THEO_S=sprite([-200,-200,400,400],1.2);
+// livro aberto com folha prensada no colo da Lia
+const bookT=ctex(512,320,(g,w,h)=>{g.fillStyle='#f3ead6';g.fillRect(0,0,w,h);g.fillStyle='#e6dabb';g.fillRect(w/2-4,0,8,h);g.strokeStyle='#b8a888';g.lineWidth=2;for(let i=0;i<9;i++){g.beginPath();g.moveTo(290,40+i*28);g.lineTo(480,40+i*28);g.stroke();}
+  g.save();g.translate(130,160);g.rotate(-.5);g.fillStyle='#4f7a2e';g.beginPath();g.moveTo(0,-110);g.bezierCurveTo(60,-60,60,60,0,110);g.bezierCurveTo(-60,60,-60,-60,0,-110);g.fill();g.strokeStyle='#2f4a1e';g.lineWidth=3;g.beginPath();g.moveTo(0,-110);g.lineTo(0,110);g.stroke();for(let i=-4;i<5;i++){g.beginPath();g.moveTo(0,i*20);g.lineTo(40,i*20-20);g.moveTo(0,i*20);g.lineTo(-40,i*20-20);g.stroke();}g.restore();g.fillStyle='#8a6a4a';g.font='22px serif';g.fillText('Urtica dioica',300,300);});
+const BOOK=new THREE.Group();ROOM.add(BOOK);M(new THREE.PlaneGeometry(.42,.26),std({map:bookT,roughness:.8,side:THREE.DoubleSide}),BOOK).rotation.x=-Math.PI/2;box(.43,.02,.27,std({color:'#5a2a3a'}),BOOK,0,-.012,0);
+BOOK.position.set(-1.62,.9,-1.38);BOOK.rotation.set(-.45,.35,0);
+
+// ---------- pós-processamento ----------
+const composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,cam));
+const bloom=new UnrealBloomPass(new THREE.Vector2(540,960),.55,.6,.82);composer.addPass(bloom);composer.addPass(new OutputPass());
+
+// ---------- câmera e animação ----------
+const SHOTS={
+  wide:{p:V(2.15,2.95,2.5),l:V(-1.0,.55,-1.7),fov:58},
+  lia:{p:V(-.55,1.25,.25),l:V(-1.9,.95,-1.45),fov:46},
+  janela:{p:V(-.3,1.45,-.4),l:V(1.3,1.5,-2.9),fov:50},
+  theo:{p:V(.05,1.6,1.55),l:V(1.15,.72,-.75),fov:44}};
+window.render=async function(t,shot='wide'){
+  const S=SHOTS[shot]||SHOTS.wide;const dr=Math.sin(t*.25)*.06;
+  cam.position.set(S.p.x+dr,S.p.y+Math.sin(t*.3)*.02,S.p.z);cam.fov=S.fov;cam.updateProjectionMatrix();cam.lookAt(S.l);
+  // Lia sentada de lado na cama, apontando a folha no livro
+  const LS=.78;LIA_S.mesh.scale.setScalar(LS);LIA_S.mesh.position.set(-1.6,HEADYs()*LS,-1.25);
+  await LIA_S.set(guy({x:0,y:0,s:1,t,style:'soft',view:'side',dir:1,stance:'sit',bob:-45,kit:LIA,expr:Math.sin(t*.7)>.6?'happy':'neutral',aF:-62+Math.sin(t*2)*3,eF:-24,handF:'point',aB:-30,eB:-60,look:.6,lookY:.5,glasses:false,sprout:true,wind:.15,mouth:0}));
+  // Theo dormindo (cabeça no travesseiro, cobertor por cima)
+  THEO_S.mesh.scale.setScalar(.62);THEO_S.mesh.position.set(1.15,.8+Math.sin(t*1.4)*.004,-.9);
+  await THEO_S.set(head({t,style:'soft',view:'3q',dir:1,expr:'sleep',hairStyle:'curly',hair:THEO.hair,skin:THEO.skin,blush:.7}));
+  for(const s of[LIA_S,THEO_S]){const p=s.mesh.position;s.mesh.rotation.y=Math.atan2(cam.position.x-p.x,cam.position.z-p.z);}
+  {const p=LIA_S.mesh.position,ry=LIA_S.mesh.rotation.y,Rv=V(Math.cos(ry),0,-Math.sin(ry)),F=V(Math.sin(ry),0,Math.cos(ry));
+   BOOK.position.copy(p).addScaledVector(Rv,120*K*LS).add(V(0,-340*K*LS,0)).addScaledVector(F,.09);BOOK.rotation.set(0,ry,0);BOOK.rotateX(.38);BOOK.rotateZ(-.08);}
+  // natureza viva: plantas balançando, chamas, luzinhas, poeira, vapor da caneca
+  PLANTS.forEach((p,i)=>{p.g.rotation.z=Math.sin(t*1.3+i)*.025;p.g.rotation.x=Math.sin(t*1.1+i*2)*.02;});SUNF.userData.head.rotation.z=Math.sin(t*.8)*.05;
+  FLAMES.forEach((fl,i)=>{const k=1+Math.sin(t*13+i*2)*.12+Math.sin(t*7+i)*.08;fl.scale.set(k,k*(1.1+Math.sin(t*9+i)*.1),1);fl.lookAt(cam.position);});CH.userData.light.intensity=3+Math.sin(t*11)*.4;
+  FAIRY.forEach((f2,i)=>{f2.material.opacity=.45+.25*Math.sin(t*2+i*1.3);f2.lookAt(cam.position);});
+  const dp=DUST.geometry.attributes.position;for(let i=0;i<400;i++){dp.setXYZ(i,.2+((rnd(i)*2.4+t*.03*rnd(i+3))%2.4)-1.0,.2+((rnd(i+1)*2.4+Math.sin(t*.4+i)*.1+t*.02)%2.4),-2.8+((rnd(i+2)*2.6+t*.04)%2.6));}dp.needsUpdate=true;
+  STEAM.forEach((m,i)=>{const ph=(t*.35+i/5)%1;m.position.set(-2.65+Math.sin(t+i)*.02,.92+ph*.35,.0+.3+Math.cos(t*.7+i)*.02);m.scale.setScalar(.6+ph*1.6);m.material.opacity=.3*(1-ph);m.lookAt(cam.position);});
+  RAYS.forEach((r,i)=>r.material.opacity=.09+.04*Math.sin(t*.6+i));
+  composer.render();
+  const fr=Math.floor(t*30),gr=document.getElementById('grain');gr.setAttribute('x',(-60+rnd(fr)*60).toFixed(1));
+};
+function HEADYs(){return 712*K;} // pés no chão; o quadril fica na altura do colchão (bob:20)
+window.ready=true;
+</script>
+</body></html>
