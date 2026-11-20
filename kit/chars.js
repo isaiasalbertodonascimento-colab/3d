@@ -23,7 +23,9 @@ const GUARD={skin:'#eab48b',skinD:'#bb845c',shirt:'#2d416c',shirtD:'#1b2847',pan
 function head(o={}){
   const c=Object.assign({},ORANGE,o), e=c.expr||'neutral', look=c.look||0, lookY=c.lookY||0, bl=c.blink||0, mo=c.mouth||0;
   let h='';
-  h+=`<circle cx="-112" cy="12" r="28" fill="${c.skin}" stroke="${c.skinD}" stroke-width="5"/><circle cx="112" cy="12" r="28" fill="${c.skin}" stroke="${c.skinD}" stroke-width="5"/>`;
+  // Orelhas: mexem com o vento e "saltam" no susto; dobra interna desenhada.
+  const TT=c.t, ew=TT===undefined?0:Math.sin(TT*7.3)*(c.wind??.45)*3, es=e==='shock'?1.14:1;
+  for(const sd of[-1,1])h+=`<g transform="translate(${sd*112} 12) rotate(${f(sd*ew*3)}) scale(${es})"><circle r="28" fill="${c.skin}" stroke="${c.skinD}" stroke-width="5"/><path d="M${sd*-4} -12 Q${sd*12} 0 ${sd*-2} 12" stroke="${c.skinD}" stroke-width="5" fill="none" stroke-linecap="round"/></g>`;
   h+=`<circle r="115" fill="${c.skin}" stroke="${c.skinD}" stroke-width="6"/>`;
   h+=`<path d="M-70 -60 Q-20 -95 40 -70" stroke="#ffffff" stroke-opacity=".18" stroke-width="18" fill="none" stroke-linecap="round"/>`;
   if(!c.hat){
@@ -45,7 +47,7 @@ function head(o={}){
     h+=`<path d="M-14 58 Q0 66 14 58" stroke="${L}" stroke-width="6" fill="none" stroke-linecap="round"/>`;
   }else if(e==='shock'){
     h+=`<circle cx="-42" cy="-6" r="33" fill="${W}" stroke="${L}" stroke-width="5"/><circle cx="42" cy="-6" r="33" fill="${W}" stroke="${L}" stroke-width="5"/>`;
-    h+=`<circle cx="-42" cy="-6" r="9" fill="${P}"/><circle cx="42" cy="-6" r="9" fill="${P}"/>`;
+    h+=`<circle cx="-42" cy="-6" r="9" fill="${P}"/><circle cx="42" cy="-6" r="9" fill="${P}"/><circle cx="-45" cy="-9" r="3.5" fill="#fff"/><circle cx="39" cy="-9" r="3.5" fill="#fff"/>`;
     h+=`<path d="M-72 -58 Q-45 -74 -18 -60 M18 -60 Q45 -74 72 -58" stroke="${L}" stroke-width="10" fill="none" stroke-linecap="round"/>`;
     h+=`<ellipse cy="64" rx="24" ry="33" fill="#5a1717"/><ellipse cy="80" rx="15" ry="11" fill="#ef7b8f"/>`;
   }else if(e==='laugh'){
@@ -56,6 +58,7 @@ function head(o={}){
     h+=`<ellipse cx="-42" cy="-4" rx="26" ry="${f(28*(1-bl)+2)}" fill="${W}" stroke="${L}" stroke-width="4.5"/><ellipse cx="42" cy="-4" rx="26" ry="${f(28*(1-bl)+2)}" fill="${W}" stroke="${L}" stroke-width="4.5"/>`;
     const pr=e==='fear'?7:11;
     if(bl<.8)h+=`<circle cx="${f(-42+look*9)}" cy="${f(lookY*9)}" r="${pr}" fill="${P}"/><circle cx="${f(42+look*9)}" cy="${f(lookY*9)}" r="${pr}" fill="${P}"/>`;
+    if(bl<.8)h+=`<circle cx="${f(-46+look*9)}" cy="${f(lookY*9-4)}" r="${f(pr*.38)}" fill="#fff"/><circle cx="${f(38+look*9)}" cy="${f(lookY*9-4)}" r="${f(pr*.38)}" fill="#fff"/>`;
     const open=mo>.05?`<ellipse cy="${f(62+mo*4)}" rx="${f(16+mo*10)}" ry="${f(4+mo*24)}" fill="#5a1717"/>`+(mo>.4?`<ellipse cy="${f(70+mo*14)}" rx="${f(8+mo*6)}" ry="${f(3+mo*5)}" fill="#ef7b8f"/>`:''):'';
     if(e==='smirk'){
       h+=`<path d="M-72 -10 L-12 -10 L-12 -40 L-72 -40Z M12 -14 L72 -14 L72 -40 L12 -40Z" fill="${c.skin}"/>`;
@@ -74,8 +77,18 @@ function head(o={}){
       else h+=open||`<path d="M-24 56 Q0 70 24 56" stroke="${L}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
     }
   }
+  // Cílios nos cantos de fora dos olhos.
+  if(!['sleep','laugh'].includes(e)&&bl<.8)h+=`<path d="M-66 -26 l-12 -9 M-60 -31 l-8 -12 M66 -26 l12 -9 M60 -31 l8 -12" stroke="#3a2722" stroke-width="5" stroke-linecap="round"/>`;
+  // Bochechas coradas: automático ao rir; blush:0..1 força (vergonha).
+  const bs=c.blush??((e==='laugh'||e==='happy')?.55:0);
+  if(bs>0)h+=`<ellipse cx="-64" cy="40" rx="22" ry="12" fill="#ff6f86" opacity="${f(bs*.6)}"/><ellipse cx="64" cy="40" rx="22" ry="12" fill="#ff6f86" opacity="${f(bs*.6)}"/>`;
   h+=`<path d="M-6 26 Q4 36 12 26" stroke="${c.skinD}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
   if(c.hat)h+=`<path d="M-42 40 Q-20 28 0 38 Q20 28 42 40 Q20 52 0 45 Q-20 52 -42 40Z" fill="#4e3322"/>`;
+  // Respiração visível no frio (cold:true).
+  if(c.cold&&TT!==undefined)for(let k=0;k<3;k++){const p=(TT*.45+k*.12)%1;if(p<.75)h+=`<circle cx="${f(18+p*110)}" cy="${f(72-p*50)}" r="${f(10+p*30)}" fill="#fff" opacity="${f((1-p/.75)*.55)}"/>`;}
+  // Sobrancelhas expressivas: browUp (-1..1), sobem no susto, tremem de raiva.
+  const by=-(c.browUp||0)*12+(e==='shock'?-6:0)+(e==='angry'&&TT!==undefined?Math.sin(TT*45)*2.5:0);
+  if(by)h=h.replace(/<path d="M-7(\d) -(4[4-9]|[5-6]\d)/g,(m)=>m.replace('<path ',`<path transform="translate(0 ${f(by)})" `));
   return h;
 }
 
@@ -112,7 +125,7 @@ function arm(side,a,e,c,hold='',hp={}){
   return `<g transform="translate(${side*106} 150) rotate(${f(r)})"><line y2="135" stroke="${c.skin}" stroke-width="44" stroke-linecap="round"/><g transform="translate(0 135) rotate(${f(re)})"><line y2="118" stroke="${c.skin}" stroke-width="42" stroke-linecap="round"/>${hd}</g><path d="M-42 -24 Q0 -48 42 -24 L46 54 Q0 70 -46 54Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="5"/></g>`;
 }
 function guy(o){
-  // Novos: handL/handR (pose da mão com dedos), fingers:false (mão antiga), t (idle sempre vivo + vento no cabelo/camiseta), wind (0..1.5), windDir (±1), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
+  // Novos: blush, browUp, cold (vapor), air (sombra no pulo), handL/handR (pose da mão com dedos), fingers:false (mão antiga), t (idle sempre vivo + vento no cabelo/camiseta), wind (0..1.5), windDir (±1), seed, walk (fase do ciclo, ex. t*1.8), run (bool), legL/legR (graus), sq (+achata / -estica), lean (graus), bob (px, negativo = sobe)
   const c=Object.assign({},ORANGE,o.kit||{});
   const {x,y,s=1,eL=-8,eR=-8,holdL='',holdR='',legs=true,rot=0,walk=null,run=false,sq=0,lean=0}=o;
   let {aL,aR,legL=0,legR=0,bob=0}=o;
@@ -124,9 +137,10 @@ function guy(o){
   if(walk!==null){const w=Math.sin(walk*Math.PI*2),amp=run?48:28;legL=w*amp;legR=-w*amp;bob+=-Math.abs(Math.cos(walk*Math.PI*2))*(run?26:12);
     if(aL===undefined)aL=12-w*(run?55:24);if(aR===undefined)aR=12+w*(run?55:24);}
   if(aL===undefined)aL=10;if(aR===undefined)aR=10;aL+=idL;aR+=idR;
-  const leg=(sd,a)=>`<g transform="translate(${sd*52} 400) rotate(${f(a)})"><rect x="-44" y="0" width="88" height="296" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/><ellipse cx="${sd*6}" cy="300" rx="62" ry="24" fill="#3a302c"/></g>`;
+  const leg=(sd,a)=>`<g transform="translate(${sd*52} 400) rotate(${f(a)})"><rect x="-44" y="0" width="88" height="296" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/><ellipse cx="${sd*6}" cy="311" rx="64" ry="15" fill="#e9e3d6"/><ellipse cx="${sd*6}" cy="300" rx="62" ry="24" fill="#3a302c"/><path d="M${sd*6-14} 284 l10 7 l10 -7 M${sd*6-14} 294 l10 7 l10 -7" stroke="#f4f0e6" stroke-width="4" fill="none" stroke-linecap="round"/></g>`;
   let h=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${s})">`;
-  if(legs)h+=`<ellipse cx="0" cy="712" rx="${f(170*(1+sq)*(1+bob/400))}" ry="26" fill="#000" opacity=".18"/>`;
+  const air=Math.max(0,o.air||0);
+  if(legs)h+=`<ellipse cx="0" cy="${f(712+air)}" rx="${f(170*(1+sq)*(1+bob/400)/(1+air/500))}" ry="${f(26/(1+air/500))}" fill="#000" opacity="${f(.18/(1+air/400))}"/>`;
   h+=`<g transform="translate(0 712) scale(${(1+sq).toFixed(3)} ${(1-sq).toFixed(3)}) translate(0 ${f(-712+bob)}) rotate(${f(lean+idLean)} 0 420)">`;
   if(legs)h+=leg(-1,legL)+leg(1,legR);
   h+=`<rect x="-28" y="90" width="56" height="44" fill="${c.skinD}"/>`;
@@ -134,6 +148,8 @@ function guy(o){
   const hw=T===undefined?0:(o.wind??.45), hm1=Math.sin((T||0)*4.7+sd)*hw, hm2=Math.sin((T||0)*6.2+sd+1)*hw, dirH=o.windDir??1;
   h+=`<path d="M-124 150 Q-134 118 -94 112 L94 112 Q134 118 124 150 L${f(118+dirH*hw*8)} ${f(432+hm1*6)} Q${f(60+hm2*14)} ${f(452+hm2*10)} 0 ${f(444+hm1*5)} Q${f(-60+hm1*14)} ${f(452-hm2*8)} ${f(-118+dirH*hw*8)} ${f(432-hm1*6)}Z" fill="${c.shirt}" stroke="${c.shirtD}" stroke-width="6"/>`;
   h+=`<path d="M-46 114 Q0 152 46 114" fill="none" stroke="${c.shirtD}" stroke-width="9"/>`;
+  const wr=.35+Math.min(1,(Math.abs(lean)+Math.abs(sq)*120)/25)*.65;
+  h+=`<path d="M-104 178 q16 12 34 6 M-98 206 q12 8 26 4 M104 178 q-16 12 -34 6 M98 206 q-12 8 -26 4 M-44 396 q22 ${f(6+wr*6)} 44 0 q22 ${f(-6-wr*6)} 44 0" stroke="${c.shirtD}" stroke-width="4" fill="none" stroke-linecap="round" opacity="${f(wr)}"/>`;
   if(c.hat)h+=`<rect x="40" y="200" width="44" height="34" rx="6" fill="#f2c230"/>`;
   else if(c.tag!=='')h+=`<text x="0" y="300" font-family="Anton" font-size="44" fill="#4a4a55" text-anchor="middle" opacity=".75">${c.tag||''}</text>`;
   h+=arm(-1,aL,eL,c,holdL,{pose:o.handL,t:T,fingers:o.fingers})+arm(1,aR,eR,c,holdR,{pose:o.handR,t:T,fingers:o.fingers});

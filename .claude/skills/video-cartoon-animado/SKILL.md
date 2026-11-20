@@ -30,6 +30,7 @@ Este repositório já tem as peças para animar de verdade, então não reinvent
 | personagem nunca parado (OBRIGATÓRIO em todo `guy`) | `guy({t, seed:2, ...})`. `seed` diferente por personagem; `blink`/`look` passados explicitamente têm prioridade. |
 | mínimos detalhes: cabelo e camiseta ao vento | vêm juntos com `t`. Ajuste por cena: `wind:0` (sala fechada) a `wind:1.5` (mar, telhado, corrida), `windDir:±1`. Correndo, use `wind` ≥1 e `windDir` contrário ao movimento. |
 | mãos com dedos (padrão) e gestos | `handL`/`handR`: `'relaxed'` (padrão), `'open'`, `'wave'` (tchau), `'fist'`, `'point'`, `'thumb'` (joinha, sempre para cima: dobre o antebraço, ex. `aR:70,eR:-95`), `'peace'`, `'grip'` (automático com `holdL`/`holdR`). Escolha o gesto pela emoção da cena: apontar ao explicar, punho com raiva, joinha no fim. |
+| detalhes do rosto e corpo | automáticos: cílios, brilho nos olhos, orelhas com vento/susto, bochechas coradas ao rir, rugas na camiseta ao dobrar, tênis com cadarço. Controláveis: `blush:0..1` (vergonha), `browUp:-1..1`, `cold:true` (vapor no frio), `air:-j.y` no pulo (a sombra fica no chão). |
 | andar / correr | `guy({walk:t*1.8})`, `guy({walk:t*3, run:true, lean:12})`. Pernas, braços e balanço vêm juntos. |
 | pular com squash | `const j=hop(u,t0)`. Aplique `sq:j.sq` no `guy` e mova o **mesh** com `mesh.position.y+=-j.y*K`. |
 | esticar / achatar / inclinar | `sq` (+ achata, − estica), `lean` (graus), `bob` (px) |

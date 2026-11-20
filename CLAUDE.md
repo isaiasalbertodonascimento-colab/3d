@@ -10,6 +10,7 @@ O vídeo de Alcatraz foi considerado parado demais. No próximo, os personagens 
 - **Personagem se movimentando a TODO momento (pedido do usuário):** nunca fica parado, nem entre ações. Sempre passar `t` no `guy()` do `kit/chars.js` (respiração, balanço, braços, olhos, piscada).
 - **Mínimos detalhes (pedido do usuário):** cabelo balançando com o vento, barra da camiseta tremulando, poeira no ar, respiração. Vento no `guy()` com `wind`/`windDir`, mais forte ao ar livre e correndo.
 - **Mãos com dedos (pedido do usuário):** sempre mãos com dedos e gestos que combinam com a cena (`handL`/`handR` no `guy()`: tchau, joinha, apontar, punho, paz e amor, segurando objeto).
+- **Detalhes do personagem (pedido do usuário):** cílios, brilho nos olhos, bochechas coradas, sobrancelhas expressivas, orelhas mexendo, rugas na camiseta, tênis com cadarço, sombra que acompanha o pulo, vapor no frio (todos no `kit/chars.js`).
 - **Personagens sempre em ação:** andar de verdade (pernas alternando, corpo balançando), correr, pular, gesticular com os dois braços, virar de lado; nada de ficar parado de pé por mais de ~1 s.
 - **Rosto vivo:** boca mexendo enquanto a legenda "fala", piscadas, mudanças rápidas de expressão (susto, riso, raiva, medo), olhos seguindo a ação.
 - **Squash & stretch e overshoot:** pulos com achatamento, impactos com tremida, objetos que quicam e giram.
