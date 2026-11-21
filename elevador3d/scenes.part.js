@@ -89,7 +89,7 @@ const SHAFT=new THREE.Group();scene.add(SHAFT);const SH={};
   SH.cw=B3(.3,2.4,.5,std({color:'#3e3e46'}),SHAFT,1.0,0,-.85);
   SH.hemi=new THREE.HemisphereLight('#8a7a90','#2a2024',.55);SHAFT.add(SH.hemi);
   SH.key=new THREE.DirectionalLight('#ffcf9a',1.2);SH.key.position.set(8,30,14);SHAFT.add(SH.key,SH.key.target);
-  SH.spark=new THREE.PointLight('#ff9a3a',0,6,1.4);SHAFT.add(SH.spark);
+  SH.spark=new THREE.PointLight('#ff9a3a',0,6,1.4);SHAFT.add(SH.spark);SH.pit=new THREE.PointLight('#ffb070',6,10,1.4);SH.pit.position.set(0,-.4,.6);SHAFT.add(SH.pit);
   // criatura (sombra) — só um sprite no topo da cabina
 }
 function setCab(y,cabOnly){SH.cab.position.y=y;SH.cables.forEach(c=>{const top=TOPY+1,b=y+2.9,L=Math.max(.1,top-b);c.scale.y=L;c.position.y=b+L/2;c.visible=!cabOnly;});SH.cw.position.y=Math.max(-1,TOPY-2-(y-0)*.9);}
@@ -104,7 +104,7 @@ const CAB=new THREE.Group();scene.add(CAB);const CB={};
   M3(new THREE.PlaneGeometry(2.2,2.4),wall,CAB,0,1.2,-1.8);
   for(const x of[-1.1,1.1]){const m=M3(new THREE.PlaneGeometry(1.8,2.4),wall,CAB,x,1.2,-.9);m.rotation.y=x<0?Math.PI/2:-Math.PI/2;}
   B3(2.1,.05,.06,std({color:'#c9b48a',metalness:.7,roughness:.3}),CAB,0,.95,-1.74);for(const x of[-1.04,1.04]){const r=B3(1.6,.05,.06,std({color:'#c9b48a',metalness:.7,roughness:.3}),CAB,x,.95,-.9);r.rotation.y=Math.PI/2;}
-  CB.panel=M3(new THREE.PlaneGeometry(1.6,.95),new THREE.MeshBasicMaterial({color:'#fff2d6',toneMapped:false}),CAB,0,2.39,-.9);CB.panel.rotation.x=Math.PI/2;
+  CB.panel=M3(new THREE.PlaneGeometry(1.6,.95),new THREE.MeshBasicMaterial({color:'#fff2d6'}),CAB,0,2.39,-.9);CB.panel.rotation.x=Math.PI/2;
   CB.light=new THREE.PointLight('#ffe8c8',9,6,1.5);CB.light.position.set(0,2.1,-.7);CAB.add(CB.light);
   CB.hemi=new THREE.HemisphereLight('#ffe2c0','#3a2a24',.6);CAB.add(CB.hemi);
   CB.red=new THREE.PointLight('#ff2a1a',0,5,1.5);CB.red.position.set(.8,2.2,-.4);CAB.add(CB.red);
@@ -140,7 +140,7 @@ function floorSVG(x,y,n,w=340,h=250,bl=1){return `<rect x="${x-w/2-16}" y="${y-h
 function sparksSVG(x,y,t,n=26,spread=1,seed=0,dirx=1,g=1){let h=`<circle cx="${f(x)}" cy="${f(y)}" r="180" fill="url(#sglow)"/>`;
   for(let i=0;i<n;i++){const ph=(t*2.2+rnd(i+seed))%1,a=(-90+(rnd(i*3+seed)-.5)*160*spread)*Math.PI/180,v=300+rnd(i+9+seed)*700,px=x+Math.cos(a)*v*ph*dirx,py=y+Math.sin(a)*v*ph+900*ph*ph*g,ln=18+30*(1-ph);
     h+=`<line x1="${f(px)}" y1="${f(py)}" x2="${f(px-Math.cos(a)*ln*dirx)}" y2="${f(py-Math.sin(a)*ln-30*ph)}" stroke="${['#ffd070','#ff9a3a','#fff0c0'][i%3]}" stroke-width="${f(6*(1-ph)+1.5)}" stroke-linecap="round" opacity="${f(1-ph)}"/>`;}return h;}
-function capSVG(words,p,y,size,hl){if(p<=0||!words.length)return'';const k=p<1?1+.35*Math.exp(-p*9)*Math.cos(p*14):1,len=words.join(' ').length,sz=Math.min(size,1000/(len*.62));
+function capSVG(words,p,y,size,hl){if(p<=0||!words.length)return'';const k=p<1?1+.35*Math.exp(-p*9)*Math.cos(p*14):1,len=words.join(' ').length,sz=Math.min(size,960/(len*.74));
   const sp=words.map(w=>`<tspan fill="${hl.has(w.replace(/[.,!?…]/g,''))||hl.has(w)?'#ffd23f':'#ffffff'}">${w}</tspan>`).join(' ');
   return `<g transform="translate(540 ${f(y)}) scale(${f(k*cl(p*4))})"><text class="mt" y="${f(sz*.36+8)}" font-size="${f(sz)}" fill="#000" opacity=".35" stroke="#000" stroke-width="${f(sz*.22)}" text-anchor="middle">${words.join(' ')}</text><text class="mt" y="${f(sz*.36)}" font-size="${f(sz)}" stroke="#000" stroke-width="${f(sz*.2)}" text-anchor="middle">${sp}</text></g>`;}
 const dark=a=>a>0?`<rect width="1080" height="1920" fill="#000" opacity="${f(a)}"/>`:'';
