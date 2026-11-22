@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}</style>
+<script type="importmap">{"imports":{"three":"../lib/three.module.js"}}</script></head><body><canvas id="c"></canvas>
+<script type="module">
+import * as THREE from 'three';import { AMB3D } from '../kit/ambiente3d.js';
+const r=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,preserveDrawingBuffer:true});r.setSize(1080,1920,false);r.toneMapping=THREE.ACESFilmicToneMapping;
+const s=new THREE.Scene();s.background=new THREE.Color('#10142a');s.fog=new THREE.Fog('#10142a',10,120);
+const cam=new THREE.PerspectiveCamera(60,1080/1920,.1,600);cam.position.set(0,2.2,7);cam.lookAt(0,1.6,0);
+s.add(new THREE.HemisphereLight('#8a9ad0','#2a2030',1.2));const fl=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.MeshStandardMaterial({color:'#2a2a38'}));fl.rotation.x=-Math.PI/2;s.add(fl);
+const A=AMB3D(THREE),up=[];const add=(n,o)=>{try{up.push(A[n](s,o))}catch(e){console.error('ERRO '+n+': '+e.message)}};
+add('fireflies',{center:new THREE.Vector3(0,1.5,0),size:new THREE.Vector3(8,3,8)});add('rain',{});add('snow',{n:200});add('dust',{});add('godRay',{pos:new THREE.Vector3(2,5,-3)});
+add('fogCards',{});add('candle',{pos:new THREE.Vector3(-1.5,.8,1)});add('lantern',{pos:new THREE.Vector3(1.5,3,1)});add('flag',{pos:new THREE.Vector3(-2.5,3,0)});add('water',{w:5,d:5,pos:new THREE.Vector3(3,.02,-1)});
+add('stars',{});add('moon',{});add('clouds',{});add('steam',{pos:new THREE.Vector3(0,1,2)});add('sparksEmitter',{pos:new THREE.Vector3(0,.5,3)});add('birds',{});add('lightning',{});add('neonSign',{pos:new THREE.Vector3(0,3.4,-1)});add('footsteps',{from:new THREE.Vector3(-3,0,2)});add('groundGlow',{pos:new THREE.Vector3(0,.02,1)});
+window.NUP=up.length;window.render=t=>{up.forEach(u=>u.update(t,cam));r.render(s,cam)};window.render(2.4);window.ready=true;
+</script></body></html>

@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Anton;src:url(../fonts/anton.woff2) format('woff2');}
+body{margin:0;background:#222;font-family:sans-serif}
+.cell{display:inline-block;width:270px;margin:4px;vertical-align:top}.cell svg{width:270px;height:480px;background:#3a3050;display:block}
+.cell span{color:#fff;font-size:12px;display:block;height:28px;overflow:hidden}
+.lb{font-family:Anton;letter-spacing:1px}
+</style></head><body><div id="o"></div>
+<script src="../kit/chars.js"></script><script src="../kit/anim.js"></script><script src="../kit/fx.js"></script><script src="../kit/fx2.js"></script>
+<script>
+window.ERR=[];
+const q=new URLSearchParams(location.search),T=+q.get('t')||1.3,Pp=+q.get('p')||.6,from=+q.get('from')||0,to=+q.get('to')||999;
+const defs=`<defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+let html='';
+FX2_META.slice(from,to).forEach((m,i)=>{let s='';try{s=FX2[m.name](540,800,T,Pp,{})}catch(e){ERR.push(m.name+': '+e.message)}
+ html+=`<div class="cell"><span>${from+i+1}. ${m.name}</span><svg viewBox="0 0 1080 1920">${defs}<circle cx="540" cy="800" r="100" fill="#f2a35e"/><rect x="440" y="900" width="200" height="300" rx="40" fill="#d2a032"/>${s}</svg></div>`;});
+document.getElementById('o').innerHTML=html;document.title='ok '+FX2_META.length;window.ready=true;
+</script></body></html>

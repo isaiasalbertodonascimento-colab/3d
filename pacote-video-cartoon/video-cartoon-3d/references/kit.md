@@ -91,3 +91,10 @@ Carregue `<script src="../kit/fx.js"></script>` depois de `chars.js` e `anim.js`
 | cabina de elevador por dentro | `exemplo-elevador` (`CAB`) | painel 1–15, portas deslizantes, mostrador, luz de emergência vermelha |
 
 Truque do "broto" trocado: sobrescreva `window.sprout=function(){…}` para desenhar outro símbolo na cabeça (raiozinho, olho, cabelo arrepiado, fumaça). Ele é desenhado dentro da cabeça e acompanha o movimento.
+
+## +138 detalhes de efeito (`kit/fx2.js` e `kit/ambiente3d.js`)
+Lista completa com o que cada um faz: `assets/projeto/DETALHES_EFEITOS.md`. Resumo:
+- **`FX2.*` (118, SVG de tela):** Personagem (25: corações, tontura, ideia, veia de raiva, fumaça nas orelhas, auréola, chifres, alma, fogo no corpo, gelo…), Ação (30: velocidade, poeira, choque, rachadura, explosão, fogos, vidro quebrando, corte, HQ BUM…), UI e texto (28: faixa de nome, barra de progresso, contagem regressiva, medalha, notificação, círculo à mão, REC, enquadramento de câmera, glitch…), Ambiente (25: chuva, neve, vaga-lumes, folhas, god rays, névoa, lens flare, filme antigo, VHS, confete, brasas, morcegos, neon…), Transição (12: íris, cortina diagonal, letterbox, glitch, queima de filme, xadrez, vazamento de luz…).
+- **`AMB3D(THREE).*` (20, Three.js):** vaga-lumes, chuva, neve, poeira, feixe de luz, névoa rasteira, vela, lanterna, bandeira, água, estrelas, lua, nuvens, vapor, faíscas, pássaros, relâmpago, neon, pegadas, brilho no chão. Todos com `update(t)` determinístico.
+- Uso: `<script src="../kit/fx2.js"></script>` e `ui.innerHTML += FX2.hearts(x,y,t,1,{s:1})`. No 3D: `import {AMB3D} from '../kit/ambiente3d.js'; const A=AMB3D(THREE); const rain=A.rain(scene); … rain.update(t)`.
+- Testar: `node teste-fx/shot.js` (folhas dos 118) e `node teste-fx/amb3d.js` (os 20 do 3D).
