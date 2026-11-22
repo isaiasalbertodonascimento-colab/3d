@@ -59,3 +59,63 @@ Todas as opções dos personagens, da câmera e dos efeitos. Personagem = `guy({
 | fundo desfocado | `BokehPass` (em `cena-quarto/index.html`: `focus` = distância câmera→rosto, `aperture` .01–.03 em close) |
 | sombra gigante na parede | sprite do personagem com `material.colorWrite=false` + `SpotLight` com sombra atrás dele, apontado para a parede (plano `sombra` do quarto) |
 | textura de pintura | `<image href="../paper.png" style="mix-blend-mode:overlay" opacity=".22">` na camada SVG por cima |
+
+## Mãos (desenho novo)
+Palma que afina no pulso, dedos com 2 falanges que dobram de verdade, polegar separado, borda suave (sem contorno grosso no estilo macio), dobrinhas nas juntas e unhas discretas.
+| Quero… | Use |
+|---|---|
+| pose da mão | `handL`/`handR`: `relaxed` (padrão), `open`, `wave`, `fist`, `point`, `thumb` (joinha sempre para cima), `peace`, `grip` (com `holdL/holdR`), `claw`, `ok` |
+| mão maior/menor | `kit:{handSize:1.15}` |
+| sem unha / unha pintada | `kit:{nails:false}` / `kit:{nailColor:'#e2283b'}` |
+
+## Física (kit/anim.js) — tudo determinístico: o mesmo `t` dá o mesmo quadro, então dá para renderizar em pedaços
+Unidades: metros e segundos (as mesmas do mesh). Gravidade `G = 12` (cartoon, um pouco mais "snappy" que a real).
+| Quero… | Use |
+|---|---|
+| personagem com física no corpo todo | `guy({... t, path: tt=>[x(tt), y(tt)]})` — `path` é a MESMA posição que você dá ao mesh (x = horizontal na tela, y = altura). Opcional: `mass` (2 pesado, .6 leve), `physGain`, `physFlip`, `tired:false` |
+| pulo com gravidade de verdade (altura decide o tempo no ar) | `const J=jump(u,t0,.5)` -> `mesh.y += J.y`; passe `sq:J.sq` ao guy; `J.phase` ('pre','air','land'), `J.T` (tempo no ar) |
+| queda de uma altura com quiques | `fall(u,t0,1.5,{e:.45})` -> `{y, vy, hit, n, rest}` (`hit` = s desde o último impacto: use para poeira/som/squash) |
+| objeto arremessado (livro, bola) | `toss(u,t0,[x,y],[vx,vy],{floor,e,friction,spin})` -> `{x,y,rot,hit,rest}` |
+| algo pendurado balançando (lustre, vaso, placa) | `pendulum(u,t0,amp,comprimento,amortecimento)` -> ângulo (rad) |
+| empurrão / esbarrão que desliza e freia | `shove(u,t0,v0,atrito)` -> `{x, v}` |
+| atraso de uma parte mole (genérico) | `inertia(path,t,k,c)` -> `{d:[dx,dy], v, a}` |
+
+O que o `path` liga sozinho no personagem (`bodyPhys` no chars.js), cada parte com a sua mola:
+- **tronco** inclina contra a aceleração e passa do ponto ao frear; inclina para a frente correndo;
+- **freada**: pernas travam na frente (derrapagem);
+- **cabelo, broto, coque, chaveiro**: mola mole e saltitante; sobem sozinhos em queda livre;
+- **braços**: mola solta, atrasam mais que o tronco; na queda levantam e se agitam;
+- **cabeça**: mola firme, atrasa pouco;
+- **pouso**: squash proporcional ao impacto, joelhos dobram e afastam, corpo afunda, bochechas balançam, pisca;
+- **no ar**: estica com a velocidade vertical, encolhe as pernas subindo; a sombra encolhe (`air` automático);
+- **velocidade** vira vento na roupa e no cabelo;
+- **cansaço**: depois de correr, respira rápido e fundo, boca entreabre, bochecha cora;
+- **mass**: pesado atrasa menos e afunda mais no pouso.
+
+## Colisão: ninguém atravessa nada
+- Marque móveis, paredes, vasos, troncos e postes com `obj.userData.solid=true`. O modelo (`cenas-novas/index.html`) monta `SOLIDS` com a caixa 3D de cada um.
+- Sempre posicione personagens com `place(sprite,x,y,z,escala)`. Ele empurra para fora de obstáculos e de outros personagens, e registra cada caso em `window.COLLIDE`.
+- **Antes do render:** `node check.js` (roda a cena inteira sem fotos). O esperado é `0 atravessamentos`. Se acusar algo, corrija a posição ou o trajeto no roteiro, porque o empurrão é só rede de segurança.
+- Funções: `solid(boxes,x,z,raio,y)` (pulando acima da altura `h` do obstáculo não conta), `apart(a,b,distMin)`.
+- Porta: abra um VÃO na parede (paredes em pedaços). Personagem entrando por parede sem vão é atravessamento.
+- Objeto arremessado com `toss` usa `floor` = altura da superfície. Confira que ele termina em cima da superfície (mesa de x0 a x1) e não flutuando fora dela.
+
+## Elenco pronto (personagens originais, estilo macio)
+`guy(ator('lia',{x:0,y:0,t,expr:'happy'}))` ou `Object.assign({},CAST.lia,{...})`.
+| nome | jeito | visual |
+|---|---|---|
+| `lia` | planta, curiosa | coque ruivo, óculos, broto, listra dourada |
+| `teo` | fogo, esquentado | cabelo curto escuro, agasalho vinho, listra vermelha, chaveiro |
+| `nina` | água, calma | chanel azul, presilha, listra azul-clara, broches |
+| `davi` | terra, forte e gentil | cacheado, pele escura, óculos, agasalho verde |
+| `bia` | vento, agitada | chanel loiro, sardas, cílios, roxo com listra branca |
+| `caio` | raio, rápido | ruivo curto, sardas, cinza-escuro com listra amarela |
+| `maya` | lua, misteriosa | coque preto, brinco, roxo com listra lilás |
+| `rafa` | gelo, tímido | cacheado castanho, bochecha corada, listra verde-água |
+| `prof` | diretor | grisalho, óculos, agasalho marrom |
+
+## Cenários novos (`cenas-novas/index.html`)
+- **Sala de aula** (`ENV.sala`): quadro-negro com desenho a giz, 6 carteiras com cadeira, janela em arco, lustre pendurado (`ENV.lamp`, pêndulo), porta com vão (`ENV.door`), relógio (`ENV.hand1`), armário com globo e plantas.
+- **Estufa** (`ENV.estufa`, x+40): paredes e telhado de vidro em grade de ferro, bancadas com vasos, vasos pendurados (`ENV.hang`, pêndulo), girassóis, regador (`ENV.can`), céu de pôr do sol.
+- **Pátio ao entardecer** (`ENV.patio`, x+80): claustro com arcos, fonte com jato (`ENV.jet`), postes acesos, árvores, bancos, bandeirinhas (`ENV.flags`), bola (`ENV.ball`).
+- Troca de cenário: `show('sala'|'estufa'|'patio')`. Câmera: `camAt(OX,[pos],[alvo],fov)`. Demo de 12 s com roteiro, eventos (`export_events.js` tira os tempos dos quiques da própria física), trilha e render.

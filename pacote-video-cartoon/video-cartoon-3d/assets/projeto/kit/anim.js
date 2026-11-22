@@ -123,3 +123,72 @@ function counter(x, y, from, to, p, o = {}) { const v = Math.round(lerp(from, to
 //   const EV = [[cena, u, 'pop'], [cena, u, 'thud'], ...];  evAt(EV, cena, 'thud') -> u do evento
 // e exporte window.EVENTS (tempos absolutos) para o make_audio.py ler via events.json.
 function evAt(EV, sc, name, nth = 0) { const l = EV.filter(e => e[0] === sc && e[2] === name); return l[nth] ? l[nth][1] : 1e9; }
+
+// ---------- física (determinística: o mesmo t dá sempre o mesmo resultado, então dá para renderizar em pedaços) ----------
+// Tudo em METROS e SEGUNDOS, igual às posições dos meshes. G = gravidade (cartoon: um pouco mais forte que a real fica mais "snappy").
+const G = 12;
+const _P = (fn, t) => { const v = fn(t); return Array.isArray(v) ? v : [v, 0]; };
+// Inércia de uma parte mole presa a um corpo que segue path(t) -> [x, y] (metros).
+// Simula os últimos `win` s a 120 Hz partindo do repouso: mola k, amortecimento c. Devolve {d:[dx,dy] (atraso da parte, m), v:[vx,vy], a:[ax,ay]}.
+function inertia(path, t, k = 70, c = 7, win = 1.6) {
+  const h = 1 / 120, n = Math.round(win / h); let dx = 0, dy = 0, vx = 0, vy = 0, ax = 0, ay = 0;
+  let p0 = _P(path, t - win - h), p1 = _P(path, t - win);
+  for (let i = 1; i <= n; i++) {
+    const p2 = _P(path, t - win + i * h); ax = (p2[0] - 2 * p1[0] + p0[0]) / (h * h); ay = (p2[1] - 2 * p1[1] + p0[1]) / (h * h);
+    // a parte sente a aceleração do corpo ao contrário (fica para trás) e a mola puxa de volta
+    vx += (-k * dx - c * vx - ax) * h; vy += (-k * dy - c * vy - ay) * h; dx += vx * h; dy += vy * h; p0 = p1; p1 = p2;
+  }
+  const pa = _P(path, t + h), pb = _P(path, t - h);
+  return { d: [dx, dy], v: [(pa[0] - pb[0]) / (2 * h), (pa[1] - pb[1]) / (2 * h)], a: [ax, ay] };
+}
+// Pulo com gravidade de verdade: a altura decide o tempo no ar (T = 2*sqrt(2h/G)). Antecipação (agacha), estica subindo, achata no pouso.
+// Devolve {y (m, para cima), sq (squash p/ guy), air (unid. SVG p/ sombra), vy, phase:'pre'|'air'|'land'|null, T (tempo no ar)}.
+function jump(u, t0, h = .5, o = {}) {
+  const g = o.g ?? G, pre = o.pre ?? .14, v0 = Math.sqrt(2 * g * h), T = 2 * v0 / g, land = o.land ?? .32, K = o.K ?? .0021;
+  const x = u - t0; if (x < 0 || x > pre + T + land) return { y: 0, sq: 0, air: 0, vy: 0, phase: null, T };
+  if (x < pre) return { y: 0, sq: .22 * Math.sin(x / pre * Math.PI / 2), air: 0, vy: 0, phase: 'pre', T };
+  if (x < pre + T) { const s = x - pre, y = v0 * s - g * s * s / 2, vy = v0 - g * s; return { y, sq: -.18 * Math.abs(vy) / v0, air: y / K, vy, phase: 'air', T }; }
+  const s = (x - pre - T) / land; return { y: 0, sq: .3 * Math.exp(-s * 5) * Math.cos(s * 11), air: 0, vy: 0, phase: 'land', T };
+}
+// Queda livre de uma altura h0 com quiques que perdem energia (e = elasticidade 0..1). Para objetos e para quem cai.
+// Devolve {y, vy, hit (s desde o último impacto, p/ squash/poeira/som), n (nº do quique), rest (parado)}.
+function fall(u, t0, h0 = 1.5, o = {}) {
+  const g = o.g ?? G, e = o.e ?? .45; let x = u - t0; if (x < 0) return { y: h0, vy: 0, hit: 1e9, n: -1, rest: false };
+  let t1 = Math.sqrt(2 * h0 / g); if (x < t1) return { y: h0 - g * x * x / 2, vy: -g * x, hit: 1e9, n: -1, rest: false };
+  x -= t1; let v = g * t1 * e, n = 0;
+  while (v > .25 && n < 12) { const T = 2 * v / g; if (x < T) return { y: v * x - g * x * x / 2, vy: v - g * x, hit: x, n, rest: false }; x -= T; v *= e; n++; }
+  return { y: 0, vy: 0, hit: x, n, rest: true };
+}
+// Objeto arremessado: parte de p0=[x,y] com v0=[vx,vy] (m/s), cai com gravidade, quica no chão (floor) perdendo energia,
+// desliza com atrito e gira enquanto voa. Devolve {x, y, rot (rad), hit, rest}.
+function toss(u, t0, p0, v0, o = {}) {
+  const g = o.g ?? G, e = o.e ?? .4, fr = o.friction ?? .6, floor = o.floor ?? 0, spin = o.spin ?? 8, h = 1 / 120;
+  let x = p0[0], y = p0[1], vx = v0[0], vy = v0[1], rot = 0, w = spin, hit = 1e9, s = 0; const T = Math.max(0, u - t0);
+  while (s < T) { vy -= g * h; x += vx * h; y += vy * h; rot += w * h; hit += h;
+    if (y < floor) { y = floor; if (Math.abs(vy) > .6) { vy = -vy * e; hit = 0; w *= .5; } else { vy = 0; } vx *= fr; if (vy === 0) { vx *= .9; w *= .8; } }
+    s += h; }
+  return { x, y, rot, hit, rest: vy === 0 && Math.abs(vx) < .01 };
+}
+// Pêndulo amortecido (placa pendurada, lustre, rabo de cavalo, chaveiro): ângulo em radianos após um empurrão em t0.
+function pendulum(u, t0, amp = .5, len = .4, damp = 1.2, o = {}) { const g = o.g ?? G; if (u < t0) return 0; const w = Math.sqrt(g / len), x = u - t0; return amp * Math.exp(-damp * x) * Math.sin(w * x); }
+// Empurrão/esbarrão: quem leva o empurrão desliza e freia por atrito (v0 m/s, mu = atrito). Devolve {x (m), v}.
+function shove(u, t0, v0 = 2, mu = 3) { if (u < t0) return { x: 0, v: 0 }; const x = u - t0, ts = v0 / mu; if (x > ts) return { x: v0 * ts / 2, v: 0 }; return { x: v0 * x - mu * x * x / 2, v: v0 - mu * x }; }
+
+// ---------- colisão: personagem NUNCA atravessa móvel, parede ou outro personagem ----------
+// Obstáculos = caixas no chão {x0,x1,z0,z1,h,name} (metros). Monte com solidsFrom(grupo) (lê a caixa 3D de cada objeto marcado
+// com userData.solid=true) ou à mão. r = "raio" do personagem (meio corpo, ~.28 m em escala .78).
+// solid(...) empurra o ponto para fora de qualquer caixa e devolve {x, z, hit (nome do que ia atravessar ou null), depth}.
+function solid(boxes, x, z, r = .28, y = 0) {
+  let hit = null, depth = 0;
+  for (let it = 0; it < 3; it++) for (const b of boxes) {
+    if (y > (b.h ?? 9)) continue; // pulando por cima de algo baixo
+    const cx = Math.max(b.x0, Math.min(b.x1, x)), cz = Math.max(b.z0, Math.min(b.z1, z)), dx = x - cx, dz = z - cz, d = Math.hypot(dx, dz);
+    if (d >= r) continue;
+    if (d > 1e-6) { x = cx + dx / d * r; z = cz + dz / d * r; }
+    else { const o = [[b.x0 - r - x, 0], [b.x1 + r - x, 0], [0, b.z0 - r - z], [0, b.z1 + r - z]].sort((a, c) => Math.hypot(...a) - Math.hypot(...c))[0]; x += o[0]; z += o[1]; }
+    hit = b.name || 'obstáculo'; depth = Math.max(depth, r - d);
+  }
+  return { x, z, hit, depth };
+}
+// Dois personagens não se atravessam: afasta a e b até a distância mínima (devolve as posições novas).
+function apart(a, b, min = .5) { const dx = b[0] - a[0], dz = b[1] - a[1], d = Math.hypot(dx, dz) || 1e-6; if (d >= min) return [a, b]; const k = (min - d) / 2 / d; return [[a[0] - dx * k, a[1] - dz * k], [b[0] + dx * k, b[1] + dz * k]]; }
