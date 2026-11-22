@@ -1,0 +1,54 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Anton;src:url(../fonts/anton.woff2) format('woff2');}
+@font-face{font-family:Mont;src:url(../fonts/Montserrat-ExtraBold.ttf) format("truetype");}
+.mt{font-family:Mont;paint-order:stroke;stroke-linejoin:round}
+html,body{margin:0;padding:0;background:#000;overflow:hidden}
+#wrap{position:relative;width:1080px;height:1920px;overflow:hidden}
+#gl{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+#ov{position:absolute;left:0;top:0}
+.lb,.cap{font-family:Anton;paint-order:stroke;stroke-linejoin:round;letter-spacing:1px}
+</style>
+<script type="importmap">{"imports":{"three":"../lib/three.module.js","three/addons/":"../lib/jsm/"}}</script>
+</head><body>
+<div id="wrap"><canvas id="gl"></canvas>
+<svg id="ov" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+<defs>
+ <radialGradient id="vig" cx=".5" cy=".45" r=".78"><stop offset=".5" stop-color="#140d22" stop-opacity="0"/><stop offset="1" stop-color="#140d22" stop-opacity=".62"/></radialGradient>
+ <radialGradient id="sunglow" cx=".72" cy=".2" r=".55"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".28"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient>
+ <radialGradient id="eball" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#dff4ff"/><stop offset=".7" stop-color="#6fc8ff" stop-opacity=".55"/><stop offset="1" stop-color="#3a7bff" stop-opacity="0"/></radialGradient>
+ <radialGradient id="sglow"><stop offset="0" stop-color="#fff0c0" stop-opacity=".9"/><stop offset=".3" stop-color="#ffb040" stop-opacity=".5"/><stop offset="1" stop-color="#ff7a20" stop-opacity="0"/></radialGradient>
+ <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1080" height="1920" fill="#5b3d7a" opacity=".12" style="mix-blend-mode:multiply"/>
+<rect id="glowL" width="1080" height="1920" fill="url(#sunglow)" style="mix-blend-mode:screen"/>
+<g id="fx"></g>
+<image href="../paper.png" x="0" y="0" width="1080" height="1920" opacity=".2" style="mix-blend-mode:overlay"/>
+<image id="grain" href="../grain.png" x="-60" y="-60" width="1200" height="2040" opacity=".09" style="mix-blend-mode:overlay" preserveAspectRatio="none"/>
+<rect width="1080" height="1920" fill="url(#vig)"/>
+<g id="ui"></g><g id="caps"></g>
+<rect id="flash" width="1080" height="1920" fill="#fff" opacity="0"/>
+</svg></div>
+
+<script src="timing.js"></script>
+<script src="../kit/chars.js"></script>
+<script src="../kit/anim.js"></script>
+<script src="../kit/fx2.js"></script>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
+import { AMB3D } from '../kit/ambiente3d.js';
+await document.fonts.load('50px Anton');await document.fonts.load('50px Mont');
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('gl'),antialias:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(1);renderer.setSize(1080,1920,false);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+const scene=new THREE.Scene();
+const cam=new THREE.PerspectiveCamera(52,1080/1920,.05,1500);
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+const TAU=Math.PI*2;
