@@ -1,0 +1,104 @@
+[
+ {
+  "cena": 1,
+  "inicio": 0,
+  "duracao": 3,
+  "texto": "E se tu caísse..."
+ },
+ {
+  "cena": 2,
+  "inicio": 3,
+  "duracao": 3,
+  "texto": "...num buraco."
+ },
+ {
+  "cena": 3,
+  "inicio": 6,
+  "duracao": 3,
+  "texto": "De vinte metros?"
+ },
+ {
+  "cena": 4,
+  "inicio": 9,
+  "duracao": 3.5,
+  "texto": "Queda livre. Setenta e um por hora."
+ },
+ {
+  "cena": 5,
+  "inicio": 12.5,
+  "duracao": 3.5,
+  "texto": "São só dois segundos. E então... o chão."
+ },
+ {
+  "cena": 6,
+  "inicio": 16,
+  "duracao": 3,
+  "texto": "Não termina bem."
+ },
+ {
+  "cena": 7,
+  "inicio": 19,
+  "duracao": 3,
+  "texto": "Mas... volta a cena."
+ },
+ {
+  "cena": 8,
+  "inicio": 22,
+  "duracao": 3,
+  "texto": "Agora, imagina com um guarda-chuva?"
+ },
+ {
+  "cena": 9,
+  "inicio": 25,
+  "duracao": 4,
+  "texto": "Será que ele te faz flutuar?"
+ },
+ {
+  "cena": 10,
+  "inicio": 29,
+  "duracao": 4,
+  "texto": "Sessenta e cinco por hora. Quase nada."
+ },
+ {
+  "cena": 11,
+  "inicio": 33,
+  "duracao": 3,
+  "texto": "Guarda-chuva não salva."
+ },
+ {
+  "cena": 12,
+  "inicio": 36,
+  "duracao": 4,
+  "texto": "E um paraquedas? Precisa de mais de cem metros pra abrir."
+ },
+ {
+  "cena": 13,
+  "inicio": 40,
+  "duracao": 4,
+  "texto": "E um airbag? Esse sim, salva!"
+ },
+ {
+  "cena": 14,
+  "inicio": 44,
+  "duracao": 4,
+  "texto": "O que importa não é cair. É parar devagar."
+ },
+ {
+  "cena": 15,
+  "inicio": 48,
+  "duracao": 4,
+  "texto": "Ou na água. Atletas saltam de vinte metros."
+ },
+ {
+  "cena": 16,
+  "inicio": 52,
+  "duracao": 4,
+  "texto": "Mas sem treino... dói."
+ },
+ {
+  "cena": 17,
+  "inicio": 56,
+  "duracao": 6,
+  "texto": "Qual vídeo tu quer ver? A ou B? Comenta aí e segue pra mais!"
+ }
+]
