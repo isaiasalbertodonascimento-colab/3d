@@ -42,3 +42,9 @@ O vídeo de Alcatraz foi considerado parado demais. No próximo, os personagens 
 - **Mais efeitos na tela:** linhas de velocidade, poeira, estrelinhas, gotas de suor, onomatopeias ("POW", "PLOFT") com pop, emojis/ícones pulando, contadores animados.
 - **Cenário vivo:** objetos de fundo com movimento (luzes piscando, poeira no ar, sombras passando, figurantes ao fundo).
 - **Ritmo:** algo novo acontecendo a cada ~1 s; legendas com pop/tremida nas palavras-chave; efeitos sonoros em cada ação.
+
+## Física, mãos, elenco e colisão (pedidos do usuário, novembro)
+- **Mão nova (o usuário achou a antiga feia):** palma afinando no pulso, dedos finos com falanges, polegar separado, sem contorno grosso. Use as poses do `hand()`; não volte para a mão redonda de "salsicha".
+- **Física nos personagens, com MUITOS detalhes:** sempre passe `path` ao `guy()` quando o personagem se mexe pela cena. Pulos com `jump()` (gravidade real), objetos com `toss()`/`fall()`, coisas penduradas com `pendulum()`, esbarrões com `shove()`. Cada parte do corpo balança no seu tempo (cabelo, braços, cabeça, tronco), com pouso pesado, derrapagem na freada, queda livre e cansaço depois de correr.
+- **Nada de atravessar objetos:** personagem nunca entra em móvel, parede, planta ou outro personagem, e porta precisa de vão. Use `place()` e rode `node check.js` antes de todo render (o esperado é 0 atravessamentos). Na prévia, confira também se ninguém parece "em pé em cima" de algo por causa do ângulo da câmera.
+- **Mais personagens e mais cenários:** use o elenco `CAST` (9 personagens originais) e os cenários de `cenas-novas/` (sala de aula, estufa, pátio) além do quarto.

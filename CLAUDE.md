@@ -1,6 +1,6 @@
 # Preferências do usuário para vídeos curtos
 
-> **Pacote pronto:** tudo foi empacotado na skill `video-cartoon-3d` (`pacote-video-cartoon/video-cartoon-3d/` e o arquivo `.skill`). Ao evoluir o kit aqui, atualize também o pacote e gere o `.skill` de novo.
+> **Pacote pronto:** tudo foi empacotado na skill `video-cartoon-3d` (`pacote-video-cartoon/video-cartoon-3d/` e o arquivo `.skill`). Ao evoluir o kit aqui, atualize também o pacote, gere o `.skill` de novo e copie o pacote para `.claude/skills/video-cartoon-3d/` (é essa cópia que o `/video-cartoon-3d` carrega neste projeto).
 
 ## ESTILO VISUAL ATUAL (pedido do usuário, vale para todos os próximos vídeos)
 Referência: vídeos estilo "Escola de Elementos" (personagens macios em quarto 3D aconchegante). Criar personagens e histórias **originais** nesse estilo, sem copiar personagens, nomes ou marcas do criador.

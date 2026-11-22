@@ -15,4 +15,5 @@ fi
 echo "Projeto criado em $DEST"
 echo "  cena-quarto/   quarto modelo (prints: cd $DEST/cena-quarto && NODE_PATH=\$(npm root -g) node shots.js)"
 echo "  exemplo-vento/ vídeo completo de exemplo (roteiro, cenas, eventos, trilha, render)"
-echo "  kit/           personagens, animação, props 3D, detector de trechos parados"
+echo "  cenas-novas/   sala de aula, estufa e pátio + elenco com física (check: node check.js)"
+echo "  kit/           personagens, mãos, física, colisão, elenco (CAST), detector de trechos parados"
