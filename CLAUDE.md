@@ -42,3 +42,9 @@ O vídeo de Alcatraz foi considerado parado demais. No próximo, os personagens 
 - **Mais efeitos na tela:** linhas de velocidade, poeira, estrelinhas, gotas de suor, onomatopeias ("POW", "PLOFT") com pop, emojis/ícones pulando, contadores animados.
 - **Cenário vivo:** objetos de fundo com movimento (luzes piscando, poeira no ar, sombras passando, figurantes ao fundo).
 - **Ritmo:** algo novo acontecendo a cada ~1 s; legendas com pop/tremida nas palavras-chave; efeitos sonoros em cada ação.
+
+## Física, mãos, elenco e colisão (pedidos do usuário)
+- **Mão nova** (a antiga era feia): dedos finos com falanges, palma afinando no pulso, polegar separado (`hand()` no `kit/chars.js`).
+- **Física com muitos detalhes:** passe `path` ao `guy()` sempre que o personagem se mover; use `jump`, `fall`, `toss`, `pendulum`, `shove` do `kit/anim.js`.
+- **Ninguém atravessa nada:** posicione com `place()`, marque obstáculos com `userData.solid=true` e rode `node check.js` antes do render (esperado: 0 atravessamentos).
+- **Mais personagens e cenários:** elenco `CAST`/`ator()` (9 originais) e `cenas-novas/` (sala de aula, estufa, pátio). Detalhes em `pacote-video-cartoon/video-cartoon-3d/references/`.
