@@ -1,0 +1,11 @@
+# Texto do vídeo: E se você acordasse com TREE(3) reais na sua conta?
+
+1. [0:00.0] E se você acordasse com TREE(3) reais na sua conta?
+2. [0:04.6] O app do banco ia travar: esse número não cabe em nenhuma tela.
+3. [0:09.4] TREE(1) é 1. TREE(2) é 3. Já TREE(3) faz o número de Graham parecer zero.
+4. [0:15.8] Empilhando notas de 100, um metro de pilha já dá 1 milhão de reais.
+5. [0:21.2] Pra pilha chegar até a Lua, seriam uns 384 trilhões de reais.
+6. [0:27.8] Com 6 octilhões de notas, a pilha pesaria tanto quanto a Terra.
+7. [0:33.1] E tanta massa junta desabaria e viraria um buraco negro!
+8. [0:37.7] Nem todos os átomos do universo dariam pra imprimir esse dinheiro.
+9. [0:42.6] E você, o que faria com TREE(3) reais? Comenta aí!
