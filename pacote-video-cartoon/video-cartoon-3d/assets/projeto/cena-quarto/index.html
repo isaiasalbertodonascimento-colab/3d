@@ -207,11 +207,12 @@ for(const s of[-1,1]){const sl=M(new THREE.SphereGeometry(1,16,10),std({color:'#
 
 // ---------- personagens originais (estilo macio) ----------
 const K=.0021;
+window.GROUND=window.GROUND||[];
 function sprite(vb,res,par=ROOM,halo=false){const [vx,vy,vw,vh]=vb,cw=Math.round(vw*res),ch=Math.round(vh*res);const c=document.createElement('canvas');c.width=cw;c.height=ch;const g=c.getContext('2d');
   const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=8;const geo=new THREE.PlaneGeometry(vw*K,vh*K);geo.translate((vx+vw/2)*K,-(vy+vh/2)*K,0);
   const mat=new THREE.MeshStandardMaterial({map:tex,alphaTest:halo?.02:.5,transparent:halo,side:THREE.DoubleSide,roughness:1,metalness:0,emissive:'#ffffff',emissiveMap:tex,emissiveIntensity:.42});
   const m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=true;m.customDepthMaterial=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:tex,alphaTest:.5});par.add(m);
-  return{mesh:m,last:'',async set(inner){if(inner===this.last)return;this.last=inner;const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(' ')}" width="${cw}" height="${ch}">${inner}</svg>`);await img.decode();g.clearRect(0,0,cw,ch);g.drawImage(img,0,0,cw,ch);tex.needsUpdate=true;}};}
+  return{mesh:m,last:'',async set(inner){inner=groundFix(inner,vb,{log:window.GROUND});if(inner===this.last)return;this.last=inner;const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(' ')}" width="${cw}" height="${ch}">${inner}</svg>`);await img.decode();g.clearRect(0,0,cw,ch);g.drawImage(img,0,0,cw,ch);tex.needsUpdate=true;}};}
 // Lia: cabelo ruivo em coque, agasalho verde-petróleo com listra mostarda. Theo (dormindo): cabelo preto cacheado.
 const LIA={hairStyle:'bun',hair:'#a8432a',skin:'#f0a468',shirt:'#22465a',pants:'#2b4a5e',sleeveStripe:'#e0b040'};
 const THEO={hairStyle:'curly',hair:'#241a17',skin:'#c98450',shirt:'#2c3566',sleeveStripe:'#e05a7a'};

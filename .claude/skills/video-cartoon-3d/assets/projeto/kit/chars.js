@@ -194,7 +194,8 @@ function head(o={}){
 // c.handSize (padrão 1) muda o tamanho; c.nails:false tira as unhas; c.nailColor pinta.
 function hand(side,pose,t,tot,c,hold){
   const ts=c.view==='back'?side:-side, soft=!!c.softHands, sk=c.skin, skD=c.skinD, wg=k=>t===undefined?0:Math.sin(t*3.1+k*1.7+side)*(pose==='wave'?7:2.5);
-  const edge=soft?tone(sk,-.12):skD, ew=soft?1.7:4, crease=tone(sk,-.22), id='hp'+sk.slice(1)+(soft?'s':'c');
+  const SH=c.simpleHands!==false, FW=SH?.62:1; // mão simples (padrão): dedos finos, sem unha, vinco, nó nem brilho
+  const edge=soft?tone(sk,-.12):skD, ew=SH?1:soft?1.7:4, crease=tone(sk,-.22), id='hp'+sk.slice(1)+(soft?'s':'c');
   const B=[],F=[],T=[]; // B = borda (atrás), F = preenchimento, T = detalhes por cima
   // dedo com 2 falanges: base (x,y), direção a (graus, 0 = ao longo do braço), comprimento, largura, dobra 0..1 e curva lateral
   const finger=(x,y,a,len,w,curl,sideBend=0,nail=true)=>{
@@ -203,7 +204,7 @@ function hand(side,pose,t,tot,c,hold){
     const d=`M${f(x)} ${f(y)} L${f(x1)} ${f(y1)} L${f(x2)} ${f(y2)}`, wt=w*.86;
     B.push(`<path d="${d}" stroke="${edge}" stroke-width="${f(w+ew*2)}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`);
     F.push(`<path d="M${f(x)} ${f(y)} L${f(x1)} ${f(y1)}" stroke="${sk}" stroke-width="${f(w)}" stroke-linecap="round"/><path d="M${f(x1)} ${f(y1)} L${f(x2)} ${f(y2)}" stroke="${sk}" stroke-width="${f(wt)}" stroke-linecap="round"/>`);
-    if(curl<.5&&l2>6){ // dobrinha da junta e unha pequena na ponta
+    if(SH){}else if(curl<.5&&l2>6){ // dobrinha da junta e unha pequena na ponta
       const nx=-Math.sin(r2),ny=Math.cos(r2);
       T.push(`<path d="M${f(x1-ny*w*.28)} ${f(y1+nx*w*.28)} L${f(x1+ny*w*.28)} ${f(y1-nx*w*.28)}" stroke="${crease}" stroke-width="1.3" opacity=".3" stroke-linecap="round"/>`);
       if(nail&&c.nails!==false){const cx=x2-nx*1.2,cy=y2-ny*1.2;T.push(`<ellipse cx="${f(cx)}" cy="${f(cy)}" rx="${f(wt*.3)}" ry="${f(wt*.36)}" transform="rotate(${f(a+sideBend)} ${f(cx)} ${f(cy)})" fill="${c.nailColor||tone(sk,.45)}" opacity="${c.nailColor&&!soft?1:.75}"/>`);}
@@ -211,11 +212,11 @@ function hand(side,pose,t,tot,c,hold){
       T.push(`<path d="M${f(x1-4)} ${f(y1-1)} Q${f(x1)} ${f(y1+3)} ${f(x1+4)} ${f(y1-1)}" stroke="${crease}" stroke-width="1.6" fill="none" opacity=".5"/>`);
   };
   // palma: larga nos nós dos dedos, fina no pulso, cantos arredondados
-  const PW=19,WW=12, palmD=`M${-WW} 120 Q${-PW-3} 128 ${-PW} 145 Q${-PW+1} 156 -10 158 L10 158 Q${PW-1} 156 ${PW} 145 Q${PW+3} 128 ${WW} 120Z`;
+  const PW=SH?14:19,WW=SH?9:12, palmD=`M${-WW} 120 Q${-PW-3} 128 ${-PW} 145 Q${-PW+1} 156 -10 158 L10 158 Q${PW-1} 156 ${PW} 145 Q${PW+3} 128 ${WW} 120Z`;
   // dedos: indicador, médio, anelar, mindinho (do lado do polegar para fora)
-  const bx=[ts*12.4,ts*4.2,-ts*4.2,-ts*12], ang=[-ts*7,-ts*2,ts*3,ts*9], len=[34,38,35,27], wd=[9,9.4,8.8,7.6];
+  const bx=[ts*12.4,ts*4.2,-ts*4.2,-ts*12].map(v=>v*(SH?.74:1)), ang=[-ts*7,-ts*2,ts*3,ts*9], len=[34,38,35,27], wd=[9,9.4,8.8,7.6].map(v=>v*FW);
   const fingers=(cu,spread=1,bend=[0,0,0,0])=>{for(let k=3;k>=0;k--)finger(bx[k],153-(k===3?3:0),ang[k]*spread+wg(k),len[k],wd[k],cu[k],bend[k]+ts*cu[k]*4);};
-  const thumb=(a,len=24,cu=0)=>finger(ts*17,134,a+wg(5),len,10.4,cu,-ts*cu*30,true);
+  const thumb=(a,len=24,cu=0)=>finger(ts*(SH?13:17),134,a+wg(5),len,10.4*FW,cu,-ts*cu*30,true);
   let thumbFront=false;
   switch(pose){
     case 'open':fingers([0,0,0,0],1.7);thumb(-ts*58,23);break;
@@ -226,20 +227,20 @@ function hand(side,pose,t,tot,c,hold){
     case 'claw':fingers([.45,.45,.45,.45],1.6);thumb(-ts*50,20,.4);break;
     case 'ok':fingers([.75,0,0,0],1.3);thumb(ts*8,16,.5);break;
     case 'thumb':{fingers([1,1,1,1]);const th=(tot||0)*Math.PI/180,x0=ts*15,y0=134,L=26,x2=x0-Math.sin(th)*L,y2=y0-Math.cos(th)*L,x1=x0-Math.sin(th)*L*.5,y1=y0-Math.cos(th)*L*.5;
-      T.push(`<path d="M${f(x0)} ${f(y0)} L${f(x2)} ${f(y2)}" stroke="${edge}" stroke-width="${f(11+ew*2)}" stroke-linecap="round"/><path d="M${f(x0)} ${f(y0)} L${f(x2)} ${f(y2)}" stroke="${sk}" stroke-width="11" stroke-linecap="round"/><path d="M${f(x1-4)} ${f(y1)} L${f(x1+4)} ${f(y1)}" stroke="${crease}" stroke-width="1.6" opacity=".45" transform="rotate(${f(-tot)} ${f(x1)} ${f(y1)})"/>`);
-      if(c.nails!==false){const cx=x2+Math.sin(th)*3,cy=y2+Math.cos(th)*3;T.push(`<ellipse cx="${f(cx)}" cy="${f(cy)}" rx="3.2" ry="3.8" transform="rotate(${f(-tot)} ${f(cx)} ${f(cy)})" fill="${c.nailColor||tone(sk,.45)}" opacity=".75"/>`);}break;}
+      T.push(`<path d="M${f(x0)} ${f(y0)} L${f(x2)} ${f(y2)}" stroke="${edge}" stroke-width="${f(11*FW+ew*2)}" stroke-linecap="round"/><path d="M${f(x0)} ${f(y0)} L${f(x2)} ${f(y2)}" stroke="${sk}" stroke-width="${f(11*FW)}" stroke-linecap="round"/><path d="M${f(x1-4)} ${f(y1)} L${f(x1+4)} ${f(y1)}" stroke="${crease}" stroke-width="1.6" opacity=".45" transform="rotate(${f(-tot)} ${f(x1)} ${f(y1)})"/>`);
+      if(!SH&&c.nails!==false){const cx=x2+Math.sin(th)*3,cy=y2+Math.cos(th)*3;T.push(`<ellipse cx="${f(cx)}" cy="${f(cy)}" rx="3.2" ry="3.8" transform="rotate(${f(-tot)} ${f(cx)} ${f(cy)})" fill="${c.nailColor||tone(sk,.45)}" opacity=".75"/>`);}break;}
     case 'grip':fingers([.55,.55,.55,.5]);thumbFront=true;break;
     default:fingers([.32,.38,.42,.48],1.1);thumb(-ts*40,20,.2);
   }
   // polegar dobrado por cima dos dedos (punho, apontar, paz e amor, segurando)
-  const TF=[];if(thumbFront){const s0=B.length,f0=F.length,t0=T.length;finger(ts*17,142,ts*74+wg(5),15,10.4,0,ts*12,false);TF.push(...B.splice(s0),...F.splice(f0),...T.splice(t0));}
+  const TF=[];if(thumbFront){const s0=B.length,f0=F.length,t0=T.length;finger(ts*(SH?13:17),142,ts*74+wg(5),15,10.4*FW,0,ts*12,false);TF.push(...B.splice(s0),...F.splice(f0),...T.splice(t0));}
   const grad=`<defs><linearGradient id="${id}" x1="0" y1="0" x2="${soft?.3:0}" y2="1"><stop offset="0" stop-color="${tone(sk,-.06)}"/><stop offset=".55" stop-color="${sk}"/><stop offset="1" stop-color="${tone(sk,.07)}"/></linearGradient></defs>`;
   const palm=`<path d="${palmD}" fill="${edge}" stroke="${edge}" stroke-width="${f(ew*2)}" stroke-linejoin="round"/>`;
-  const palmF=`<path d="${palmD}" fill="url(#${id})"/>`+
+  const palmF=SH?`<path d="${palmD}" fill="${sk}"/>`:`<path d="${palmD}" fill="url(#${id})"/>`+
     `<ellipse cx="${f(-ts*7)}" cy="134" rx="8" ry="5" fill="#fff" opacity="${soft?.16:.12}"/>`+
     [-ts*8.8,0,ts*8.8].map(x=>`<path d="M${f(x)} 152 l0 6" stroke="${crease}" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>`).join('');
-  const knuck=['fist','point','peace','thumb','grip'].includes(pose)?[ts*13,ts*4.4,-ts*4.6,-ts*13].map(x=>`<ellipse cx="${f(x)}" cy="156" rx="3.6" ry="2" fill="#fff" opacity=".22"/>`).join(''):'';
-  const S=1.3*(c.handSize||1), Z=x=>`<g transform="translate(0 122) scale(${f(S)}) translate(0 -122)">${x}</g>`;
+  const knuck=SH?'':['fist','point','peace','thumb','grip'].includes(pose)?[ts*13,ts*4.4,-ts*4.6,-ts*13].map(x=>`<ellipse cx="${f(x)}" cy="156" rx="3.6" ry="2" fill="#fff" opacity=".22"/>`).join(''):'';
+  const S=(SH?1.15:1.3)*(c.handSize||1), Z=x=>`<g data-g="1" transform="translate(0 122) scale(${f(S)}) translate(0 -122)">${x}</g>`;
   if(pose==='grip'){const q=c.squeeze||0;return grad+Z(palm+B.join('')+palmF+F.join(''))+(q?`<g transform="translate(0 128) scale(${f(1-q*.18)} ${f(1+q*.06)}) translate(0 -128)">${hold}</g>`:hold)+Z(TF.join('')+T.join(''));}
   return grad+Z(palm+B.join('')+palmF+F.join('')+T.join('')+knuck+TF.join(''))+hold;
 }
@@ -330,18 +331,18 @@ function guy(o){
   legL+=-WS*3;legR+=WS*4;
   if(run&&walk!==null)o=Object.assign({},o,{earFlap:Math.sin(walk*4*Math.PI)*14});
   const TS=o.thighScale??1, FF=o.flipflops===true?'#e2574c':o.flipflops;
-  const foot=(sd,tot)=>`<g transform="rotate(${f(-tot*.75)} ${sd*6} 150) translate(${sd*6} 150) scale(${f(1-Math.max(0,Math.abs(tot)-12)/120)} 1) translate(${-sd*6} -150)">`+(FF?`<ellipse cx="${sd*6}" cy="162" rx="64" ry="10" fill="${FF}"/><ellipse cx="${sd*6}" cy="148" rx="50" ry="17" fill="${c.skin}" stroke="${c.skinD}" stroke-width="4"/>${[0,1,2,3].map(k=>`<circle cx="${sd*6-20+k*13}" cy="160" r="6.5" fill="${c.skin}" stroke="${c.skinD}" stroke-width="2"/>`).join('')}<path d="M${sd*6} 140 l-20 16 M${sd*6} 140 l20 16" stroke="${FF}" stroke-width="7" stroke-linecap="round"/>`:`<ellipse cx="${sd*6}" cy="161" rx="64" ry="15" fill="${o.shoeColor?'#c9c4b8':'#e9e3d6'}"/><ellipse cx="${sd*6}" cy="150" rx="62" ry="24" fill="${o.shoeColor||'#3a302c'}"/><path d="M${sd*6-14} 134 l10 7 l10 -7 M${sd*6-14} 144 l10 7 l10 -7" stroke="${o._soft?'#9a9aa6':'#f4f0e6'}" stroke-width="4" fill="none" stroke-linecap="round"/>`+(o._soft?`<path d="M${sd*6-12} 132 q-10 -8 -2 -10 q6 2 2 10 q8 -10 12 -4 q-2 6 -12 4" stroke="#9a9aa6" stroke-width="2.6" fill="none"/><path d="M${sd*6-58} 154 Q${sd*6} 172 ${sd*6+58} 154" stroke="${o.soleStripe||c.sleeveStripe||'#e0b040'}" stroke-width="5" fill="none"/><path d="M${sd*6+sd*30} 140 q${sd*14} 4 ${sd*22} 14" stroke="#c9c4b8" stroke-width="3" fill="none"/><path d="M${sd*6-sd*40} 140 l${sd*-6} 10" stroke="${o.soleStripe||c.sleeveStripe||'#e0b040'}" stroke-width="7" stroke-linecap="round"/><path d="M${sd*6-sd*22} 150 l4 -6 l4 6 l-4 4Z" fill="${c.sleeveStripe||'#e0b040'}"/><ellipse cx="${sd*6-12}" cy="140" rx="16" ry="5" fill="#fff" opacity=".6"/>`:''))+`</g>`;
+  const foot=(sd,tot)=>`<g data-g="1" transform="rotate(${f(-tot*.75)} ${sd*6} 150) translate(${sd*6} 150) scale(${f(1-Math.max(0,Math.abs(tot)-12)/120)} 1) translate(${-sd*6} -150)">`+(FF?`<ellipse cx="${sd*6}" cy="162" rx="64" ry="10" fill="${FF}"/><ellipse cx="${sd*6}" cy="148" rx="50" ry="17" fill="${c.skin}" stroke="${c.skinD}" stroke-width="4"/>${[0,1,2,3].map(k=>`<circle cx="${sd*6-20+k*13}" cy="160" r="6.5" fill="${c.skin}" stroke="${c.skinD}" stroke-width="2"/>`).join('')}<path d="M${sd*6} 140 l-20 16 M${sd*6} 140 l20 16" stroke="${FF}" stroke-width="7" stroke-linecap="round"/>`:`<ellipse cx="${sd*6}" cy="161" rx="64" ry="15" fill="${o.shoeColor?'#c9c4b8':'#e9e3d6'}"/><ellipse cx="${sd*6}" cy="150" rx="62" ry="24" fill="${o.shoeColor||'#3a302c'}"/><path d="M${sd*6-14} 134 l10 7 l10 -7 M${sd*6-14} 144 l10 7 l10 -7" stroke="${o._soft?'#9a9aa6':'#f4f0e6'}" stroke-width="4" fill="none" stroke-linecap="round"/>`+(o._soft?`<path d="M${sd*6-12} 132 q-10 -8 -2 -10 q6 2 2 10 q8 -10 12 -4 q-2 6 -12 4" stroke="#9a9aa6" stroke-width="2.6" fill="none"/><path d="M${sd*6-58} 154 Q${sd*6} 172 ${sd*6+58} 154" stroke="${o.soleStripe||c.sleeveStripe||'#e0b040'}" stroke-width="5" fill="none"/><path d="M${sd*6+sd*30} 140 q${sd*14} 4 ${sd*22} 14" stroke="#c9c4b8" stroke-width="3" fill="none"/><path d="M${sd*6-sd*40} 140 l${sd*-6} 10" stroke="${o.soleStripe||c.sleeveStripe||'#e0b040'}" stroke-width="7" stroke-linecap="round"/><path d="M${sd*6-sd*22} 150 l4 -6 l4 6 l-4 4Z" fill="${c.sleeveStripe||'#e0b040'}"/><ellipse cx="${sd*6-12}" cy="140" rx="16" ry="5" fill="#fff" opacity=".6"/>`:''))+`</g>`;
   // Perna com joelho: a = quadril, kn = joelho (graus). thighScale encurta a coxa (sentado de frente).
   const leg=(sd,a,kn=0)=>`<g transform="translate(${f(sd*52*(o.slim??1))} 400) rotate(${f(a)}) scale(${o.slim??1} 1)"><g transform="translate(0 ${f(150*TS)}) rotate(${f(kn)})">`+(o.shorts||FF?(o.shorts?`<rect x="-30" y="-24" width="60" height="170" rx="26" fill="${c.skin}"/>`+(FF?'':`<rect x="-26" y="112" width="52" height="26" rx="8" fill="#f7f5f0"/>`):`<rect x="-44" y="-16" width="88" height="150" rx="28" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`):`<rect x="-44" y="-16" width="88" height="162" rx="28" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`)+(o._soft?`<line x1="${sd*4}" y1="-6" x2="${sd*4}" y2="128" stroke="${c.pantsD}" stroke-width="2" opacity=".45"/><path d="M-20 -4 q12 6 26 0 M-14 8 q10 5 20 0" stroke="${tone(c.pants,-.25)}" stroke-width="2.4" fill="none" opacity=".55"/><line x1="${sd*-36}" y1="-14" x2="${sd*-36}" y2="130" stroke="${c.pantsStripe||c.sleeveStripe||'#e0b040'}" stroke-width="5" opacity=".9"/><rect x="-44" y="122" width="88" height="14" rx="6" fill="${tone(c.pants,-.12)}"/><rect x="-26" y="132" width="52" height="16" rx="5" fill="${o.sock||'#f2f2f2'}"/><path d="M-22 138 h44" stroke="${c.sleeveStripe||'#e0b040'}" stroke-width="3"/>`:'')+foot(sd,a+kn)+(o.dirt?`<ellipse cx="${sd*10}" cy="80" rx="22" ry="14" fill="#6b4a2f" opacity="${f(.4*o.dirt)}"/>`:'')+`</g>`+(o.shorts?`<rect x="-46" y="0" width="92" height="${f(160*TS)}" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`:`<rect x="-44" y="0" width="88" height="${f(170*TS)}" rx="30" fill="${c.pants}" stroke="${c.pantsD}" stroke-width="5"/>`)+`</g>`;
   const ML=o.melt||0,SQ=sq+ML*.38,FZ=o.frozen&&T!==undefined?Math.sin(T*60)*3:0;
-  let h=`<g transform="translate(${f(x+FZ)} ${f(y)}) rotate(${f(rot)}) scale(${f(s*(o.sxMul??1))} ${s})">`;
+  let h=`<g data-guy="1" transform="translate(${f(x+FZ)} ${f(y)}) rotate(${f(rot)}) scale(${f(s*(o.sxMul??1))} ${s})">`;
   if(ML>0)h+=`<ellipse cy="714" rx="${f(150+ML*190)}" ry="${f(16+ML*16)}" fill="${c.skin}" opacity=".9"/><ellipse cx="-40" cy="708" rx="${f(40+ML*60)}" ry="6" fill="#fff" opacity=".35"/>`;
   const air=Math.max(0,o.air||0);
   if(legs&&o._soft)h+=`<defs><radialGradient id="gs"><stop offset="0" stop-color="#000" stop-opacity=".32"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs><ellipse cx="0" cy="${f(714+air)}" rx="${f(200*(1+sq)/(1+air/500))}" ry="${f(34/(1+air/500))}" fill="url(#gs)"/>`;
   else if(legs)h+=`<ellipse cx="0" cy="${f(712+air)}" rx="${f(170*KID*(1+sq)*(1+bob/400)/(1+air/500))}" ry="${f(26/(1+air/500))}" fill="#000" opacity="${f(.18/(1+air/400))}"/>`;
   // Sombra de contato: bem escura e pequena embaixo de cada pé (some no ar).
   if(legs&&air<60)for(const[sd2,la]of[[-1,legL],[1,legR]])h+=`<ellipse cx="${f((sd2*52-Math.sin(la*Math.PI/180)*300)*KID)}" cy="${f(718+air)}" rx="${f(54*KID)}" ry="9" fill="#000" opacity="${f(.38*(1-air/60))}"/>`;
-  h+=`<g transform="translate(${f(WS*10)} 712) scale(${(1+SQ).toFixed(3)} ${(1-SQ).toFixed(3)}) translate(0 ${f(-712+bob)}) rotate(${f(lean+idLean+WS*2.5)} 0 420)">`;
+  h+=`<g data-body="1" transform="translate(${f(WS*10)} 712) scale(${(1+SQ).toFixed(3)} ${(1-SQ).toFixed(3)}) translate(0 ${f(-712+bob)}) rotate(${f(lean+idLean+WS*2.5)} 0 420)">`;
   // Rastro de poeira ao andar/correr (moveDir = lado para onde anda; dust:false desliga).
   if(KID<1)h+=`<g transform="translate(0 712) scale(${KID}) translate(0 -712)">`;
   if(walk!==null&&o.dust!==false&&legs){const md=o.moveDir??1;for(let k=0;k<4;k++){const p=((walk*2)+k/4)%1;h+=`<circle cx="${f(-md*(40+p*(run?220:120)))}" cy="${f(705-p*(run?70:35))}" r="${f(10+p*(run?34:20))}" fill="#d9cfbb" opacity="${f((1-p)*(run?.6:.4))}"/>`;}}
@@ -570,13 +571,13 @@ function guySide(o){
     if(aF===undefined)aF=-w*(run?65:30);if(aB===undefined)aB=w*(run?65:30);if(run){eF-=60;eB-=60;}}
   if(aF===undefined)aF=T===undefined?0:Math.sin(T*2.1+sd)*4;if(aB===undefined)aB=T===undefined?0:Math.sin(T*2.1+sd+1.7)*4;
   const cb=Object.assign({},c,{skin:tone(c.skin,-.14),skinD:tone(c.skinD,-.14),shirt:tone(c.shirt,-.1),shirtD:tone(c.shirtD,-.1),pants:tone(c.pants,-.15),pantsD:tone(c.pantsD,-.15)});
-  const legS=(k,a,kn,cc)=>`<g transform="translate(${k} 400) rotate(${f(a)})"><g transform="translate(0 150) rotate(${f(kn)})"><rect x="-44" y="-16" width="88" height="162" rx="28" fill="${cc.pants}" stroke="${cc.pantsD}" stroke-width="5"/><g transform="rotate(${f(-(a+kn)*.75)} 0 150)">`+(o.flipflops?`<ellipse cx="24" cy="162" rx="72" ry="9" fill="#e2574c"/><ellipse cx="22" cy="148" rx="58" ry="16" fill="${cc.skin}" stroke="${cc.skinD}" stroke-width="4"/>`:`<ellipse cx="24" cy="161" rx="74" ry="14" fill="#e9e3d6"/><ellipse cx="22" cy="150" rx="72" ry="24" fill="${o.shoeColor||'#3a302c'}"/><path d="M14 134 l10 7 l10 -7" stroke="#f4f0e6" stroke-width="4" fill="none"/>`)+`</g></g><rect x="-44" width="88" height="170" rx="30" fill="${cc.pants}" stroke="${cc.pantsD}" stroke-width="5"/></g>`;
+  const legS=(k,a,kn,cc)=>`<g transform="translate(${k} 400) rotate(${f(a)})"><g data-g="1" transform="translate(0 150) rotate(${f(kn)})"><rect x="-44" y="-16" width="88" height="162" rx="28" fill="${cc.pants}" stroke="${cc.pantsD}" stroke-width="5"/><g transform="rotate(${f(-(a+kn)*.75)} 0 150)">`+(o.flipflops?`<ellipse cx="24" cy="162" rx="72" ry="9" fill="#e2574c"/><ellipse cx="22" cy="148" rx="58" ry="16" fill="${cc.skin}" stroke="${cc.skinD}" stroke-width="4"/>`:`<ellipse cx="24" cy="161" rx="74" ry="14" fill="#e9e3d6"/><ellipse cx="22" cy="150" rx="72" ry="24" fill="${o.shoeColor||'#3a302c'}"/><path d="M14 134 l10 7 l10 -7" stroke="#f4f0e6" stroke-width="4" fill="none"/>`)+`</g></g><rect x="-44" width="88" height="170" rx="30" fill="${cc.pants}" stroke="${cc.pantsD}" stroke-width="5"/></g>`;
   const hw=T===undefined?0:(o.wind??.45),hm=Math.sin((T||0)*4.7+sd)*hw,br=T===undefined?0:Math.sin(T*2.6+sd);
-  let h=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${f(s*dir*(o.sxMul??1))} ${s})">`;
+  let h=`<g data-guy="1" transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${f(s*dir*(o.sxMul??1))} ${s})">`;
   h+=`<ellipse cy="712" rx="150" ry="24" fill="#000" opacity=".18"/>`;
   for(const a of[legB,legF])h+=`<ellipse cx="${f(-Math.sin(a*Math.PI/180)*300+20)}" cy="718" rx="64" ry="9" fill="#000" opacity=".35"/>`;
   if(walk!==null&&o.dust!==false)for(let k=0;k<4;k++){const p=((walk*2)+k/4)%1;h+=`<circle cx="${f(-(40+p*(run?220:120)))}" cy="${f(705-p*(run?70:35))}" r="${f(10+p*(run?34:20))}" fill="#d9cfbb" opacity="${f((1-p)*(run?.6:.4))}"/>`;}
-  h+=`<g transform="translate(0 712) scale(${f(1+SQ)} ${f(1-SQ)}) translate(0 ${f(-712+bob)}) rotate(${f(lean)} 0 420)">`;
+  h+=`<g data-body="1" transform="translate(0 712) scale(${f(1+SQ)} ${f(1-SQ)}) translate(0 ${f(-712+bob)}) rotate(${f(lean)} 0 420)">`;
   h+=arm(-1,aB,eB,cb,holdB,{pose:o.handB,t:T,sx:-6});
   const kB=o.kneeB??Math.max(0,legB)*1.1+(run?20:0),kF=o.kneeF??Math.max(0,legF)*1.1+(run?20:0);
   h+=legS(-10,legB,kB,cb)+legS(10,legF,kF,c);
@@ -596,7 +597,7 @@ function headSoft(c){
   // olhar com microssaltos (sacadas) e sobrancelha que mexe sozinha de vez em quando
   const sac=TT===undefined?0:(rnd(Math.floor(TT/1.3)+7)-.5)*.5,sacY=TT===undefined?0:(rnd(Math.floor(TT/1.3)+19)-.5)*.3;
   const look=c.lookCam?0:(c.look||0)+sac,lookY=c.lookCam?0:(c.lookY||0)+sacY,browJ=TT===undefined?0:(rnd(Math.floor(TT/2.7)+3)>.8?-4:0);
-  const Q=V==='3q'?(c.dir??1):0,SIDE=V==='side',D='#2b2320',sk=c.skin,hair=c.hair,u=sk.slice(1)+hair.slice(1)+(SIDE?'s':Q);
+  const SF=c.detail!==true,Q=V==='3q'?(c.dir??1):0,SIDE=V==='side',D='#2b2320',sk=c.skin,hair=c.hair,u=sk.slice(1)+hair.slice(1)+(SIDE?'s':Q);
   const PHX=(c.physHair||[0,0])[0],PHY=(c.physHair||[0,0])[1],wd=TT===undefined?0:(c.wind??.45),sw=k=>(TT===undefined?0:Math.sin(TT*5+k)*wd*7)+PHX*.8+(k%2?PHY*.4:0),HS=c.hairStyle||'bob';
   const happy=['happy','laugh','smug'].includes(e),hD=tone(hair,-.28),hL=tone(hair,.3),skD=tone(sk,-.2),eyeC=c.eyeColor||'#4a2e22',lip=c.lipColor||'#d9707a',browC=c.browColor||tone(hair,-.15);
   let h=`<defs><radialGradient id="fg${u}" cx="${f(.36+(SIDE?.18:Q*.1))}" cy=".3" r=".8"><stop offset="0" stop-color="${tone(sk,.18)}"/><stop offset=".6" stop-color="${sk}"/><stop offset="1" stop-color="${tone(sk,-.18)}"/></radialGradient>`+
@@ -620,11 +621,16 @@ function headSoft(c){
   if(SIDE)h+=ear(-14,16,1);else for(const sd of[-1,1])if(sd!==Q)h+=ear(Q?-Q*100:sd*106,16,-sd);
   // ----- rosto: degradê, contorno sutil, poros, brilho na testa, sombra do maxilar -----
   h+=`<circle r="115" fill="url(#fg${u})"/><circle r="114" fill="none" stroke="${skD}" stroke-width="2" opacity=".45"/>${c.pores?`<circle r="112" fill="url(#sp${u})" opacity=".12"/>`:''}`;
-  h+=`<ellipse cx="${f(-26+Q*12+(SIDE?20:0))}" cy="-58" rx="34" ry="18" fill="#fff" opacity=".13"/><path d="M-92 62 Q0 138 92 62 Q0 120 -92 62Z" fill="${skD}" opacity=".22"/>`;
+  h+=(SF?'':`<ellipse cx="${f(-26+Q*12+(SIDE?20:0))}" cy="-58" rx="34" ry="18" fill="#fff" opacity=".13"/>`)+`<path d="M-92 62 Q0 138 92 62 Q0 120 -92 62Z" fill="${skD}" opacity=".22"/>`;
   if(SIDE)h+=`<path d="M106 4 Q124 18 108 30" fill="${sk}"/><circle cx="110" cy="26" r="2" fill="${skD}" opacity=".6"/>`;
   // ----- olhos: íris, pupila, 2 brilhos, pálpebras, vinco, canto rosado, cílios, olheira, aperto ao sorrir -----
   const fx=SIDE?62:Q*30,E=SIDE?[[fx,1]]:Q?[[fx+Q*30,1],[fx-Q*28,.72]]:[[-34,1],[34,1]];
   for(const[ex,sxe]of E){const sg=ex>fx?1:-1,X=ex+look*3*sxe,Y=lookY*5;
+    if(SF){ // rosto simples (padrão): olho = pontinho, sobrancelha = traço fino
+      if(e==='sleep'||e==='laugh'||e==='smug'||bl>.6)h+=`<path d="M${f(ex-8*sxe)} 0 Q${ex} ${e==='laugh'?-8:6} ${f(ex+8*sxe)} 0" stroke="${D}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`;
+      else{const pl=(e==='bored'||e==='suspicious')?.45:0,ry=(e==='shock'?11:9)*(1-bl*.8)*(1-pl);h+=`<ellipse cx="${f(X)}" cy="${f(Y+(pl?3:0))}" rx="${f((e==='shock'?7.5:6.5)*sxe)}" ry="${f(Math.max(2,ry))}" fill="${D}"/>`;}
+      const by=(e==='shock'?-32:e==='angry'?-20:-26)+browJ-(c.browUp||0)*8,tilt=e==='angry'?7:(e==='fear'||e==='sad')?-7:0;
+      h+=`<path d="M${f(ex-9*sxe)} ${f(by-tilt*sg)} L${f(ex+9*sxe)} ${f(by+tilt*sg)}" stroke="${browC}" stroke-width="3.5" stroke-linecap="round" opacity=".85"/>`;continue;}
     if(e==='sleep'||e==='laugh'||e==='smug'){h+=`<path d="M${f(ex-10*sxe)} 0 Q${ex} ${e==='laugh'?-10:8} ${f(ex+10*sxe)} 0" stroke="${D}" stroke-width="5" fill="none" stroke-linecap="round"/>`;if(c.lashes)h+=`<path d="M${f(ex+sg*10*sxe)} ${e==='laugh'?-2:2} l${f(sg*6)} ${e==='laugh'?-6:4}" stroke="${D}" stroke-width="3" stroke-linecap="round"/>`;}
     else{const ry=(e==='shock'?13:10)*(1-bl)+1,pl=(e==='bored'||e==='suspicious')?.45:0,ry2=ry*(1-pl);
       h+=`<path d="M${f(ex-10*sxe)} ${f(-ry-7)} Q${ex} ${f(-ry-11)} ${f(ex+10*sxe)} ${f(-ry-7)}" stroke="${skD}" stroke-width="2" fill="none" opacity=".55"/>`;
@@ -641,17 +647,24 @@ function headSoft(c){
     h+=`<path d="M${f(x0)} ${f(y0+1)} Q${f(mxb)} ${f(myb-4)} ${f(x1)} ${f(y1+1)} Q${f(mxb)} ${f(myb+1)} ${f(x0)} ${f(y0+1)}Z" fill="${browC}" stroke="${browC}" stroke-width="2.2" stroke-linejoin="round"/>`;
     for(let k=0;k<3;k++)h+=`<path d="M${f(x0+(k+1)*6*sxe)} ${f(myb-1+k*.3)} l${f(3*sxe)} -3" stroke="${tone(browC,.25)}" stroke-width="1.2" opacity=".6"/>`;}
   // ----- nariz sutil com pontinha rosada -----
-  if(!SIDE)h+=`<path d="M${f(fx-4)} 24 Q${fx} 29 ${f(fx+4)} 24" stroke="${skD}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".75"/><ellipse cx="${fx}" cy="20" rx="6" ry="4" fill="#ffb3a0" opacity="${c.cold?.6:.3}"/>`;
+  if(!SIDE&&SF)h+=`<path d="M${f(fx-3)} 25 Q${fx} 28 ${f(fx+3)} 25" stroke="${skD}" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".6"/>`;
+  else if(!SIDE)h+=`<path d="M${f(fx-4)} 24 Q${fx} 29 ${f(fx+4)} 24" stroke="${skD}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".75"/><ellipse cx="${fx}" cy="20" rx="6" ry="4" fill="#ffb3a0" opacity="${c.cold?.6:.3}"/>`;
   // ----- boca: lábio, dentes, língua, covinhas, brilho, queixo -----
   const my=50+(TT===undefined?0:Math.sin(TT*.7)*.6),mx=SIDE?92:fx;
-  if(mo>.05||e==='shock')h+=`<ellipse cx="${mx}" cy="${f(my+2)}" rx="${f(5+mo*4)}" ry="${f(5+(e==='shock'?6:mo*10))}" fill="#5a1f1f"/><ellipse cx="${mx}" cy="${f(my+4+mo*6)}" rx="${f(3+mo*2)}" ry="${f(2+mo*3)}" fill="#e98292"/>`;
+  if(SF){ // boca simples: um traço ou uma forma escura, sem dentes, língua, covinha ou brilho
+    if(mo>.05||e==='shock')h+=`<ellipse cx="${mx}" cy="${f(my+2)}" rx="${f(5+mo*3)}" ry="${f(4+(e==='shock'?6:mo*9))}" fill="#5a1f1f"/>`;
+    else if(e==='laugh'||e==='happy')h+=`<path d="M${mx-11} ${my-3} Q${mx} ${my} ${mx+11} ${my-3} Q${mx} ${my+16} ${mx-11} ${my-3}Z" fill="#6a2222"/>`;
+    else if(e==='smirk'||e==='smug')h+=`<path d="M${mx-7} ${my} Q${mx+3} ${my+4} ${mx+10} ${my-5}" stroke="${D}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+    else if(e==='angry'||e==='fear'||e==='sad')h+=`<path d="M${mx-8} ${my+4} Q${mx} ${my-2} ${mx+8} ${my+4}" stroke="${D}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+    else h+=`<path d="M${mx-6} ${f(my)} Q${mx} ${f(my+3)} ${mx+6} ${f(my)}" stroke="${D}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;}
+  else if(mo>.05||e==='shock')h+=`<ellipse cx="${mx}" cy="${f(my+2)}" rx="${f(5+mo*4)}" ry="${f(5+(e==='shock'?6:mo*10))}" fill="#5a1f1f"/><ellipse cx="${mx}" cy="${f(my+4+mo*6)}" rx="${f(3+mo*2)}" ry="${f(2+mo*3)}" fill="#e98292"/>`;
   else if(e==='laugh'||e==='happy')h+=`<path d="M${mx-13} ${my-4} Q${mx} ${my} ${mx+13} ${my-4} Q${mx+11} ${my+16} ${mx} ${my+16} Q${mx-11} ${my+16} ${mx-13} ${my-4}Z" fill="#7a2626"/><path d="M${mx-12} ${my-3.5} Q${mx} ${my} ${mx+12} ${my-3.5} L${mx+10} ${my+1.5} Q${mx} ${my+4} ${mx-10} ${my+1.5}Z" fill="#fffaf2"/><ellipse cx="${mx}" cy="${my+11}" rx="7" ry="4" fill="#e98292"/>`;
   else if(e==='smirk'||e==='smug')h+=`<path d="M${mx-8} ${my} Q${mx+4} ${my+5} ${mx+12} ${my-6}" stroke="${D}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
   else if(e==='angry'||e==='fear'||e==='sad')h+=`<path d="M${mx-9} ${my+5} Q${mx} ${my-2} ${mx+9} ${my+5}" stroke="${D}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
   else h+=`<path d="M${mx-7} ${f(my)} Q${mx} ${f(my+3)} ${mx+7} ${f(my)}" stroke="${D}" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M${mx-5} ${f(my+5)} Q${mx} ${f(my+8)} ${mx+5} ${f(my+5)}" stroke="${lip}" stroke-width="3" fill="none" opacity=".55" stroke-linecap="round"/>`;
-  if(happy||e==='smirk')for(const s2 of(SIDE?[1]:[-1,1]))h+=`<path d="M${f(mx+s2*15)} ${my-6} q${s2*3} 3 0 7" stroke="${skD}" stroke-width="2" fill="none" opacity=".6"/>`;
-  if(!(mo>.05)&&!happy)h+=`<circle cx="${mx+3}" cy="${f(my+6)}" r="1.4" fill="#fff" opacity=".6"/>`;
-  if(!SIDE)h+=`<path d="M${mx-5} 80 Q${mx} 83 ${mx+5} 80" stroke="${skD}" stroke-width="2" fill="none" opacity=".35"/>`;
+  if(!SF&&(happy||e==='smirk'))for(const s2 of(SIDE?[1]:[-1,1]))h+=`<path d="M${f(mx+s2*15)} ${my-6} q${s2*3} 3 0 7" stroke="${skD}" stroke-width="2" fill="none" opacity=".6"/>`;
+  if(!SF&&!(mo>.05)&&!happy)h+=`<circle cx="${mx+3}" cy="${f(my+6)}" r="1.4" fill="#fff" opacity=".6"/>`;
+  if(!SIDE&&!SF)h+=`<path d="M${mx-5} 80 Q${mx} 83 ${mx+5} 80" stroke="${skD}" stroke-width="2" fill="none" opacity=".35"/>`;
   // ----- bochechas em degradê com brilhinhos (sobem ao sorrir); sardas -----
   const bs=c.blush??.6,bly=happy?24:28;for(const[ex,sxe]of E){const bx=ex+(SIDE?-6:(ex>fx?1:-1)*20)*sxe;h+=`<ellipse cx="${f(bx)}" cy="${bly}" rx="${f(22*sxe)}" ry="15" fill="url(#bg${u})" opacity="${f(bs*1.2)}"/>`;if(c.sparkle)for(let k=0;k<3;k++)h+=`<circle cx="${f(bx-6+k*6)}" cy="${f(bly-4+(k%2)*5)}" r="1.1" fill="#fff" opacity=".55"/>`;}
   if(c.freckles)for(const[ex,sxe]of E)for(let k=0;k<5;k++)h+=`<circle cx="${f(ex+(rnd(k+ex)-.5)*26*sxe)}" cy="${f(16+rnd(k+3)*12)}" r="1.6" fill="${tone(sk,-.35)}" opacity=".7"/>`;
@@ -734,3 +747,27 @@ const CAST={
   prof: {style:'soft',seed:9, kit:{hairStyle:'short',hair:'#d8d8dc',skin:'#e6ad84',shirt:'#4a3a2a',sleeveStripe:'#c9a36a'}, glasses:true, emblem:'#c9a36a', nome:'Prof. Orvalho (diretor)'}
 };
 function ator(nome,o={}){const b=CAST[nome];if(!b)throw new Error('ator desconhecido: '+nome);const k=Object.assign({},b.kit,o.kit||{});return Object.assign({},b,o,{kit:k});}
+
+// ---------- chão sólido: nenhum pedaço do personagem passa do chão ----------
+// groundFix(svgInner, vb, o) mede, no navegador, o ponto mais baixo de pés, pernas (de lado) e mãos de cada guy()
+// e, se algum passar do chão (y = 712 no boneco), levanta só o corpo até encostar (a sombra continua no chão).
+// o.floor (padrão 712), o.tol (unid. SVG, padrão 1), o.log (lista onde registrar {t, d}), o.t. Devolve o SVG corrigido.
+// Use em todo sprite: s.set(groundFix(guy({...}), VB, {log:window.GROUND, t:NOW})). Requer document (navegador).
+let _GFS=null;
+function groundFix(inner,vb,o={}){
+  if(typeof document==='undefined'||!inner.includes('data-body="1"'))return inner;
+  const floor=o.floor??712,tol=o.tol??1,NS='http://www.w3.org/2000/svg';
+  if(!_GFS){_GFS=document.createElementNS(NS,'svg');_GFS.setAttribute('style','position:absolute;left:-99999px;top:0;visibility:hidden');document.body.appendChild(_GFS);}
+  _GFS.setAttribute('viewBox',(vb||[-1000,-1000,2000,2000]).join(' '));_GFS.setAttribute('width','1000');_GFS.setAttribute('height','1000');
+  _GFS.innerHTML=inner;const lifts=[];
+  for(const root of _GFS.querySelectorAll('[data-guy]')){const body=root.querySelector(':scope > [data-body]');if(!body){lifts.push(0);continue;}
+    const inv=root.getCTM().inverse();let low=-1e9;
+    for(const g of body.querySelectorAll('[data-g]'))for(const el of g.querySelectorAll('path,ellipse,rect,circle,line,polygon')){
+      if(!el.getTotalLength||el.closest('defs,clipPath,mask,pattern'))continue;const op=el.getAttribute('opacity');if(op!==null&&+op<.3)continue;
+      let L=0;try{L=el.getTotalLength();}catch(e){continue;}if(!(L>0))continue;
+      const M=inv.multiply(el.getCTM()),sw=(+el.getAttribute('stroke-width')||0)*(el.getAttribute('stroke')&&el.getAttribute('stroke')!=='none'?.5:0),n=Math.min(48,Math.max(8,Math.ceil(L/12)));
+      for(let i=0;i<n;i++){const p=el.getPointAtLength(L*i/n),y=M.b*p.x+M.d*p.y+M.f+sw*Math.hypot(M.b,M.d);if(y>low)low=y;}}
+    lifts.push(low>floor+tol?low-floor:0);}
+  let i=0;const out=inner.replace(/<g data-body="1" transform="/g,m=>{const d=lifts[i++]||0;return d?m+`translate(0 ${(-d).toFixed(1)}) `:m;});
+  const dm=Math.max(0,...lifts);if(dm&&o.log)o.log.push({t:o.t,d:+dm.toFixed(1)});
+  return out;}

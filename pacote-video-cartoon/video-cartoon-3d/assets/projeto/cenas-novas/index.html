@@ -192,11 +192,12 @@ const APPLE=M(new THREE.SphereGeometry(.07,16,12),std({color:'#d8322e',roughness
 
 // ---------- personagens (sprites com o SVG do kit) ----------
 const K=.0021,VB=[-560,-640,1120,1420];
+window.GROUND=window.GROUND||[];
 function sprite(vb,res,halo=false){const [vx,vy,vw,vh]=vb,cw=Math.round(vw*res),ch=Math.round(vh*res);const c=document.createElement('canvas');c.width=cw;c.height=ch;const g=c.getContext('2d');
   const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=8;const geo=new THREE.PlaneGeometry(vw*K,vh*K);geo.translate((vx+vw/2)*K,-(vy+vh/2)*K,0);
   const mat=new THREE.MeshStandardMaterial({map:tex,alphaTest:.5,side:THREE.DoubleSide,roughness:1,metalness:0,emissive:'#ffffff',emissiveMap:tex,emissiveIntensity:.42});
   const m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=true;m.customDepthMaterial=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:tex,alphaTest:.5});scene.add(m);
-  const s={mesh:m,last:'',async set(inner){if(inner===s.last)return;s.last=inner;const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(' ')}" width="${cw}" height="${ch}">${inner}</svg>`);await img.decode();g.clearRect(0,0,cw,ch);g.drawImage(img,0,0,cw,ch);tex.needsUpdate=true;}};return s;}
+  const s={mesh:m,last:'',async set(inner){inner=groundFix(inner,vb,{log:window.GROUND,t:typeof NOW!=='undefined'?NOW:0});if(inner===s.last)return;s.last=inner;const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(' ')}" width="${cw}" height="${ch}">${inner}</svg>`);await img.decode();g.clearRect(0,0,cw,ch);g.drawImage(img,0,0,cw,ch);tex.needsUpdate=true;}};return s;}
 const SP=[0,1,2,3].map(()=>sprite(VB,.62));
 // coloca o sprite com os pés em (x,y,z) do mundo, escala s, virado para a câmera
 // obstáculos (tudo marcado com userData.solid) em coordenadas do mundo; a árvore usa só o tronco
@@ -205,7 +206,7 @@ scene.traverse(o=>{if(!o.userData.solid)return;_b.setFromObject(o);if(!isFinite(
 window.SOLIDS=SOLIDS;window.COLLIDE=[];let PLACED=[],NOW=0;
 // coloca o sprite com os pés em (x,y,z), escala sc, virado para a câmera. NUNCA dentro de obstáculo nem de outro personagem:
 // se a posição pedida atravessa algo, empurra para fora e registra em window.COLLIDE (o check.js acusa e o roteiro deve ser corrigido).
-function place(s,x,y,z,sc=.78){const r=.3*sc/.78;let q=solid(SOLIDS,x,z,r,y);if(q.hit)window.COLLIDE.push({t:+NOW.toFixed(2),what:q.hit,depth:+q.depth.toFixed(3)});x=q.x;z=q.z;
+function place(s,x,y,z,sc=.78){const r=.3*sc/.78;const gy=groundAt(SOLIDS,x,z,y);if(y<gy-.005){window.GROUND.push({t:+NOW.toFixed(2),d:+((gy-y)/K/sc).toFixed(1),what:'pés abaixo do chão'});y=gy;}let q=solid(SOLIDS,x,z,r,y);if(q.hit)window.COLLIDE.push({t:+NOW.toFixed(2),what:q.hit,depth:+q.depth.toFixed(3)});x=q.x;z=q.z;
   for(const o of PLACED){const d=Math.hypot(x-o[0],z-o[1]);if(d<r+o[2]){window.COLLIDE.push({t:+NOW.toFixed(2),what:'outro personagem',depth:+(r+o[2]-d).toFixed(3)});const[,b]=apart([o[0],o[1]],[x,z],r+o[2]);x=b[0];z=b[1];}}
   PLACED.push([x,z,r]);s.mesh.visible=true;s.mesh.scale.setScalar(sc);s.mesh.position.set(x,y+712*K*sc,z);s.mesh.rotation.y=Math.atan2(cam.position.x-x,cam.position.z-z);}
 

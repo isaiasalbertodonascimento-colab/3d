@@ -51,6 +51,7 @@ const leafTex=ctex(64,64,(g)=>{g.fillStyle='#fff';g.beginPath();g.ellipse(32,32,
 // ================= sprites 2D =================
 const SPR=[];const K=.0021,HEADY=724*K;
 const CHAR_VB=[-560,-600,1120,1360],FLY_VB=[-1000,-1000,2000,2000];
+window.GROUND=window.GROUND||[];
 function sprite(vb,k,res,par=scene,cast=true){
   const [vx,vy,vw,vh]=vb,cw=Math.round(vw*res),ch=Math.round(vh*res);
   const c=document.createElement('canvas');c.width=cw;c.height=ch;const g=c.getContext('2d');
@@ -58,7 +59,7 @@ function sprite(vb,k,res,par=scene,cast=true){
   const geo=new THREE.PlaneGeometry(vw*k,vh*k);geo.translate((vx+vw/2)*k,-(vy+vh/2)*k,0);
   const mat=new THREE.MeshBasicMaterial({map:tex,alphaTest:.5,alphaToCoverage:true,side:THREE.DoubleSide,toneMapped:false});
   const m=new THREE.Mesh(geo,mat);m.castShadow=cast;m.customDepthMaterial=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:tex,alphaTest:.5});par.add(m);
-  const s={mesh:m,last:'',k,async set(inner){if(inner===s.last)return;s.last=inner;const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(' ')}" width="${cw}" height="${ch}">${inner}</svg>`);await img.decode();g.clearRect(0,0,cw,ch);g.drawImage(img,0,0,cw,ch);tex.needsUpdate=true;}};
+  const s={mesh:m,last:'',k,async set(inner){inner=groundFix(inner,vb,{log:window.GROUND});if(inner===s.last)return;s.last=inner;const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(' ')}" width="${cw}" height="${ch}">${inner}</svg>`);await img.decode();g.clearRect(0,0,cw,ch);g.drawImage(img,0,0,cw,ch);tex.needsUpdate=true;}};
   SPR.push(s);return s;
 }
 const HERO=sprite(CHAR_VB,K,.75),NEIGH=sprite(CHAR_VB,K,.7),FLY=sprite(FLY_VB,K,.5),FAKE=sprite([-180,-180,360,360],K,1);

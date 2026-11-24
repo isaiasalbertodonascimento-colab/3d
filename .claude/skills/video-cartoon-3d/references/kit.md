@@ -119,3 +119,10 @@ O que o `path` liga sozinho no personagem (`bodyPhys` no chars.js), cada parte c
 - **Estufa** (`ENV.estufa`, x+40): paredes e telhado de vidro em grade de ferro, bancadas com vasos, vasos pendurados (`ENV.hang`, pêndulo), girassóis, regador (`ENV.can`), céu de pôr do sol.
 - **Pátio ao entardecer** (`ENV.patio`, x+80): claustro com arcos, fonte com jato (`ENV.jet`), postes acesos, árvores, bancos, bandeirinhas (`ENV.flags`), bola (`ENV.ball`).
 - Troca de cenário: `show('sala'|'estufa'|'patio')`. Câmera: `camAt(OX,[pos],[alvo],fov)`. Demo de 12 s com roteiro, eventos (`export_events.js` tira os tempos dos quiques da própria física), trilha e render.
+
+## Chão sólido, mão simples e rosto simples (novo)
+- **Ninguém atravessa o chão:** todo `sprite.set` passa o SVG por `groundFix(svg, VB, {log:window.GROUND, t})` (kit/chars.js). Ele mede pés, pernas e mãos de cada `guy()` e, se algo passar do chão (y=712 no boneco: agachar, `bob`, pouso com squash, inclinação), levanta só o corpo até encostar. A sombra fica no chão.
+- No mundo 3D, `place()` usa `groundAt(SOLIDS,x,z,y)` (kit/anim.js): o personagem nunca fica abaixo do chão nem afunda na mesa/banco em que subiu.
+- `node check.js` agora também lista "CHÃO corrigido" (quadros em que o corpo foi levantado). Correção grande (> ~40) = ajuste a pose.
+- **Mão simples (padrão):** dedos finos, sem unha, vinco, nó nem brilho. `kit:{simpleHands:false}` volta a mão detalhada.
+- **Rosto simples (padrão no estilo macio):** olho = pontinho, sobrancelha = traço fino, boca = traço ou forma escura (sem dentes, língua, covinha, brilho, cílios). `detail:true` no `guy()` volta o rosto detalhado.

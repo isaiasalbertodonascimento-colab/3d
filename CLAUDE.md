@@ -48,3 +48,4 @@ O vídeo de Alcatraz foi considerado parado demais. No próximo, os personagens 
 - **Física com muitos detalhes:** passe `path` ao `guy()` sempre que o personagem se mover; use `jump`, `fall`, `toss`, `pendulum`, `shove` do `kit/anim.js`.
 - **Ninguém atravessa nada:** posicione com `place()`, marque obstáculos com `userData.solid=true` e rode `node check.js` antes do render (esperado: 0 atravessamentos).
 - **Mais personagens e cenários:** elenco `CAST`/`ator()` (9 originais) e `cenas-novas/` (sala de aula, estufa, pátio). Detalhes em `pacote-video-cartoon/video-cartoon-3d/references/`.
+- **Chão sólido, mão e rosto simples (24/11):** ninguém atravessa o chão (`groundFix` em todo `sprite.set`, `groundAt` no `place()`); mão fina e simples (padrão; `simpleHands:false` volta a antiga); rosto simples com olho de ponto, sobrancelha em traço e boca simples (padrão; `detail:true` volta o detalhado).

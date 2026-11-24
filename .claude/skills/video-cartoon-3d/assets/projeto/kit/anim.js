@@ -192,3 +192,7 @@ function solid(boxes, x, z, r = .28, y = 0) {
 }
 // Dois personagens não se atravessam: afasta a e b até a distância mínima (devolve as posições novas).
 function apart(a, b, min = .5) { const dx = b[0] - a[0], dz = b[1] - a[1], d = Math.hypot(dx, dz) || 1e-6; if (d >= min) return [a, b]; const k = (min - d) / 2 / d; return [[a[0] - dx * k, a[1] - dz * k], [b[0] + dx * k, b[1] + dz * k]]; }
+
+// Chão: altura da superfície embaixo de (x,z) — chão (floor, padrão 0) ou o topo de uma caixa que já está abaixo do personagem
+// (subiu na mesa, pulou no banco). Use para nunca deixar o personagem abaixo do chão: y = Math.max(y, groundAt(...)).
+function groundAt(boxes, x, z, y = 0, floor = 0) { let g = floor; for (const b of boxes) if (x >= b.x0 && x <= b.x1 && z >= b.z0 && z <= b.z1 && (b.h ?? 9) <= y + .05) g = Math.max(g, b.h); return g; }

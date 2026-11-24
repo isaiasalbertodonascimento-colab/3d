@@ -48,3 +48,8 @@ O vídeo de Alcatraz foi considerado parado demais. No próximo, os personagens 
 - **Física nos personagens, com MUITOS detalhes:** sempre passe `path` ao `guy()` quando o personagem se mexe pela cena. Pulos com `jump()` (gravidade real), objetos com `toss()`/`fall()`, coisas penduradas com `pendulum()`, esbarrões com `shove()`. Cada parte do corpo balança no seu tempo (cabelo, braços, cabeça, tronco), com pouso pesado, derrapagem na freada, queda livre e cansaço depois de correr.
 - **Nada de atravessar objetos:** personagem nunca entra em móvel, parede, planta ou outro personagem, e porta precisa de vão. Use `place()` e rode `node check.js` antes de todo render (o esperado é 0 atravessamentos). Na prévia, confira também se ninguém parece "em pé em cima" de algo por causa do ângulo da câmera.
 - **Mais personagens e mais cenários:** use o elenco `CAST` (9 personagens originais) e os cenários de `cenas-novas/` (sala de aula, estufa, pátio) além do quarto.
+
+## Pedido de 24/11/2026
+- Física: os personagens **nunca atravessam o chão** (`groundFix` + `groundAt`, conferido no `check.js`).
+- **Mão mais fina e simples** (sem unha, vinco ou brilho).
+- **Rosto com menos detalhes:** olhos de pontinho, sobrancelha em traço fino, boca simples.
