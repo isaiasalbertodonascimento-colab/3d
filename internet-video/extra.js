@@ -1,0 +1,3 @@
+function M(geo,mat,par,x=0,y=0,z=0,cast=true){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.castShadow=cast;m.receiveShadow=true;par.add(m);return m;}
+const cyl=(rt,rb,h,mat,par,x,y,z,seg=20)=>M(new THREE.CylinderGeometry(rt,rb,h,seg),mat,par,x,y,z);
+function pin(x,y,p,txt){if(p<=0)return'';const s=back(cl(p));return `<g transform="translate(${f(x)} ${f(y)}) scale(${s.toFixed(3)})"><path d="M0 0 C-40 -50 -50 -80 -50 -100 A50 50 0 1 1 50 -100 C50 -80 40 -50 0 0Z" fill="#e2574c" stroke="#141414" stroke-width="8"/><circle cy="-100" r="20" fill="#fff"/></g>`+(txt?label(txt,y+90,{size:70,x,p,stroke:14}):'');}
